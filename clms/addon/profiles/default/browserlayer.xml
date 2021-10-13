@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layers>
+  <layer
+      name="clms.addon"
+      interface="clms.addon.interfaces.IClmsAddonLayer"
+      />
+</layers>
