@@ -10,30 +10,30 @@ from plone.app.testing import setRoles
 
 
 class EEAFixture(PloneSandboxLayer):
-    """ EEA Testing Policy
-    """
+    """EEA Testing Policy"""
+
     def setUpZope(self, app, configurationContext):
-        """ Setup Zope
-        """
+        """Setup Zope"""
+        # pylint: disable=C0415
         import clms.addon
+
         self.loadZCML(package=clms.addon)
-        z2.installProduct(app, 'clms.addon')
+        z2.installProduct(app, "clms.addon")
 
     def setUpPloneSite(self, portal):
-        """ Setup Plone
-        """
-        applyProfile(portal, 'clms.addon:default')
+        """Setup Plone"""
+        applyProfile(portal, "clms.addon:default")
 
         # Default workflow
-        wftool = portal['portal_workflow']
-        wftool.setDefaultChain('simple_publication_workflow')
+        wftool = portal["portal_workflow"]
+        wftool.setDefaultChain("simple_publication_workflow")
 
         # Login as manager
-        setRoles(portal, TEST_USER_ID, ['Manager'])
+        setRoles(portal, TEST_USER_ID, ["Manager"])
 
         # Add default Plone content
         try:
-            applyProfile(portal, 'plone.app.contenttypes:plone-content')
+            applyProfile(portal, "plone.app.contenttypes:plone-content")
         except KeyError:
             # BBB Plone 4
             setuphandlers.setupPortalContent(portal)
@@ -41,12 +41,12 @@ class EEAFixture(PloneSandboxLayer):
         # Create testing environment
         portal.invokeFactory("Folder", "sandbox", title="Sandbox")
 
-
     def tearDownZope(self, app):
-        """ Uninstall Zope
-        """
-        z2.uninstallProduct(app, 'clms.addon')
+        """Uninstall Zope"""
+        z2.uninstallProduct(app, "clms.addon")
+
 
 EEAFIXTURE = EEAFixture()
-FUNCTIONAL_TESTING = FunctionalTesting(bases=(EEAFIXTURE,),
-                                       name='EEAaddon:Functional')
+FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(EEAFIXTURE,), name="EEAaddon:Functional"
+)
