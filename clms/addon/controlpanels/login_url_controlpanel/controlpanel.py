@@ -8,7 +8,6 @@ from plone.z3cform import layout
 from zope import schema
 from zope.interface import Interface
 
-# pylint: disable=C0412
 from clms.addon import _
 
 
