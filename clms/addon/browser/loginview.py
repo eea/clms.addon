@@ -5,6 +5,8 @@ from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 
 
 class CallbackView(BaseCallbackView):
+    """ Callback view """
+
     def __call__(self):
         """
         Override redirect url

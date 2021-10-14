@@ -1,8 +1,7 @@
 include *.md *.rst *.txt
 graft docs
-graft eea
+graft clms
 global-exclude *pyc
 global-exclude *~
 global-exclude *.un~
-
 global-include *.mo
