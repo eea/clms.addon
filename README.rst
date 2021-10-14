@@ -16,9 +16,8 @@ The clms.addon is a Plone add-on
 Main features
 =============
 
-1. Easy to install/uninstall via Site Setup > Add-ons
-2.
-3.
+1. Control panel to configure the login URL
+2. Override post-login redirect
 
 Install
 =======
@@ -32,7 +31,6 @@ Install
 
 * You can download a sample buildout from:
 
-  - https://github.com/eea/clms.addon/tree/master/buildouts/plone4
   - https://github.com/eea/clms.addon/tree/master/buildouts/plone5
 
 * Or via docker::
@@ -45,7 +43,6 @@ Install
 Buildout installation
 =====================
 
-- `Plone 4+ <https://github.com/eea/clms.addon/tree/master/buildouts/plone4>`_
 - `Plone 5+ <https://github.com/eea/clms.addon/tree/master/buildouts/plone5>`_
 
 

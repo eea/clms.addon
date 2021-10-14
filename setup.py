@@ -7,10 +7,8 @@ from setuptools import setup, find_packages
 NAME = 'clms.addon'
 PATH = NAME.split('.') + ['version.txt']
 
-# pylint: disable=R1732
 VERSION = open(join(*PATH)).read().strip()
 
-# pylint: disable=R1732
 setup(
     name=NAME,
     version=VERSION,
@@ -40,7 +38,7 @@ setup(
     namespace_packages=['clms'],
     include_package_data=True,
     zip_safe=False,
-        python_requires="==2.7, >=3.6",
+        python_requires=">=3.6",
         install_requires=[
         'setuptools',
         # -*- Extra requirements: -*-

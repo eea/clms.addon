@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<object name="portal_controlpanel" xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="clms.addon">
+
+    <!-- -*- extra stuff goes here -*- -->
+    <configlet
+        i18n:attributes="title"
+        title="Login URL Control Panel"
+        action_id="login_url_controlpanel-controlpanel"
+        appId="login_url_controlpanel-controlpanel"
+        category="Products"
+        condition_expr=""
+        icon_expr=""
+        url_expr="string:${portal_url}/@@login_url_controlpanel-controlpanel"
+        visible="True">
+      <permission>Manage Portal</permission>
+    </configlet>
+</object>

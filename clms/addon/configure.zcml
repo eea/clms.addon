@@ -8,5 +8,7 @@
   <include file="profiles.zcml" />
   <include package=".browser" />
   <include package=".upgrades" />
+  <include package=".controlpanels" />
+  <include package=".restapi" />
 
 </configure>

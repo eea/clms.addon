@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="clms.addon">
+
+  <browser:page
+    name="login_url_controlpanel-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".controlpanel.LoginURLControlPanelView"
+    layer="clms.addon.interfaces.IClmsAddonLayer"
+    permission="cmf.ManagePortal"
+    />
+
+
+</configure>
