@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.1 - (2021-11-22)
+---------------------------
+* Change: Add FME configuration controlpanel
+  [erral]
+
 1.0 - (2021-10-14)
 ---------------------------
 * Change: docstring [erral]

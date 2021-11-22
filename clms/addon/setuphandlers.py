@@ -14,6 +14,10 @@ class HiddenProfiles:
             "clms.addon:uninstall",
         ]
 
+    def getNonInstallableProducts(self):
+        """Hide the upgrades package from site-creation and quickinstaller."""
+        return ["clms.addon.upgrades"]
+
 
 def post_install(context):
     """Post install script"""

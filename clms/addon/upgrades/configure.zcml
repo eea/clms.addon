@@ -15,4 +15,6 @@
 
   </genericsetup:upgradeSteps>
 
+  <include file="1001.zcml" />
+
 </configure>
