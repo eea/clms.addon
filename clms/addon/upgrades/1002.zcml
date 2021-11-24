@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup">
+
+  <gs:registerProfile name="1002"
+    title="New Control Panel for FME Configuration"
+    directory="1002"
+    description='Configuration for version 1002'
+    for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+  <gs:upgradeSteps source="1001"
+    destination="1002"
+    profile="clms.addon:default">
+
+    <gs:upgradeStep title="New fields in the FME configuration panel"
+      description="New fields"
+      handler=".v1002.upgrade" />
+
+    <gs:upgradeDepends title="New fields in the FME configuration panel (GS profile)"
+      description="New fields"
+      import_profile="clms.addon.upgrades:1002" />
+
+  </gs:upgradeSteps>
+
+</configure>
