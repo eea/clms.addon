@@ -26,6 +26,28 @@ class IFMEConfigControlPanel(Interface):
         readonly=False,
     )
 
+    fme_token = schema.TextLine(
+        title=_(
+            "Enter the FME token",
+        ),
+        description=_(
+            "This token will be used when connecting to FME",
+        ),
+        default=u"XXXXXXXXXXXXXXXXXXX",
+        required=True,
+        readonly=False,
+    )
+
+    statstool_endpoint = schema.TextLine(
+        title=_(
+            "Enter the URL of the stats tool",
+        ),
+        description=_("This url will be used to register stats "),
+        default=u"http://land.copernicus.eu/@stats",
+        required=True,
+        readonly=False,
+    )
+
 
 class FMEConfigControlPanel(RegistryEditForm):
     """ control panel rest API endpoint configuration """
