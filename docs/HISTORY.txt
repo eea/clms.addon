@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5 - (2021-12-03)
+---------------------------
+* Change: Develop
+  [erral]
+
 1.4 - (2021-11-26)
 ---------------------------
 * Change: Endpoint to get registry values
