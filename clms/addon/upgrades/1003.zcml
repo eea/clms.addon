@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup">
+
+  <gs:registerProfile name="1003"
+    title="User profile form configuration"
+    directory="1003"
+    description='Configuration for version 1003'
+    for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+  <gs:upgradeSteps source="1002"
+    destination="1003"
+    profile="clms.addon:default">
+
+    <gs:upgradeStep title="New fields for user profile"
+      description="New fields"
+      handler=".v1003.upgrade" />
+
+    <gs:upgradeDepends title="New fields for user profile (GS profile)"
+      description="New fields"
+      import_profile="clms.addon.upgrades:1003" />
+
+  </gs:upgradeSteps>
+
+</configure>

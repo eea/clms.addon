@@ -1,0 +1,45 @@
+
+<model xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:users="http://namespaces.plone.org/supermodel/users" xmlns:lingua="http://namespaces.plone.org/supermodel/lingua" xmlns="http://namespaces.plone.org/supermodel/schema">
+  <schema name="member-fields">
+    <field name="country" type="zope.schema.TextLine" users:forms="In User Profile">
+      <description/>
+      <title>Country</title>
+    </field>
+    <field name="are_you_registering_on_behalf_on_an_organisation_" type="zope.schema.Bool" users:forms="In User Profile">
+      <description/>
+      <title>Are you registering on behalf on an organisation?</title>
+    </field>
+    <field name="how_do_you_intend_to_use_the_products" type="zope.schema.Set" users:forms="In User Profile">
+      <description/>
+      <title>How do you intend to use the products?</title>
+      <value_type type="zope.schema.Choice">
+        <vocabulary>collective.taxonomy.userprofileproductuseintention</vocabulary>
+      </value_type>
+    </field>
+    <field name="professional_thematic_domain" type="zope.schema.Set" users:forms="In User Profile">
+      <description>Enter your professional thematic domain (more than one is allowed).</description>
+      <title>Professional thematic domain</title>
+      <value_type type="zope.schema.Choice">
+        <vocabulary>collective.taxonomy.userprofileprofessionalthematicdomain</vocabulary>
+      </value_type>
+    </field>
+    <field name="organisation_url" type="zope.schema.TextLine" users:forms="In User Profile">
+      <description/>
+      <required>False</required>
+      <title>Organisation URL</title>
+    </field>
+    <field name="organisation_name" type="zope.schema.TextLine" users:forms="In User Profile">
+      <description/>
+      <required>False</required>
+      <title>Organisation name</title>
+    </field>
+    <field name="organisation_institutional_domain" type="zope.schema.Set" users:forms="In User Profile">
+      <description/>
+      <required>False</required>
+      <title>Institutional domain</title>
+      <value_type type="zope.schema.Choice">
+        <vocabulary>collective.taxonomy.userprofileinstitutionaldomain</vocabulary>
+      </value_type>
+    </field>
+  </schema>
+</model>

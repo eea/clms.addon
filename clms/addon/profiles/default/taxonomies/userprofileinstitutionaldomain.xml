@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd" orderSignificant="false" profileType="hierarchicalTokenTerms" language="en">
+  <vocabName>
+    <langstring language="en">User Profile: Institutional Domain</langstring>
+  </vocabName>
+  <vocabIdentifier>userprofileinstitutionaldomain</vocabIdentifier>
+  <term>
+    <termIdentifier>gku8c182co</termIdentifier>
+    <caption>
+      <langstring language="en">Citizen</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>waobex3sms</termIdentifier>
+    <caption>
+      <langstring language="en">Commercial</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>8wp85sftdi</termIdentifier>
+    <caption>
+      <langstring language="en">Education</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>wxjgpt05an</termIdentifier>
+    <caption>
+      <langstring language="en">Non-governmental (NGO)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>purk452xrk</termIdentifier>
+    <caption>
+      <langstring language="en">Public Authority</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>1mmxiwwnce</termIdentifier>
+    <caption>
+      <langstring language="en">Research and development</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>gq5ihn35j7</termIdentifier>
+    <caption>
+      <langstring language="bs"></langstring>
+      <langstring language="cs"></langstring>
+      <langstring language="da"></langstring>
+      <langstring language="de"></langstring>
+      <langstring language="en">Other</langstring>
+      <langstring language="es"></langstring>
+      <langstring language="et"></langstring>
+      <langstring language="fi"></langstring>
+      <langstring language="fr"></langstring>
+      <langstring language="hr"></langstring>
+      <langstring language="hu"></langstring>
+      <langstring language="it"></langstring>
+      <langstring language="lt"></langstring>
+      <langstring language="lv"></langstring>
+      <langstring language="mt"></langstring>
+      <langstring language="nl"></langstring>
+      <langstring language="pl"></langstring>
+      <langstring language="pt"></langstring>
+      <langstring language="ro"></langstring>
+      <langstring language="sk"></langstring>
+      <langstring language="sl"></langstring>
+      <langstring language="sv"></langstring>
+    </caption>
+  </term>
+</vdex>
