@@ -1,9 +1,9 @@
+
 <model xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:users="http://namespaces.plone.org/supermodel/users" xmlns:lingua="http://namespaces.plone.org/supermodel/lingua" xmlns="http://namespaces.plone.org/supermodel/schema">
   <schema name="member-fields">
-    <field name="country" type="zope.schema.Choice" users:forms="In User Profile">
-      <description>Enter your current location</description>
+    <field name="country" type="zope.schema.TextLine" users:forms="In User Profile">
+      <description/>
       <title>Country</title>
-      <vocabulary>collective.taxonomy.eeageolocationbiotagstaxonomy</vocabulary>
     </field>
     <field name="are_you_registering_on_behalf_on_an_organisation_" type="zope.schema.Bool" users:forms="In User Profile">
       <description/>
