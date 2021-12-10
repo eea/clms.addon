@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd" orderSignificant="false" profileType="hierarchicalTokenTerms" language="en">
+  <vocabName>
+    <langstring language="en">User Profile: Product Use Intention</langstring>
+  </vocabName>
+  <vocabIdentifier>userprofileproductuseintention</vocabIdentifier>
+  <term>
+    <termIdentifier>imdlsxp8g2</termIdentifier>
+    <caption>
+      <langstring language="en">Provide value added products (created by modifying the products), to a third party</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>oe8xnmkaoy</termIdentifier>
+    <caption>
+      <langstring language="en">Redistribute the products to a third party</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>c4joocds9b</termIdentifier>
+    <caption>
+      <langstring language="en">Fulfill internal use only in connection with own application or for research purpose</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>9t48lncmm7</termIdentifier>
+    <caption>
+      <langstring language="bs"></langstring>
+      <langstring language="cs"></langstring>
+      <langstring language="da"></langstring>
+      <langstring language="de"></langstring>
+      <langstring language="en">Other purposes</langstring>
+      <langstring language="es"></langstring>
+      <langstring language="et"></langstring>
+      <langstring language="fi"></langstring>
+      <langstring language="fr"></langstring>
+      <langstring language="hr"></langstring>
+      <langstring language="hu"></langstring>
+      <langstring language="it"></langstring>
+      <langstring language="lt"></langstring>
+      <langstring language="lv"></langstring>
+      <langstring language="mt"></langstring>
+      <langstring language="nl"></langstring>
+      <langstring language="pl"></langstring>
+      <langstring language="pt"></langstring>
+      <langstring language="ro"></langstring>
+      <langstring language="sk"></langstring>
+      <langstring language="sl"></langstring>
+      <langstring language="sv"></langstring>
+    </caption>
+  </term>
+</vdex>
