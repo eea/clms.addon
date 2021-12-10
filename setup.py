@@ -17,9 +17,8 @@ setup(
     description="An add-on for customization of the CLMS portal",
     long_description_content_type="text/x-rst",
     long_description=(
-        open("README.rst").read()
-        + "\n"
-        + open(os.path.join("docs", "HISTORY.txt")).read()
+        # pylint: disable=line-too-long
+        open("README.rst").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa
     ),
     classifiers=[
         "Environment :: Web Environment",
