@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.8-dev0 - (unreleased)
+---------------------------
+
 1.7 - (2021-12-11)
 ---------------------------
 * Change: Allow authenticated users to access vocabularies
