@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup">
+
+  <gs:registerProfile name="1004"
+    title="Allow authenticated users to query vocabularies from plone.restapi"
+    directory="1004"
+    description='Configuration for version 1004'
+    for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+  <gs:upgradeSteps source="1003"
+    destination="1004"
+    profile="clms.addon:default">
+
+    <gs:upgradeStep title="Allow authenticated users to query vocabularies from plone.restapi"
+      description="New fields"
+      handler=".v1004.upgrade" />
+
+    <gs:upgradeDepends title="Allow authenticated users to query vocabularies from plone.restapi (GS profile)"
+      description="New fields"
+      import_profile="clms.addon.upgrades:1004" />
+
+  </gs:upgradeSteps>
+
+</configure>
