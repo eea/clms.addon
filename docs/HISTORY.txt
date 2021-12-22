@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.8 - (2021-12-22)
+---------------------------
+* Change: Develop
+  [erral]
+
 1.7 - (2021-12-11)
 ---------------------------
 * Change: Allow authenticated users to access vocabularies
