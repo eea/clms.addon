@@ -27,12 +27,12 @@ class DataSetSearch(Service):
                         new_query[k].append(v)
             else:
                 if "," in v:
-                    new_query[k] = v.split(',')
+                    new_query[k] = v.split(",")
                 else:
                     new_query[k] = v
         lazy_resultset = self.catalog.searchResults(**new_query)
-        results = getMultiAdapter((lazy_resultset, self.request), ISerializeToJson)(
-            fullobjects=True
-        )
+        results = getMultiAdapter(
+            (lazy_resultset, self.request), ISerializeToJson
+        )(fullobjects=True)
 
         return results
