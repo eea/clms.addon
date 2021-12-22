@@ -18,7 +18,7 @@ Main features
 
 1. Control panel to configure the login URL
 2. Override post-login redirect
-
+ 
 Install
 =======
 
