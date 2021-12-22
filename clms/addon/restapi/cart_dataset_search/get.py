@@ -1,7 +1,6 @@
 """ userschema endpoint """
 # -*- coding: utf-8 -*-
 from plone.restapi.interfaces import ISerializeToJson
-from plone.restapi.search.handler import SearchHandler
 from plone.restapi.search.utils import unflatten_dotted_dict
 from plone.restapi.services import Service
 from Products.CMFCore.utils import getToolByName
