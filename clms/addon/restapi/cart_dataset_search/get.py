@@ -23,7 +23,7 @@ class DataSetSearch(Service):
                     if "," in v:
                         new_query[k].extend(item.split(","))
                     else:
-                        new_query[k].append(v)
+                        new_query[k].append(item)
             else:
                 if "," in v:
                     new_query[k] = v.split(",")
