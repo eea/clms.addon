@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+  >
+
+  <include package="plone.restapi"  />
+
+  <plone:service
+    method="GET"
+    name="@datasets_by_uid"
+    factory=".get.DataSetSearch"
+    permission="zope2.View"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+
+  />
+
+</configure>

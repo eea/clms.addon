@@ -9,6 +9,7 @@
   <include package=".fme_config_controlpanel"  />
   <include package=".registry_endpoint"/>
   <include package=".userschema"/>
+  <include package=".cart_dataset_search"/>
 
 
 </configure>
