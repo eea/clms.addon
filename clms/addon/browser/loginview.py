@@ -17,8 +17,8 @@ class CallbackView(BaseCallbackView):
         - If this is the first time that the user logs in, redirect to the
             /profile url to let her fill the profile form
 
-        - If the user comes from a given url (came_from=whatever), check if that
-            url is a url in the portal, and if so redirect here there.
+        - If the user comes from a given url (came_from=whatever), check if
+            that url is a url in the portal, and if so redirect here there.
 
         - If everything else fails, redirect to the home page.
 
@@ -40,4 +40,4 @@ class CallbackView(BaseCallbackView):
             self.request,
             use_session_data_manager=self.context.use_session_data_manager,
         )
-        self.request.response.redirect(self.return_url(session=session))
+        return self.request.response.redirect(self.return_url(session=session))
