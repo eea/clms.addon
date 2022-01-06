@@ -8,6 +8,7 @@ from zope.interface import implementer
 from plone import api
 from zope.annotation.interfaces import IAnnotations
 from persistent.mapping import PersistentMapping
+from datetime import datetime
 
 
 ANNOTATION_KEY = "clms.addon.newsitem_notification_subscribers"
@@ -42,7 +43,7 @@ class NewsItemNotificationsUtility:
         subscribers = annotations.get(ANNOTATION_KEY, PersistentMapping())
         if email is not None and email.strip():
             if email not in subscribers:
-                subscribers[email] = 1
+                subscribers[email] = {"date": datetime.utcnow().isoformat()}
                 annotations[ANNOTATION_KEY] = subscribers
                 return True
 
