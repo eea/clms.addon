@@ -15,6 +15,10 @@ from clms.addon.utilities.newsitem_notifications_utility import (
     INewsItemPendingSubscriptionsUtility,
 )
 
+from clms.addon.utilities.newsletter_utility import (
+    INewsLetterPendingSubscriptionsUtility,
+)
+
 
 @implementer(IPublishTraverse)
 class BaseNotificationsSubscribeConfirmHandler(Service):
@@ -77,3 +81,11 @@ class EventNotificationsSubscribeConfirm(
     """ Event implementation """
 
     utility_interface = IEventPendingSubscriptionsUtility
+
+
+class NewsLetterNotificationsSubscribeConfirm(
+    BaseNotificationsSubscribeConfirmHandler
+):
+    """ NewsLetter implementation """
+
+    utility_interface = INewsLetterPendingSubscriptionsUtility

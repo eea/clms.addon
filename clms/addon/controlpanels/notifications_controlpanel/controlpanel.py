@@ -26,19 +26,6 @@ class INotificationsControlPanel(Interface):
         readonly=False,
     )
 
-    event_notification_subscriptions_url = schema.TextLine(
-        title=_(
-            "Base URL for the event notification subscription",
-        ),
-        description=_(
-            "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
-        ),
-        default="/event-notification-subscription",
-        required=True,
-        readonly=False,
-    )
-
     newsitem_notification_unsubscriptions_url = schema.TextLine(
         title=_(
             "Base URL for the newsitem notification unsubscription",
@@ -52,6 +39,19 @@ class INotificationsControlPanel(Interface):
         readonly=False,
     )
 
+    event_notification_subscriptions_url = schema.TextLine(
+        title=_(
+            "Base URL for the event notification subscription",
+        ),
+        description=_(
+            "This base URL will be used to build the actual confirmation URL"
+            " handled by the frontend",
+        ),
+        default="/event-notification-subscription",
+        required=True,
+        readonly=False,
+    )
+
     event_notification_unsubscriptions_url = schema.TextLine(
         title=_(
             "Base URL for the event notification unsubscription",
@@ -61,6 +61,32 @@ class INotificationsControlPanel(Interface):
             " handled by the frontend",
         ),
         default="/event-notification-unsubscription",
+        required=True,
+        readonly=False,
+    )
+
+    newsletter_notification_subscriptions_url = schema.TextLine(
+        title=_(
+            "Base URL for the newsletter notification subscription",
+        ),
+        description=_(
+            "This base URL will be used to build the actual confirmation URL"
+            " handled by the frontend",
+        ),
+        default="/newsletter-notification-subscription",
+        required=True,
+        readonly=False,
+    )
+
+    newsletter_notification_unsubscriptions_url = schema.TextLine(
+        title=_(
+            "Base URL for the newsletter notification unsubscription",
+        ),
+        description=_(
+            "This base URL will be used to build the actual confirmation URL"
+            " handled by the frontend",
+        ),
+        default="/newsletter-notification-unsubscription",
         required=True,
         readonly=False,
     )

@@ -13,14 +13,6 @@
 
   <plone:service
       method="POST"
-      factory=".post_subscribe.EventNotificationsSubscribe"
-      for="Products.CMFCore.interfaces.ISiteRoot"
-      permission="zope2.View"
-      name="@event-notification-subscribe"
-      />
-
-  <plone:service
-      method="POST"
       factory=".post_unsubscribe.NewsItemNotificationsUnSubscribe"
       for="Products.CMFCore.interfaces.ISiteRoot"
       permission="zope2.View"
@@ -29,19 +21,36 @@
 
   <plone:service
       method="POST"
-      factory=".post_unsubscribe.EventNotificationsUnSubscribe"
+      factory=".post_subscribe_confirm.NewsItemNotificationsSubscribeConfirm"
       for="Products.CMFCore.interfaces.ISiteRoot"
       permission="zope2.View"
-      name="@event-notification-unsubscribe"
+      name="@newsitem-notification-subscribe-confirm"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe_confirm.NewsItemNotificationsUnSubscribeConfirm"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@newsitem-notification-unsubscribe-confirm"
       />
 
 
   <plone:service
       method="POST"
-      factory=".post_subscribe_confirm.NewsItemNotificationsSubscribeConfirm"
+      factory=".post_subscribe.EventNotificationsSubscribe"
       for="Products.CMFCore.interfaces.ISiteRoot"
       permission="zope2.View"
-      name="@newsitem-notification-subscribe-confirm"
+      name="@event-notification-subscribe"
+      />
+
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe.EventNotificationsUnSubscribe"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@event-notification-unsubscribe"
       />
 
   <plone:service
@@ -54,19 +63,47 @@
 
   <plone:service
       method="POST"
-      factory=".post_unsubscribe_confirm.NewsItemNotificationsUnSubscribeConfirm"
-      for="Products.CMFCore.interfaces.ISiteRoot"
-      permission="zope2.View"
-      name="@newsitem-notification-unsubscribe-confirm"
-      />
-
-  <plone:service
-      method="POST"
       factory=".post_unsubscribe_confirm.EventNotificationsUnSubscribeConfirm"
       for="Products.CMFCore.interfaces.ISiteRoot"
       permission="zope2.View"
       name="@event-notification-unsubscribe-confirm"
       />
+
+
+  <plone:service
+      method="POST"
+      factory=".post_subscribe.NewsLetterNotificationsSubscribe"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@newsletter-notification-subscribe"
+      />
+
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe.NewsLetterNotificationsUnSubscribe"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@newsletter-notification-unsubscribe"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".post_subscribe_confirm.NewsLetterNotificationsSubscribeConfirm"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@newsletter-notification-subscribe-confirm"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe_confirm.NewsLetterNotificationsUnSubscribeConfirm"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@newsletter-notification-unsubscribe-confirm"
+      />
+
+
 
 
 
@@ -80,29 +117,11 @@
 
   <plone:service
     method="DELETE"
-    factory=".delete.EventNotificationSubscriptions"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-event-notification-subscriptions"
-    />
-
-
-  <plone:service
-    method="DELETE"
     factory=".delete.NewsItemPendingNotificationSubscriptionRequests"
     for="Products.CMFCore.interfaces.ISiteRoot"
     permission="cmf.ManagePortal"
     name="@cleanup-newsitem-notification-subscription-requests"
     />
-
-  <plone:service
-    method="DELETE"
-    factory=".delete.EventPendingNotificationSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-event-notification-subscription-requests"
-    />
-
 
   <plone:service
     method="DELETE"
@@ -114,10 +133,50 @@
 
   <plone:service
     method="DELETE"
+    factory=".delete.EventNotificationSubscriptions"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@cleanup-event-notification-subscriptions"
+    />
+
+  <plone:service
+    method="DELETE"
+    factory=".delete.EventPendingNotificationSubscriptionRequests"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@cleanup-event-notification-subscription-requests"
+    />
+
+  <plone:service
+    method="DELETE"
     factory=".delete.EventPendingNotificationUnSubscriptionRequests"
     for="Products.CMFCore.interfaces.ISiteRoot"
     permission="cmf.ManagePortal"
     name="@cleanup-event-notification-unsubscription-requests"
+    />
+
+  <plone:service
+    method="DELETE"
+    factory=".delete.NewsLetterNotificationSubscriptions"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@cleanup-newsletter-notification-subscriptions"
+    />
+
+  <plone:service
+    method="DELETE"
+    factory=".delete.NewsLetterPendingNotificationSubscriptionRequests"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@cleanup-newsletter-notification-subscription-requests"
+    />
+
+  <plone:service
+    method="DELETE"
+    factory=".delete.NewsLetterPendingNotificationUnSubscriptionRequests"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@cleanup-newsletter-notification-unsubscription-requests"
     />
 
 

@@ -22,6 +22,9 @@ from clms.addon.utilities.event_notifications_utility import (
 from clms.addon.utilities.newsitem_notifications_utility import (
     INewsItemPendingSubscriptionsUtility,
 )
+from clms.addon.utilities.newsletter_utility import (
+    INewsLetterPendingSubscriptionsUtility,
+)
 
 
 class BaseNotificationsSubscribeHandler(Service):
@@ -162,6 +165,30 @@ class EventNotificationsSubscribe(BaseNotificationsSubscribeHandler):
             _(
                 "You are receiving this email because you have requested to"
                 " subscribe to receive notifications about new events from"
+                " the ${portal_title} website. Please visit the following URL"
+                " to confirm your subscription: ${url}.",
+                mapping={
+                    "portal_title": portal_title,
+                    "url": url,
+                },
+            )
+        )
+
+
+class NewsLetterNotificationsSubscribe(BaseNotificationsSubscribeHandler):
+    """ base class """
+
+    utility_interface = INewsLetterPendingSubscriptionsUtility
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsletter_notification_subscriptions_url"  # noqa
+    email_subject = _("Newsletter notification subscription")
+
+    def email_message(self, url, portal_title):
+        """ return the message """
+        return translate(
+            _(
+                "You are receiving this email because you have requested to"
+                " subscribe to receive the newsletter from"
                 " the ${portal_title} website. Please visit the following URL"
                 " to confirm your subscription: ${url}.",
                 mapping={

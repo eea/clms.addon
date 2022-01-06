@@ -8,21 +8,9 @@
     factory=".event_notifications_utility.EventNotificationsUtility"
     />
 
-
-  <utility
-    provides=".newsitem_notifications_utility.INewsItemNotificationsUtility"
-    factory=".newsitem_notifications_utility.NewsItemNotificationsUtility"
-    />
-
-
   <utility
     provides=".event_notifications_utility.IEventPendingSubscriptionsUtility"
     factory=".event_notifications_utility.EventPendingSubscriptionsUtility"
-    />
-
-  <utility
-    provides=".newsitem_notifications_utility.INewsItemPendingSubscriptionsUtility"
-    factory=".newsitem_notifications_utility.NewsItemPendingSubscriptionsUtility"
     />
 
   <utility
@@ -31,8 +19,34 @@
     />
 
   <utility
+    provides=".newsitem_notifications_utility.INewsItemNotificationsUtility"
+    factory=".newsitem_notifications_utility.NewsItemNotificationsUtility"
+    />
+
+  <utility
+    provides=".newsitem_notifications_utility.INewsItemPendingSubscriptionsUtility"
+    factory=".newsitem_notifications_utility.NewsItemPendingSubscriptionsUtility"
+    />
+
+  <utility
     provides=".newsitem_notifications_utility.INewsItemPendingUnSubscriptionsUtility"
     factory=".newsitem_notifications_utility.NewsItemPendingUnSubscriptionsUtility"
+    />
+
+
+  <utility
+    provides=".newsletter_utility.INewsLetterNotificationsUtility"
+    factory=".newsletter_utility.NewsLetterNotificationsUtility"
+    />
+
+  <utility
+    provides=".newsletter_utility.INewsLetterPendingSubscriptionsUtility"
+    factory=".newsletter_utility.NewsLetterPendingSubscriptionsUtility"
+    />
+
+  <utility
+    provides=".newsletter_utility.INewsLetterPendingUnSubscriptionsUtility"
+    factory=".newsletter_utility.NewsLetterPendingUnSubscriptionsUtility"
     />
 
 </configure>

@@ -22,6 +22,9 @@ from clms.addon.utilities.event_notifications_utility import (
 from clms.addon.utilities.newsitem_notifications_utility import (
     INewsItemPendingUnSubscriptionsUtility,
 )
+from clms.addon.utilities.newsletter_utility import (
+    INewsLetterPendingUnSubscriptionsUtility,
+)
 
 
 class BaseNotificationsUnSubscribeHandler(Service):
@@ -164,6 +167,30 @@ class EventNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
             _(
                 "You are receiving this email because you have requested to"
                 " unsubscribe from receiving notifications about events from"
+                " the ${portal_title} website. Please visit the following URL"
+                " to confirm your subscription: ${url}.",
+                mapping={
+                    "portal_title": portal_title,
+                    "url": url,
+                },
+            )
+        )
+
+
+class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
+    """ base class """
+
+    utility_interface = INewsLetterPendingUnSubscriptionsUtility
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsletter_notification_unsubscriptions_url"  # noqa
+    email_subject = _("NewsLetter notification unsubscription")
+
+    def email_message(self, url, portal_title):
+        """ return the message """
+        return translate(
+            _(
+                "You are receiving this email because you have requested to"
+                " unsubscribe from receivingthe newsletter from"
                 " the ${portal_title} website. Please visit the following URL"
                 " to confirm your subscription: ${url}.",
                 mapping={
