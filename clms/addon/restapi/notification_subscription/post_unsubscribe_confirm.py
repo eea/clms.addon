@@ -4,7 +4,6 @@ REST API information for notification subscriptions
 # -*- coding: utf-8 -*-
 
 from plone.restapi.services import Service
-
 from zope.component import getUtility
 from zope.interface import implementer
 from zope.publisher.interfaces import IPublishTraverse
@@ -55,13 +54,13 @@ class BaseNotificationsUnSubscribeConfirmHandler(Service):
             utility = getUtility(self.utility_interface)
             if utility.confirm_pending_unsubscription(self._get_key):
                 self.request.response.setStatus(204)
-            else:
-                self.request.response.setStatus(400)
-                return {"error": "Provided key is not valid"}
+                return {}
 
-        else:  # batched listing
             self.request.response.setStatus(400)
-            return {"error": "You need to provide a key"}
+            return {"error": "Provided key is not valid"}
+
+        self.request.response.setStatus(400)
+        return {"error": "You need to provide a key"}
 
 
 class NewsItemNotificationsUnSubscribeConfirm(

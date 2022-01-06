@@ -1,11 +1,11 @@
 """ base implementation"""
 # -*- coding: utf-8 -*-
-from zope.interface import Interface
-from zope.interface import implementer
+from datetime import datetime
+
+from persistent.mapping import PersistentMapping
 from plone import api
 from zope.annotation.interfaces import IAnnotations
-from persistent.mapping import PersistentMapping
-from datetime import datetime
+from zope.interface import Interface, implementer
 
 
 class INotificationsUtility(Interface):
@@ -28,6 +28,8 @@ class INotificationsUtility(Interface):
 
 @implementer(INotificationsUtility)
 class NotificationsUtility:
+    """ Utility implementation """
+
     ANNOTATION_KEY = "clms.addon.dummykey"
 
     def subscribe_address(self, email):
@@ -61,9 +63,10 @@ class NotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
-        return [key for key in subscribers.keys()]
+        return list(subscribers.keys())
 
     def cleanup_subscribers(self):
+        """ cleanup the registry """
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         annotations[self.ANNOTATION_KEY] = PersistentMapping()

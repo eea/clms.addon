@@ -2,24 +2,26 @@
 REST API information for notification subscriptions
 """
 
+from email.mime.text import MIMEText
+from smtplib import SMTPException
+
 # -*- coding: utf-8 -*-
 from plone import api
 from plone.registry.interfaces import IRegistry
-from zope.component import getUtility
 from plone.restapi.deserializer import json_body
 from plone.restapi.services import Service
-from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemPendingSubscriptionsUtility,
-)
+from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from zope.component import getUtility
+from zope.i18n import translate
+
+from clms.addon import _
 from clms.addon.utilities.event_notifications_utility import (
     IEventPendingSubscriptionsUtility,
 )
-from clms.addon import _
-from Products.CMFPlone.interfaces import ISiteSchema
-from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from smtplib import SMTPException
-from email.mime.text import MIMEText
-from zope.i18n import translate
+from clms.addon.utilities.newsitem_notifications_utility import (
+    INewsItemPendingSubscriptionsUtility,
+)
 
 
 class BaseNotificationsSubscribeHandler(Service):
@@ -61,21 +63,22 @@ class BaseNotificationsSubscribeHandler(Service):
             if status:
                 self.request.response.setStatus(204)
                 return {}
-            else:
-                self.request.response.setStatus(500)
-                return {
-                    "status": "error",
-                    "message": (
-                        "There was an error sending the email, try again"
-                        " please"
-                    ),
-                }
+
+            self.request.response.setStatus(500)
+            return {
+                "status": "error",
+                "message": (
+                    "There was an error sending the email, try again please"
+                ),
+            }
 
         self.request.response.setStatus(400)
         return {"status": "error", "message": "No email address provided"}
 
     def send_confirmation_email(self, email, key):
-        """ send a confirmation email requesting the user to go to a given URL"""
+        """send a confirmation email requesting the user to go to a
+        given URL
+        """
         registry = getUtility(IRegistry)
         url = registry.get(self.registry_key_for_base_url)
         frontend_domain = api.portal.get_registry_record(
@@ -123,7 +126,8 @@ class NewsItemNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     """News Item implementation """
 
     utility_interface = INewsItemPendingSubscriptionsUtility
-    registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsitem_notification_subscriptions_url"
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsitem_notification_subscriptions_url"  # noqa
     email_subject = _("News item notification subscription")
 
     def email_message(self, url, portal_title):
@@ -146,7 +150,8 @@ class EventNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     """ base class """
 
     utility_interface = IEventPendingSubscriptionsUtility
-    registry_key_for_base_url = "clms.addon.notifications_controlpanel.event_notification_subscriptions_url"
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.event_notification_subscriptions_url"  # noqa
     email_subject = _("Event notification subscription")
 
     def email_message(self, url, portal_title):

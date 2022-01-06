@@ -3,7 +3,9 @@ A utility to save all subscribers for NewsItem notifications
 """
 # -*- coding: utf-8 -*-
 
+from zope.component import getUtility
 from zope.interface import implementer
+
 from .base_notifications_utility import (
     INotificationsUtility,
     NotificationsUtility,
@@ -16,11 +18,10 @@ from .base_pending_unsubscriptions_utility import (
     IPendingUnSubscriptionHandler,
     PendingUnSubscriptionHandler,
 )
-from zope.component import getUtility
 
 
 class INewsItemNotificationsUtility(INotificationsUtility):
-    pass
+    """ utility interface """
 
 
 @implementer(INewsItemNotificationsUtility)
@@ -31,7 +32,7 @@ class NewsItemNotificationsUtility(NotificationsUtility):
 
 
 class INewsItemPendingSubscriptionsUtility(IPendingSubscriptionHandler):
-    pass
+    """ utility interface"""
 
 
 @implementer(INewsItemPendingSubscriptionsUtility)
@@ -49,7 +50,7 @@ class NewsItemPendingSubscriptionsUtility(PendingSubscriptionHandler):
 
 
 class INewsItemPendingUnSubscriptionsUtility(IPendingUnSubscriptionHandler):
-    pass
+    """ utility interface """
 
 
 @implementer(INewsItemPendingUnSubscriptionsUtility)

@@ -70,18 +70,19 @@ class PendingSubscriptionHandler:
         return False
 
     def cleanup_unconfirmed_subscriptions(self, days=7):
-        """ delete unconfirmed subscriptions older than the said number of days """
+        """delete unconfirmed subscriptions older than the said number of
+        days
+        """
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
-                if (
-                    datetime.utcnow()
-                    - datetime.strptime(
-                        subscribers[key]["date"], "%Y-%m-%dT%H:%M:%S.%f"
-                    )
-                ) > timedelta(days=days):
+                date = subscribers[key]["date"]
+                date_difference = datetime.utcnow() - datetime.strptime(
+                    date, "%Y-%m-%dT%H:%M:%S.%f"
+                )
+                if date_difference > timedelta(days=days):
                     del subscribers[key]
 
         annotations[self.ANNOTATION_KEY] = subscribers
@@ -93,6 +94,7 @@ class PendingSubscriptionHandler:
         )
 
     def cleanup_requests(self):
+        """ cleanup all requests """
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         annotations[self.ANNOTATION_KEY] = PersistentMapping()

@@ -3,7 +3,9 @@ A utility to save all subscribers for event notifications
 """
 # -*- coding: utf-8 -*-
 
+from zope.component import getUtility
 from zope.interface import implementer
+
 from .base_notifications_utility import (
     INotificationsUtility,
     NotificationsUtility,
@@ -17,11 +19,9 @@ from .base_pending_unsubscriptions_utility import (
     PendingUnSubscriptionHandler,
 )
 
-from zope.component import getUtility
-
 
 class IEventNotificationsUtility(INotificationsUtility):
-    pass
+    """ utility interface """
 
 
 @implementer(IEventNotificationsUtility)
@@ -32,7 +32,7 @@ class EventNotificationsUtility(NotificationsUtility):
 
 
 class IEventPendingSubscriptionsUtility(IPendingSubscriptionHandler):
-    pass
+    """ utility interface """
 
 
 @implementer(IEventPendingSubscriptionsUtility)
@@ -50,7 +50,7 @@ class EventPendingSubscriptionsUtility(PendingSubscriptionHandler):
 
 
 class IEventPendingUnSubscriptionsUtility(IPendingUnSubscriptionHandler):
-    pass
+    """ utility interface """
 
 
 @implementer(IEventPendingUnSubscriptionsUtility)
