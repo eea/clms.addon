@@ -21,4 +21,12 @@
       />
 
 
+  <adapter
+      for="*"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      factory=".volto_url_substitution.VoltoURLSubstitution"
+      name="volto_absolute_url"
+      />
+
+
 </configure>
