@@ -180,5 +180,13 @@
     />
 
 
+  <plone:service
+    method="GET"
+    factory=".get.Get"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@newsletter-subscribers"
+    />
+
 
 </configure>

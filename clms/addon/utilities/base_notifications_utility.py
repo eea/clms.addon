@@ -63,7 +63,7 @@ class NotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
-        return list(subscribers.keys())
+        return subscribers
 
     def cleanup_subscribers(self):
         """ cleanup the registry """
