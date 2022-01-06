@@ -8,7 +8,10 @@ from zope.component import getUtility
 
 
 class Get(Service):
+    """ Get all the newsletter subscribers"""
+
     def reply(self):
+        """ get all the newsletter subscribers"""
         utility = getUtility(INewsLetterNotificationsUtility)
         subscribers = utility.list_subscribers()
         subscribers_as_dicts = []
