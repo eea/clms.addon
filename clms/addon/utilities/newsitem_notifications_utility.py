@@ -66,4 +66,4 @@ class NewsItemNotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(ANNOTATION_KEY, PersistentMapping())
-        return subscribers.keys()
+        return [key for key in subscribers.keys()]
