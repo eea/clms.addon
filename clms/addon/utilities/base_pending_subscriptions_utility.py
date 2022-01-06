@@ -64,7 +64,9 @@ class PendingSubscriptionHandler:
                 "confirmation_date"
             ] = datetime.utcnow().isoformat()
             annotations[self.ANNOTATION_KEY] = subscribers
-            return True
+            return self.do_something_with_confirmed_subscriber(
+                subscribers[key]
+            )
 
         return False
 
@@ -84,3 +86,9 @@ class PendingSubscriptionHandler:
                     del subscribers[key]
 
         annotations[self.ANNOTATION_KEY] = subscribers
+
+    def do_something_with_confirmed_subscriber(self, subscriber):
+        """ do something with the confirmed subscriber """
+        raise NotImplementedError(
+            "You need to implement this method in your subclass"
+        )

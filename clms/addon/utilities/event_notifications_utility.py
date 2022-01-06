@@ -13,6 +13,8 @@ from .base_pending_subscriptions_utility import (
     PendingSubscriptionHandler,
 )
 
+from zope.component import getUtility
+
 
 class IEventNotificationsUtility(INotificationsUtility):
     pass
@@ -34,3 +36,10 @@ class EventPendingSubscriptionsUtility(PendingSubscriptionHandler):
     """ utility implementation """
 
     ANNOTATION_KEY = "clms.addon.event_pending_subscriptions"
+
+    def do_something_with_confirmed_subscriber(self, subscriber):
+        email = subscriber.get("email")
+        if email is not None:
+            utility = getUtility(IEventNotificationsUtility)
+            return utility.subscribe_address(email)
+        return False
