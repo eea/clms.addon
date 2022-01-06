@@ -117,7 +117,9 @@ class BaseNotificationsUnSubscribeHandler(Service):
         except (SMTPException, RuntimeError):
             plone_utils = api.portal.get_tool("plone_utils")
             exception = plone_utils.exceptionString()
-            message = f"Unable to send mail: {exception}"
+            message = "Unable to send mail: {exception}".format(
+                exception=exception
+            )
 
             return False
 
