@@ -23,7 +23,7 @@ class INewsItemNotificationsUtility(Interface):
         subscribed
         """
 
-    def unsubscribe_addreess(email):
+    def unsubscribe_address(email):
         """unsubscribe email address to notifications. Return True if
         unsubscription was OK False if the user is not subscribed
         """
