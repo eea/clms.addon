@@ -10,5 +10,6 @@
   <include package=".upgrades" />
   <include package=".controlpanels" />
   <include package=".restapi" />
+  <include package=".utilities" />
 
 </configure>

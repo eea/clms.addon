@@ -1,0 +1,16 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="eea">
+
+  <utility
+    provides=".event_notifications_utility.IEventNotificationsUtility"
+    factory=".event_notifications_utility.EventNotificationsUtility"
+    />
+
+
+  <utility
+    provides=".newsitem_notifications_utility.INewsItemNotificationsUtility"
+    factory=".newsitem_notifications_utility.NewsItemNotificationsUtility"
+    />
+</configure>
