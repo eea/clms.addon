@@ -11,5 +11,6 @@
   <include package=".controlpanels" />
   <include package=".restapi" />
   <include package=".utilities" />
+  <include package=".contentrules" />
 
 </configure>
