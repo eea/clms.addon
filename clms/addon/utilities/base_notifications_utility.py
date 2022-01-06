@@ -62,3 +62,8 @@ class NotificationsUtility:
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
         return [key for key in subscribers.keys()]
+
+    def cleanup_subscribers(self):
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        annotations[self.ANNOTATION_KEY] = PersistentMapping()

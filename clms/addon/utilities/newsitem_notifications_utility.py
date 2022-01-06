@@ -12,6 +12,10 @@ from .base_pending_subscriptions_utility import (
     IPendingSubscriptionHandler,
     PendingSubscriptionHandler,
 )
+from .base_pending_unsubscriptions_utility import (
+    IPendingUnSubscriptionHandler,
+    PendingUnSubscriptionHandler,
+)
 from zope.component import getUtility
 
 
@@ -41,4 +45,22 @@ class NewsItemPendingSubscriptionsUtility(PendingSubscriptionHandler):
         if email is not None:
             utility = getUtility(INewsItemNotificationsUtility)
             return utility.subscribe_address(email)
+        return False
+
+
+class INewsItemPendingUnSubscriptionsUtility(IPendingUnSubscriptionHandler):
+    pass
+
+
+@implementer(INewsItemPendingUnSubscriptionsUtility)
+class NewsItemPendingUnSubscriptionsUtility(PendingUnSubscriptionHandler):
+    """ utility implementation """
+
+    ANNOTATION_KEY = "clms.addon.newsitem_pending_unsubscriptions"
+
+    def do_something_with_confirmed_unsubscriber(self, unsubscriber):
+        email = unsubscriber.get("email")
+        if email is not None:
+            utility = getUtility(INewsItemNotificationsUtility)
+            return utility.unsubscribe_address(email)
         return False

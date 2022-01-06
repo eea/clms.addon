@@ -25,4 +25,14 @@
     factory=".newsitem_notifications_utility.NewsItemPendingSubscriptionsUtility"
     />
 
+  <utility
+    provides=".event_notifications_utility.IEventPendingUnSubscriptionsUtility"
+    factory=".event_notifications_utility.EventPendingUnSubscriptionsUtility"
+    />
+
+  <utility
+    provides=".newsitem_notifications_utility.INewsItemPendingUnSubscriptionsUtility"
+    factory=".newsitem_notifications_utility.NewsItemPendingUnSubscriptionsUtility"
+    />
+
 </configure>

@@ -29,4 +29,18 @@
       <permission>Manage Portal</permission>
     </configlet>
 
+
+    <configlet
+        i18n:attributes="title"
+        title="Notifications Control Panel"
+        action_id="notifications-controlpanel"
+        appId="notifications-controlpanel"
+        category="Products"
+        condition_expr=""
+        icon_expr=""
+        url_expr="string:${portal_url}/@@notifications-controlpanel"
+        visible="True">
+      <permission>Manage Portal</permission>
+    </configlet>
+
 </object>
