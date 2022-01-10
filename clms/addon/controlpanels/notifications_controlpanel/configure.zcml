@@ -5,8 +5,13 @@
     xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="clms.addon">
 
-  <include package=".login_url_controlpanel" />
-  <include package=".fme_config_controlpanel" />
-  <include package=".notifications_controlpanel" />
+  <browser:page
+    name="notifications-controlpanel"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    class=".controlpanel.NotificationsControlPanelView"
+    layer="clms.addon.interfaces.IClmsAddonLayer"
+    permission="cmf.ManagePortal"
+    />
+
 
 </configure>
