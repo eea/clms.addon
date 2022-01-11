@@ -5,6 +5,7 @@
 
   <i18n:registerTranslations directory="locales" />
   <include package="plone.app.registry" />
+
   <include file="profiles.zcml" />
   <include package=".browser" />
   <include package=".upgrades" />
@@ -12,5 +13,7 @@
   <include package=".restapi" />
   <include package=".utilities" />
   <include package=".contentrules" />
+  <include package=".exportimport" />
+
 
 </configure>

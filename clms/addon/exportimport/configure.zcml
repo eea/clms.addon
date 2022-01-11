@@ -1,0 +1,19 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="eea">
+
+
+  <configure package="collective.exportimport">
+    <browser:page
+        name="import_content"
+        for="zope.interface.Interface"
+        class="clms.addon.exportimport.import_content.ImportContent"
+        template="templates/import_content.pt"
+        permission="cmf.ManagePortal"
+        layer="clms.addon.interfaces.IClmsAddonLayer"
+        />
+  </configure>
+
+</configure>
