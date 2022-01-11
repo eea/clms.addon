@@ -45,6 +45,7 @@ setup(
         "setuptools",
         # -*- Extra requirements: -*-
         "collective.taxonomy",
+        "z3c.unconfigure"
     ],
     extras_require={
         "test": [
