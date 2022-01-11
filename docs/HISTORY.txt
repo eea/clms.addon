@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.1-dev0 - (unreleased)
+---------------------------
+
+2.0 - (2022-01-10)
+---------------------------
+* Change: Develop [erral]
+
 1.9 - (2022-01-03)
 ---------------------------
 * Change: Redirect users to /profile when logging in for the first time and reuse redirect from the plugin

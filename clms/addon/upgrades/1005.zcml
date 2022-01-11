@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup">
+
+  <gs:registerProfile name="1005"
+    title="New control panel and registry values"
+    directory="1005"
+    description='Configuration for version 1005'
+    for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+
+  <gs:upgradeSteps source="1004"
+    destination="1005"
+    profile="clms.addon:default">
+
+    <gs:upgradeStep title="New control panel and registry values"
+      description="New fields"
+      handler=".v1004.upgrade" />
+
+    <gs:upgradeDepends title="New control panel and registry values (GS profile)"
+      description="New fields"
+      import_profile="clms.addon.upgrades:1005" />
+
+  </gs:upgradeSteps>
+
+</configure>
