@@ -28,5 +28,13 @@
       name="volto_absolute_url"
       />
 
+  <adapter
+      for="*"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      factory=".volto_portal_url.VoltoPortalURLSubstitution"
+      name="volto_portal_url"
+      />
+
+
 
 </configure>
