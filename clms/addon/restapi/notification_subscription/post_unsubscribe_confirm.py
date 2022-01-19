@@ -55,7 +55,7 @@ class BaseNotificationsUnSubscribeConfirmHandler(Service):
             utility = getUtility(self.utility_interface)
             if utility.confirm_pending_unsubscription(self._get_key):
                 self.request.response.setStatus(204)
-                return {}
+                return
 
             self.request.response.setStatus(400)
             return {"error": "Provided key is not valid"}

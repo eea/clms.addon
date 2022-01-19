@@ -28,7 +28,7 @@ class NewsItemNotificationSubscriptions(Service):
         utility = getUtility(INewsItemNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class NewsItemPendingNotificationSubscriptionRequests(Service):
@@ -40,7 +40,7 @@ class NewsItemPendingNotificationSubscriptionRequests(Service):
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class NewsItemPendingNotificationUnSubscriptionRequests(Service):
@@ -52,7 +52,7 @@ class NewsItemPendingNotificationUnSubscriptionRequests(Service):
         utility = getUtility(INewsItemPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class EventNotificationSubscriptions(Service):
@@ -64,7 +64,7 @@ class EventNotificationSubscriptions(Service):
         utility = getUtility(IEventNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class EventPendingNotificationSubscriptionRequests(Service):
@@ -76,7 +76,7 @@ class EventPendingNotificationSubscriptionRequests(Service):
         utility = getUtility(IEventPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class EventPendingNotificationUnSubscriptionRequests(Service):
@@ -88,7 +88,7 @@ class EventPendingNotificationUnSubscriptionRequests(Service):
         utility = getUtility(IEventPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class NewsLetterNotificationSubscriptions(Service):
@@ -100,7 +100,7 @@ class NewsLetterNotificationSubscriptions(Service):
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class NewsLetterPendingNotificationSubscriptionRequests(Service):
@@ -112,7 +112,7 @@ class NewsLetterPendingNotificationSubscriptionRequests(Service):
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return
 
 
 class NewsLetterPendingNotificationUnSubscriptionRequests(Service):
@@ -124,4 +124,4 @@ class NewsLetterPendingNotificationUnSubscriptionRequests(Service):
         utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
-        return {}
+        return

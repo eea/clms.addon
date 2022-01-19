@@ -65,7 +65,7 @@ class BaseNotificationsSubscribeHandler(Service):
             status = self.send_confirmation_email(email, key)
             if status:
                 self.request.response.setStatus(204)
-                return {}
+                return
 
             self.request.response.setStatus(500)
             return {
