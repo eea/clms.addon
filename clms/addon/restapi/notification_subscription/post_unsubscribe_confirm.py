@@ -3,9 +3,10 @@ REST API information for notification subscriptions
 """
 # -*- coding: utf-8 -*-
 
-from plone.restapi.services import Service
+from plone.protect.interfaces import IDisableCSRFProtection
+from plone.restapi.services import Service, _no_content_marker
 from zope.component import getUtility
-from zope.interface import implementer
+from zope.interface import alsoProvides, implementer
 from zope.publisher.interfaces import IPublishTraverse
 
 from clms.addon.utilities.event_notifications_utility import (
@@ -52,12 +53,12 @@ class BaseNotificationsUnSubscribeConfirmHandler(Service):
 
     def reply(self):
         """ return the real response """
-
+        alsoProvides(self.request, IDisableCSRFProtection)
         if self.params:
             utility = getUtility(self.utility_interface)
             if utility.confirm_pending_unsubscription(self._get_key):
                 self.request.response.setStatus(204)
-                return {}
+                return _no_content_marker
 
             self.request.response.setStatus(400)
             return {"error": "Provided key is not valid"}

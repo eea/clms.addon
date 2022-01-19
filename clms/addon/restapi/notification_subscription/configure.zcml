@@ -103,10 +103,6 @@
       name="@newsletter-notification-unsubscribe-confirm"
       />
 
-
-
-
-
   <plone:service
     method="DELETE"
     factory=".delete.NewsItemNotificationSubscriptions"
