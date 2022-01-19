@@ -10,7 +10,7 @@ from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.restapi.deserializer import json_body
-from plone.restapi.services import Service
+from plone.restapi.services import Service, _no_content_marker
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
@@ -18,12 +18,15 @@ from zope.i18n import translate
 from zope.interface import alsoProvides
 
 from clms.addon import _
-from clms.addon.utilities.event_notifications_utility import \
-    IEventPendingUnSubscriptionsUtility
-from clms.addon.utilities.newsitem_notifications_utility import \
-    INewsItemPendingUnSubscriptionsUtility
-from clms.addon.utilities.newsletter_utility import \
-    INewsLetterPendingUnSubscriptionsUtility
+from clms.addon.utilities.event_notifications_utility import (
+    IEventPendingUnSubscriptionsUtility,
+)
+from clms.addon.utilities.newsitem_notifications_utility import (
+    INewsItemPendingUnSubscriptionsUtility,
+)
+from clms.addon.utilities.newsletter_utility import (
+    INewsLetterPendingUnSubscriptionsUtility,
+)
 
 
 class BaseNotificationsUnSubscribeHandler(Service):
@@ -65,7 +68,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
             status = self.send_confirmation_email(email, key)
             if status:
                 self.request.response.setStatus(204)
-                return
+                return _no_content_marker
 
             self.request.response.setStatus(500)
             return {
