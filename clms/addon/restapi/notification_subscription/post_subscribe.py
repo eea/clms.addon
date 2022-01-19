@@ -1,12 +1,13 @@
 """
 REST API information for notification subscriptions
 """
+# -*- coding: utf-8 -*-
 
 from email.mime.text import MIMEText
 from smtplib import SMTPException
 
-# -*- coding: utf-8 -*-
 from plone import api
+from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
 from plone.restapi.deserializer import json_body
 from plone.restapi.services import Service
@@ -14,17 +15,15 @@ from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
 from zope.i18n import translate
+from zope.interface import alsoProvides
 
 from clms.addon import _
-from clms.addon.utilities.event_notifications_utility import (
-    IEventPendingSubscriptionsUtility,
-)
-from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemPendingSubscriptionsUtility,
-)
-from clms.addon.utilities.newsletter_utility import (
-    INewsLetterPendingSubscriptionsUtility,
-)
+from clms.addon.utilities.event_notifications_utility import \
+    IEventPendingSubscriptionsUtility
+from clms.addon.utilities.newsitem_notifications_utility import \
+    INewsItemPendingSubscriptionsUtility
+from clms.addon.utilities.newsletter_utility import \
+    INewsLetterPendingSubscriptionsUtility
 
 
 class BaseNotificationsSubscribeHandler(Service):
@@ -57,6 +56,7 @@ class BaseNotificationsSubscribeHandler(Service):
 
     def reply(self):
         """ return the real response """
+        alsoProvides(self.request, IDisableCSRFProtection)
         body = json_body(self.request)
         email = body.get("email")
         if email is not None:

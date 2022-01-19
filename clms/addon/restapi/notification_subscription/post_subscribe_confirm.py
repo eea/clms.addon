@@ -3,21 +3,18 @@ REST API information for notification subscriptions
 """
 # -*- coding: utf-8 -*-
 
+from plone.protect.interfaces import IDisableCSRFProtection
 from plone.restapi.services import Service
 from zope.component import getUtility
-from zope.interface import implementer
+from zope.interface import alsoProvides, implementer
 from zope.publisher.interfaces import IPublishTraverse
 
-from clms.addon.utilities.event_notifications_utility import (
-    IEventPendingSubscriptionsUtility,
-)
-from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemPendingSubscriptionsUtility,
-)
-
-from clms.addon.utilities.newsletter_utility import (
-    INewsLetterPendingSubscriptionsUtility,
-)
+from clms.addon.utilities.event_notifications_utility import \
+    IEventPendingSubscriptionsUtility
+from clms.addon.utilities.newsitem_notifications_utility import \
+    INewsItemPendingSubscriptionsUtility
+from clms.addon.utilities.newsletter_utility import \
+    INewsLetterPendingSubscriptionsUtility
 
 
 @implementer(IPublishTraverse)
@@ -53,7 +50,7 @@ class BaseNotificationsSubscribeConfirmHandler(Service):
 
     def reply(self):
         """ return the real response """
-
+        alsoProvides(self.request, IDisableCSRFProtection)
         if self.params:
             utility = getUtility(self.utility_interface)
             if utility.confirm_pending_subscription(self._get_key):

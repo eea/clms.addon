@@ -3,24 +3,20 @@ Cleanump registrations
 """
 # -*- coding: utf-8 -*-
 
+from plone.protect.interfaces import IDisableCSRFProtection
 from plone.restapi.services import Service
 from zope.component import getUtility
+from zope.interface import alsoProvides
 
 from clms.addon.utilities.event_notifications_utility import (
-    IEventNotificationsUtility,
-    IEventPendingSubscriptionsUtility,
-    IEventPendingUnSubscriptionsUtility,
-)
+    IEventNotificationsUtility, IEventPendingSubscriptionsUtility,
+    IEventPendingUnSubscriptionsUtility)
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility,
-    INewsItemPendingSubscriptionsUtility,
-    INewsItemPendingUnSubscriptionsUtility,
-)
+    INewsItemNotificationsUtility, INewsItemPendingSubscriptionsUtility,
+    INewsItemPendingUnSubscriptionsUtility)
 from clms.addon.utilities.newsletter_utility import (
-    INewsLetterNotificationsUtility,
-    INewsLetterPendingSubscriptionsUtility,
-    INewsLetterPendingUnSubscriptionsUtility,
-)
+    INewsLetterNotificationsUtility, INewsLetterPendingSubscriptionsUtility,
+    INewsLetterPendingUnSubscriptionsUtility)
 
 
 class NewsItemNotificationSubscriptions(Service):
@@ -28,6 +24,7 @@ class NewsItemNotificationSubscriptions(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
@@ -39,6 +36,7 @@ class NewsItemPendingNotificationSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
@@ -50,6 +48,7 @@ class NewsItemPendingNotificationUnSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
@@ -61,6 +60,7 @@ class EventNotificationSubscriptions(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
@@ -72,6 +72,7 @@ class EventPendingNotificationSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
@@ -83,6 +84,7 @@ class EventPendingNotificationUnSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
@@ -94,6 +96,7 @@ class NewsLetterNotificationSubscriptions(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.cleanup_subscribers()
         self.request.response.setStatus(204)
@@ -105,6 +108,7 @@ class NewsLetterPendingNotificationSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
@@ -116,6 +120,7 @@ class NewsLetterPendingNotificationUnSubscriptionRequests(Service):
 
     def reply(self):
         """ cleanup the registry """
+        alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
