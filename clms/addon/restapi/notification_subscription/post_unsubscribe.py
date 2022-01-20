@@ -94,7 +94,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
         if frontend_domain.endswith("/"):
             frontend_domain = frontend_domain[:-1]
 
-        url = frontend_domain + "/" + url + "/" + key
+        url = frontend_domain + "/en" + url + "/" + key
 
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
