@@ -10,20 +10,23 @@ from DateTime import DateTime
 class CallbackView(BaseCallbackView):
     """ Callback view """
 
-    def __call__(self):
+    def return_url(self, session):
         """
-        We need to check several things here:
+            We need to check several things here:
 
-        - If this is the first time that the user logs in, redirect to the
-            /profile url to let her fill the profile form
+            - First of all we need to login the user in the membership tool
+              so that last_login_time is updated.
 
-        - If the user comes from a given url (came_from=whatever), check if
-            that url is a url in the portal, and if so redirect here there.
+            - If this is the first time that the user logs in, redirect to the
+                /profile url to let her fill the profile form
 
-        - If everything else fails, redirect to the home page.
+            - If the user comes from a given url (came_from=whatever), check if
+                that url is a url in the portal, and if so redirect here there.
 
+            - If everything else fails, redirect to the home page.
         """
-        _ = super().__call__()
+
+        super_url = super().return_url(session)
 
         member = api.user.get_current()
         login_time = member.getProperty("login_time", "2000/01/01")
@@ -34,10 +37,6 @@ class CallbackView(BaseCallbackView):
         membership_tool = api.portal.get_tool("portal_membership")
         membership_tool.loginUser(self.request)
         if is_initial_login:
-            return self.request.response.redirect("/profile", status=302)
+            return '/profile'
 
-        session = Session(
-            self.request,
-            use_session_data_manager=self.context.use_session_data_manager,
-        )
-        return self.request.response.redirect(self.return_url(session=session))
+        return super_url
