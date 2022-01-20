@@ -2,7 +2,6 @@
 Override OIDC PAS Plugin redirect url
 """
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
-from pas.plugins.oidc.browser.view import Session
 from plone import api
 from DateTime import DateTime
 
