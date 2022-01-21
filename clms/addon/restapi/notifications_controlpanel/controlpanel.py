@@ -1,6 +1,8 @@
 """ Control Panel RestAPI endpoint
 """
-from clms.addon.controlpanels.notifications_controlpanel.controlpanel import (INotificationsControlPanel)
+from clms.addon.controlpanels.notifications_controlpanel.controlpanel import (
+    INotificationsControlPanel,
+)
 
 from clms.addon.interfaces import IClmsAddonLayer
 from plone.restapi.controlpanels import RegistryConfigletPanel
