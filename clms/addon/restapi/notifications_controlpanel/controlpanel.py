@@ -1,6 +1,7 @@
 """ Control Panel RestAPI endpoint
 """
-from clms.addon.controlpanels.notifications_controlpanel.controlpanel import (
+# pylint: disable=line-too-long
+from clms.addon.controlpanels.notifications_controlpanel.controlpanel import (  # noqa: E501
     INotificationsControlPanel,
 )
 
