@@ -67,7 +67,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
             "You need to define the message in your class"
         )
 
-    def email_message_not_subscribed(self, url, portal_tilte):
+    def email_message_not_subscribed(self, url, portal_title):
         """return the email message to be sent to the user when she is
         not subscribed
         """
