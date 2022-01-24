@@ -49,7 +49,6 @@ class BaseNotificationsUnSubscribeHandler(Service):
             "You need to define the interface in your class"
         )
 
-
     @property
     def registry_key_for_base_url(self):
         """ the key to get the base url from the registry """
@@ -83,7 +82,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
         email = body.get("email")
         if email is not None:
             # pylint: disable=line-too-long
-            subscription_utility = getUtility(self.subscription_handler_utility)  # no-qa: E501
+            subscription_utility = getUtility(self.subscription_handler_utility)  # noqa: E501
             if subscription_utility.is_subscribed(email):
                 utility = getUtility(self.utility_interface)
                 key = utility.create_pending_unsubscription(email)
