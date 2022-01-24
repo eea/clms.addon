@@ -39,7 +39,6 @@ class BaseNotificationsUnSubscribeHandler(Service):
             "You need to define the interface in your class"
         )
 
-
     @property
     def subscription_handler_utility(self):
         """utility that really handles the subscription. Will be used
@@ -83,7 +82,8 @@ class BaseNotificationsUnSubscribeHandler(Service):
         body = json_body(self.request)
         email = body.get("email")
         if email is not None:
-            subscription_utility = getUtility(self.subscription_handler_utility)
+            # pylint: disable=line-too-long
+            subscription_utility = getUtility(self.subscription_handler_utility)  # no-qa: E501
             if subscription_utility.is_subscribed(email):
                 utility = getUtility(self.utility_interface)
                 key = utility.create_pending_unsubscription(email)
@@ -96,7 +96,8 @@ class BaseNotificationsUnSubscribeHandler(Service):
                 return {
                     "status": "error",
                     "message": (
-                        "There was an error sending the email, try again please"
+                        "There was an error sending the email, try again "
+                        "please"
                     ),
                 }
 
@@ -248,7 +249,6 @@ class NewsItemNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
         )
 
 
-
 class EventNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
     """ base class """
 
@@ -289,7 +289,6 @@ class EventNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
                 },
             )
         )
-
 
 
 class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
