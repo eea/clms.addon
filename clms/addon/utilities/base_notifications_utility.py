@@ -25,6 +25,9 @@ class INotificationsUtility(Interface):
     def list_subscribers():
         """ return list of all subscribers """
 
+    def is_subscribed(email):
+        """ return whether the said e-mail address is subscribed"""
+
 
 @implementer(INotificationsUtility)
 class NotificationsUtility:
@@ -70,3 +73,13 @@ class NotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         annotations[self.ANNOTATION_KEY] = PersistentMapping()
+
+    def is_subscribed(self, email):
+        """ return if the email is already subscribed """
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        if email is not None and email.strip():
+            return email in subscribers
+
+        return False
