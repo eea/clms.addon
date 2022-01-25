@@ -18,20 +18,6 @@
 
     <configlet
         i18n:attributes="title"
-        title="FME Config Control Panel"
-        action_id="fme_config-controlpanel"
-        appId="fme_config-controlpanel"
-        category="Products"
-        condition_expr=""
-        icon_expr=""
-        url_expr="string:${portal_url}/@@fme_config-controlpanel"
-        visible="True">
-      <permission>Manage Portal</permission>
-    </configlet>
-
-
-    <configlet
-        i18n:attributes="title"
         title="Notifications Control Panel"
         action_id="notifications-controlpanel"
         appId="notifications-controlpanel"
