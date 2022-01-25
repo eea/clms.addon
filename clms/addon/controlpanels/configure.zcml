@@ -6,7 +6,6 @@
     i18n_domain="clms.addon">
 
   <include package=".login_url_controlpanel" />
-  <include package=".fme_config_controlpanel" />
   <include package=".notifications_controlpanel" />
 
 </configure>

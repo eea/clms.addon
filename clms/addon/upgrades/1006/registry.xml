@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<registry
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="clms.downloadtool">
+
+  <!-- -*- extra stuff goes here -*- -->
+
+
+  <record name="clms.addon.fme_config_controlpanel.url" remove="true" />
+  <record name="clms.addon.fme_config_controlpanel.fme_token" remove="true" />
+  <record name="clms.addon.fme_config_controlpanel.statstool_endpoint" remove="true" />
+
+
+</registry>
