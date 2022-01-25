@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:gs="http://namespaces.zope.org/genericsetup">
+
+  <gs:registerProfile name="1006"
+    title="New control panel and registry values"
+    directory="1006"
+    description='Configuration for version 1006'
+    for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+    provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+
+  <gs:upgradeSteps source="1005"
+    destination="1006"
+    profile="clms.addon:default">
+
+    <gs:upgradeStep title="Remove FME Control Panel"
+      description="New fields"
+      handler=".v1006.upgrade" />
+
+    <gs:upgradeDepends title="Remove FME Control Panel (GS profile)"
+      description="New fields"
+      import_profile="clms.addon.upgrades:1006" />
+
+  </gs:upgradeSteps>
+
+</configure>
