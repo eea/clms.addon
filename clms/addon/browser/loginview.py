@@ -36,6 +36,6 @@ class CallbackView(BaseCallbackView):
         membership_tool = api.portal.get_tool("portal_membership")
         membership_tool.loginUser(self.request)
         if is_initial_login:
-            return '/profile'
+            return '/en/profile'
 
         return super_url
