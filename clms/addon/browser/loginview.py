@@ -1,6 +1,8 @@
 """
 Override OIDC PAS Plugin redirect url
 """
+from Products.Five.browser import BrowserView
+from pas.plugins.oidc.browser.view import Session
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from plone import api
 from DateTime import DateTime
@@ -10,22 +12,19 @@ class CallbackView(BaseCallbackView):
     """ Callback view """
 
     def return_url(self, session):
+        """The return url will be a custom callback, this way
+        the user will be logged in and we can check the last login time
         """
-            We need to check several things here:
+        return "{}/my-custom-callback".format(self.context.absolute_url())
 
-            - First of all we need to login the user in the membership tool
-              so that last_login_time is updated.
 
-            - If this is the first time that the user logs in, redirect to the
-                /profile url to let her fill the profile form
-
-            - If the user comes from a given url (came_from=whatever), check if
-                that url is a url in the portal, and if so redirect here there.
-
-            - If everything else fails, redirect to the home page.
-        """
-
-        super_url = super().return_url(session)
+class MyCallBack(BrowserView):
+    def __call__(self):
+        """ callback """
+        session = Session(
+            self.request,
+            use_session_data_manager=self.context.use_session_data_manager,
+        )
 
         member = api.user.get_current()
         login_time = member.getProperty("login_time", "2000/01/01")
@@ -33,9 +32,26 @@ class CallbackView(BaseCallbackView):
             login_time = DateTime(login_time)
         is_initial_login = login_time == DateTime("2000/01/01")
 
-        membership_tool = api.portal.get_tool("portal_membership")
-        membership_tool.loginUser(self.request)
-        if is_initial_login:
-            return '/en/profile'
+        # membership_tool = api.portal.get_tool("portal_membership")
+        # membership_tool.loginUser(self.request)
 
-        return super_url
+        redirect_url = "/"
+
+        if is_initial_login:
+            redirect_url = "/en/profile"
+        else:
+            came_from = self.request.get("came_from")
+            if not came_from and session:
+                came_from = session.get("came_from")
+
+            portal_url = api.portal.get_tool("portal_url")
+
+            if came_from:
+                if came_from.startswith("http") and portal_url.isURLInPortal(
+                    came_from
+                ):
+                    redirect_url = came_from
+                elif not came_from.startswith("http"):
+                    redirect_url = came_from
+
+            return self.request.response.redirect(redirect_url, status=302)
