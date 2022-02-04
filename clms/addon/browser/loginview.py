@@ -19,6 +19,8 @@ class CallbackView(BaseCallbackView):
 
 
 class MyCallBack(BrowserView):
+    """ Custom callback view """
+
     def __call__(self):
         """ callback """
         session = Session(
@@ -54,4 +56,4 @@ class MyCallBack(BrowserView):
                 elif not came_from.startswith("http"):
                     redirect_url = came_from
 
-            return self.request.response.redirect(redirect_url, status=302)
+        return self.request.response.redirect(redirect_url, status=302)

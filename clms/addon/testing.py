@@ -1,3 +1,6 @@
+"""
+testing basics
+"""
 # -*- coding: utf-8 -*-
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
@@ -13,19 +16,23 @@ import clms.addon
 
 
 class ClmsAddonLayer(PloneSandboxLayer):
+    """ base layer"""
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
+        """ setup zope """
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
+        # pylint: disable=import-outside-toplevel
         import plone.restapi
 
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=clms.addon)
 
     def setUpPloneSite(self, portal):
+        """ setup Plone site"""
         applyProfile(portal, "clms.addon:default")
 
 

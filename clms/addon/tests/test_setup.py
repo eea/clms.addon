@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 """Setup tests for this package."""
-from plone import api
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
-from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING  # noqa: E501
-
 import unittest
 
+from plone import api
+from plone.app.testing import TEST_USER_ID, setRoles
+from plone.browserlayer import utils
+
+from clms.addon.interfaces import IClmsAddonLayer
+from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING  # noqa: E501
 
 try:
     from Products.CMFPlone.utils import get_installer
@@ -33,17 +34,16 @@ class TestSetup(unittest.TestCase):
 
     def test_browserlayer(self):
         """Test that IClmsAddonLayer is registered."""
-        from clms.addon.interfaces import IClmsAddonLayer
-        from plone.browserlayer import utils
-
         self.assertIn(IClmsAddonLayer, utils.registered_layers())
 
 
 class TestUninstall(unittest.TestCase):
+    """ test that clms.addon is properly uninstalled """
 
     layer = CLMS_ADDON_INTEGRATION_TESTING
 
     def setUp(self):
+        """ setup"""
         self.portal = self.layer["portal"]
         if get_installer:
             self.installer = get_installer(self.portal, self.layer["request"])
@@ -60,7 +60,4 @@ class TestUninstall(unittest.TestCase):
 
     def test_browserlayer_removed(self):
         """Test that IClmsAddonLayer is removed."""
-        from clms.addon.interfaces import IClmsAddonLayer
-        from plone.browserlayer import utils
-
         self.assertNotIn(IClmsAddonLayer, utils.registered_layers())
