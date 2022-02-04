@@ -18,7 +18,9 @@ setup(
     long_description_content_type="text/x-rst",
     long_description=(
         # pylint: disable=line-too-long
-        open("README.rst").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa
+        open("README.rst").read()
+        + "\n"
+        + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa
     ),
     classifiers=[
         "Environment :: Web Environment",
@@ -44,12 +46,15 @@ setup(
     install_requires=[
         "setuptools",
         # -*- Extra requirements: -*-
+        "pas.plugins.oidc",
         "collective.taxonomy",
-        "z3c.unconfigure"
+        "z3c.unconfigure",
     ],
     extras_require={
         "test": [
             "plone.app.testing",
+            "plone.app.contenttypes",
+            "plone.app.robotframework[debug]",
         ],
     },
     entry_points="""
