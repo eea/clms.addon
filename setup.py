@@ -48,6 +48,7 @@ setup(
         "collective.taxonomy",
         "plone.volto",
         "z3c.unconfigure",
+        "eea.restapi",
     ],
     extras_require={
         "test": [
