@@ -16,7 +16,7 @@ from zope.annotation.interfaces import IAnnotations
 from persistent.mapping import PersistentMapping
 
 
-class TestSubscriptionUtility(unittest.TestCase):
+class TestNotificationsUtility(unittest.TestCase):
     """ test the subscription utility """
 
     layer = CLMS_ADDON_INTEGRATION_TESTING
