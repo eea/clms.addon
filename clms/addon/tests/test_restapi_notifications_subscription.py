@@ -3,30 +3,24 @@
 
 import unittest
 
-from plone import api
-from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
+import transaction
 from plone.app.testing import TEST_USER_ID, setRoles
 from plone.restapi.testing import RelativeSession
+from zope.component import getUtility
 
-from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility,
-    INewsItemPendingSubscriptionsUtility,
-    INewsItemPendingUnSubscriptionsUtility,
-)
+from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from clms.addon.utilities.event_notifications_utility import (
     IEventNotificationsUtility,
     IEventPendingSubscriptionsUtility,
-    IEventPendingUnSubscriptionsUtility,
+)
+from clms.addon.utilities.newsitem_notifications_utility import (
+    INewsItemNotificationsUtility,
+    INewsItemPendingSubscriptionsUtility,
 )
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingSubscriptionsUtility,
-    INewsLetterPendingUnSubscriptionsUtility,
 )
-
-from zope.component import getUtility
-
-import transaction
 
 
 class TestNewsItemNotificationsEndpoint(unittest.TestCase):
