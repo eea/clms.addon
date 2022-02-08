@@ -9,9 +9,9 @@ from plone.app.testing import (
     FunctionalTesting,
     IntegrationTesting,
     PloneSandboxLayer,
-    quickInstallProduct
+    quickInstallProduct,
 )
-from plone.testing import z2
+from plone.testing.zope import WSGI_SERVER_FIXTURE
 
 import clms.addon
 import collective.MockMailHost
@@ -57,7 +57,7 @@ CLMS_ADDON_FUNCTIONAL_TESTING = FunctionalTesting(
 
 
 CLMS_ADDON_RESTAPI_TESTING = FunctionalTesting(
-    bases=(CLMS_ADDON_FIXTURE, z2.ZSERVER_FIXTURE),
+    bases=(CLMS_ADDON_FIXTURE, WSGI_SERVER_FIXTURE),
     name="ClmsAddonLayer:RestApiTesting",
 )
 
@@ -66,7 +66,7 @@ CLMS_ADDON_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         CLMS_ADDON_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
-        z2.ZSERVER_FIXTURE,
+        WSGI_SERVER_FIXTURE,
     ),
     name="ClmsAddonLayer:AcceptanceTesting",
 )

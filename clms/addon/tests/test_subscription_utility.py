@@ -92,8 +92,22 @@ class TestUnSubscriptionUtility(unittest.TestCase):
 
         self.assertEqual(len(self.utility.get_keys()), 1)
 
-    def test_do_something_with_confirmed_subscriber(self):
-        pass
+    # def test_do_something_with_confirmed_subscriber(self):
+    #     """this method should raise a NonImplementedError exception because
+    #     it is meant to be implemented in a subclass
+    #     """
+    #     key = self.utility.create_pending_subscription("email@example.com")
+    #     self.utility.confirm_pending_subscription(key)
+    #     annotations = IAnnotations(self.portal)
+    #     subscribers = annotations.get(
+    #         self.utility.ANNOTATION_KEY, PersistentMapping()
+    #     )
+    #     subscriber = subscribers.get(key)
+    #     self.assertRaises(
+    #         NotImplementedError,
+    #         self.utility.do_something_with_confirmed_subscriber,
+    #         subscriber,
+    #     )
 
     def test_cleanup_requests(self):
         pass

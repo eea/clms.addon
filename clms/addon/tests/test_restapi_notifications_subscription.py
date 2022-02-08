@@ -7,7 +7,8 @@ import transaction
 from plone.app.testing import TEST_USER_ID, setRoles
 from plone.restapi.testing import RelativeSession
 from zope.component import getUtility
-
+from plone.app.testing import SITE_OWNER_NAME
+from plone.app.testing import SITE_OWNER_PASSWORD
 from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from clms.addon.utilities.event_notifications_utility import (
     IEventNotificationsUtility,
@@ -297,6 +298,10 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.api_session = RelativeSession(self.portal_url, test=self)
         self.api_session.headers.update({"Accept": "application/json"})
 
+        self.manager_api_session = RelativeSession(self.portal_url, test=self)
+        self.manager_api_session.headers.update({"Accept": "application/json"})
+        self.manager_api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+
     def test_newsletter_notifications_subscribe_is_registered(self):
         """ test that a subscription request is registered """
 
@@ -411,3 +416,36 @@ class TestNewsletterEndpoint(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 400)
+
+    def test_newsletter_subscribers(self):
+        """ test getting all subscribers as manager """
+
+        utility = getUtility(INewsLetterNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.manager_api_session.get(
+            "@newsletter-subscribers",
+        )
+
+        result = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("subscribers", result)
+        self.assertEqual(len(result["subscribers"]), 2)
+
+    def test_newsletter_subscribers_anonymous(self):
+        """ test getting all subscribers as anonymous is not allowed """
+
+        utility = getUtility(INewsLetterNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.api_session.get(
+            "@newsletter-subscribers",
+        )
+
+        self.assertEqual(response.status_code, 401)
