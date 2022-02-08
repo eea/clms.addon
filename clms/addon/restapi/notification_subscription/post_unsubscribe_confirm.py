@@ -55,13 +55,18 @@ class BaseNotificationsUnSubscribeConfirmHandler(Service):
         """ return the real response """
         alsoProvides(self.request, IDisableCSRFProtection)
         if self.params:
-            utility = getUtility(self.utility_interface)
-            if utility.confirm_pending_unsubscription(self._get_key):
-                self.request.response.setStatus(204)
-                return _no_content_marker
+            try:
+                key = self._get_key
+                utility = getUtility(self.utility_interface)
+                if utility.confirm_pending_unsubscription(key):
+                    self.request.response.setStatus(204)
+                    return _no_content_marker
 
-            self.request.response.setStatus(400)
-            return {"error": "Provided key is not valid"}
+                self.request.response.setStatus(400)
+                return {"error": "Provided key is not valid"}
+            except Exception:
+                self.request.response.setStatus(400)
+                return {"error": "You should provide just one key"}
 
         self.request.response.setStatus(400)
         return {"error": "You need to provide a key"}

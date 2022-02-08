@@ -58,3 +58,28 @@ class TestDatasetSearch(unittest.TestCase):
         self.assertIn(
             self.doc2.UID(), [item["UID"] for item in results["items"]]
         )
+
+    def test_endpoint_allows_list_like_searches(self):
+        """the whole idea of the endpoint is to support searching multiple
+        values at once, receiving a list of possible values as a
+        parameter, something like UID=a1,a2,a3
+        """
+        response = self.api_session.get(
+            "@datasets_by_uid?UID=%s&UID=%s"
+            % (self.doc1.UID(), self.doc2.UID())
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.headers.get("Content-Type"), "application/json"
+        )
+
+        results = response.json()
+        self.assertEqual(results["items_total"], len(results["items"]))
+        self.assertEqual(results["items_total"], 2)
+
+        self.assertIn(
+            self.doc1.UID(), [item["UID"] for item in results["items"]]
+        )
+        self.assertIn(
+            self.doc2.UID(), [item["UID"] for item in results["items"]]
+        )

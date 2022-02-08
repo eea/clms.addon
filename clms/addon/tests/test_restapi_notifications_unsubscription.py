@@ -1,29 +1,25 @@
 """ test the notifications related REST API endpoints """
 # -*- coding: utf-8 -*-
-
 import unittest
 
-from plone import api
-from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
+import transaction
 from plone.app.testing import TEST_USER_ID, setRoles
 from plone.restapi.testing import RelativeSession
+from zope.component import getUtility
 
-from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility,
-    INewsItemPendingUnSubscriptionsUtility,
-)
+from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from clms.addon.utilities.event_notifications_utility import (
     IEventNotificationsUtility,
     IEventPendingUnSubscriptionsUtility,
+)
+from clms.addon.utilities.newsitem_notifications_utility import (
+    INewsItemNotificationsUtility,
+    INewsItemPendingUnSubscriptionsUtility,
 )
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingUnSubscriptionsUtility,
 )
-
-from zope.component import getUtility
-
-import transaction
 
 
 class TestNewsItemNotificationsEndpoint(unittest.TestCase):
@@ -69,7 +65,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         utility = getUtility(INewsItemPendingUnSubscriptionsUtility)
         self.assertEqual(len(utility.get_keys()), 1)
 
-    def test_confirm_subscription(self):
+    def test_confirm_unsubscription(self):
         """ test that we can confirm a subscription """
 
         utility = getUtility(INewsItemNotificationsUtility)
@@ -111,7 +107,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         # now we have one item in the unsubscribers list
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
-    def test_confirm_subscription_with_no_key(self):
+    def test_confirm_unsubscription_with_no_key(self):
         """when trying to confirma a subscription without providing a key
         the endpoint should return an error
         """
@@ -122,7 +118,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    def test_confirm_subscription_with_invalid_key(self):
+    def test_confirm_unsubscription_with_invalid_key(self):
         """when trying to confirm a subscription with an invalid key
         the endpoint should return an error
         """
@@ -215,7 +211,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
             [item["email"] for item in utility.get_values()],
         )
 
-    def test_confirm_subscription(self):
+    def test_confirm_unsubscription(self):
         """ test that we can confirm a subscription """
         utility = getUtility(IEventNotificationsUtility)
         utility.subscribe_address("email@example.com")
@@ -256,7 +252,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         # now we have one item in the unsubscribers list
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
-    def test_confirm_subscription_with_no_key(self):
+    def test_confirm_unsubscription_with_no_key(self):
         """when trying to confirma a subscription without providing a key
         the endpoint should return an error
         """
@@ -267,7 +263,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    def test_confirm_subscription_with_invalid_key(self):
+    def test_confirm_unsubscription_with_invalid_key(self):
         """when trying to confirm a subscription with an invalid key
         the endpoint should return an error
         """
@@ -358,7 +354,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
             [item["email"] for item in utility.get_values()],
         )
 
-    def test_confirm_subscription(self):
+    def test_confirm_unsubscription(self):
         """ test that we can confirm a subscription """
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.subscribe_address("email@example.com")
@@ -397,7 +393,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
-    def test_confirm_subscription_with_no_key(self):
+    def test_confirm_unsubscription_with_no_key(self):
         """when trying to confirma a subscription without providing a key
         the endpoint should return an error
         """
@@ -408,7 +404,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
-    def test_confirm_subscription_with_invalid_key(self):
+    def test_confirm_unsubscription_with_invalid_key(self):
         """when trying to confirm a subscription with an invalid key
         the endpoint should return an error
         """
@@ -454,6 +450,57 @@ class TestNewsletterEndpoint(unittest.TestCase):
         response = self.api_session.post(
             "@newsletter-notification-unsubscribe-confirm/{}".format(
                 random_key
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_confirm_unsubscription_with_multiple_keys(self):
+        """when trying to confirm a subscription with multiple keys
+        the endpoint should return an error
+        """
+
+        utility = getUtility(INewsLetterNotificationsUtility)
+        utility.subscribe_address("email@example.com")
+
+        transaction.commit()
+
+        # to test this we will create a subscription request, then create a random key
+        # which is different to an existing key, and try to confirm the subscription with
+        # the random key
+
+        utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
+        # starting from an empty list
+        self.assertEqual(len(utility.get_keys()), 0)
+
+        # if we make a subscription request
+        response = self.api_session.post(
+            "@newsletter-notification-unsubscribe",
+            json={"email": "email@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 204)
+        transaction.commit()
+
+        # we have one item there
+        pending_utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
+        self.assertEqual(len(pending_utility.get_keys()), 1)
+
+        # and we are not unsubscribed yet
+        utility = getUtility(INewsLetterNotificationsUtility)
+        self.assertTrue(utility.is_subscribed("email@example.com"))
+
+        # get this item's key and make a confirmation request
+        keys = [key for key in pending_utility.get_keys()]
+
+        # create a random key
+        random_key = "random_key"
+        while random_key in keys:
+            random_key += "-1"
+
+        response = self.api_session.post(
+            "@newsletter-notification-unsubscribe-confirm/{}/{}".format(
+                random_key, random_key
             )
         )
 

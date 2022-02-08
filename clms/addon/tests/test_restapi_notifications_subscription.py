@@ -417,6 +417,52 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_confirm_subscription_with_multiple_keys(self):
+        """when trying to confirm a subscription with multiple keys
+        the endpoint should return an error
+        """
+
+        # to test this we will create a subscription request, then create a random key
+        # which is different to an existing key, and try to confirm the subscription with
+        # the random key
+
+        utility = getUtility(INewsLetterPendingSubscriptionsUtility)
+        # starting from an empty list
+        self.assertEqual(len(utility.get_keys()), 0)
+
+        # if we make a subscription request
+        response = self.api_session.post(
+            "@newsletter-notification-subscribe",
+            json={"email": "email@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 204)
+        transaction.commit()
+
+        # we have one item there
+        pending_utility = getUtility(INewsLetterPendingSubscriptionsUtility)
+        self.assertEqual(len(pending_utility.get_keys()), 1)
+
+        # and we are not subscribed yet
+        utility = getUtility(INewsLetterNotificationsUtility)
+        self.assertFalse(utility.is_subscribed("email@example.com"))
+
+        # get this item's key and make a confirmation request
+        keys = [key for key in pending_utility.get_keys()]
+
+        # create a random key
+        random_key = "random_key"
+        while random_key in keys:
+            random_key += "-1"
+
+        response = self.api_session.post(
+            "@newsletter-notification-subscribe-confirm/{}/{}".format(
+                random_key, random_key
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+
     def test_newsletter_subscribers(self):
         """ test getting all subscribers as manager """
 

@@ -57,6 +57,17 @@ class TestAnonRegistry(unittest.TestCase):
             response.headers.get("Content-Type"), "application/json"
         )
 
+    def test_anonymous_plone(self):
+        """ Access as an anonymous user to a plone key"""
+        response = self.anonymous_session.get(
+            "@anon-registry/plone.alignment_styles"
+        )
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response.headers.get("Content-Type"), "application/json"
+        )
+
     def test_logged_whole_registry(self):
         """ Test that when logged in, the whole registry is accessible"""
 
@@ -65,20 +76,11 @@ class TestAnonRegistry(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("items", result)
 
-    def test_anonymous_plone(self):
-        """ Access as an anonymous user to a plone key"""
-        response = self.anonymous_session.get(
-            "@registry/plone.alignment_styles"
-        )
-
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(
-            response.headers.get("Content-Type"), "application/json"
-        )
-
     def test_logged_plone(self):
         """ test logged user access to a plone key"""
-        response = self.api_session.get("@registry/plone.alignment_styles")
+        response = self.api_session.get(
+            "@anon-registry/plone.alignment_styles"
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(

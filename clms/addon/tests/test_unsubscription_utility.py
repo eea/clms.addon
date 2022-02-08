@@ -4,17 +4,16 @@
 
 import unittest
 
+from freezegun import freeze_time
+from persistent.mapping import PersistentMapping
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
-
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
-    INewsLetterPendingSubscriptionsUtility,
+    INewsLetterPendingUnSubscriptionsUtility,
 )
-from zope.annotation.interfaces import IAnnotations
-from persistent.mapping import PersistentMapping
-from freezegun import freeze_time
 
 
 class TestSubscriptionUtility(unittest.TestCase):
@@ -25,11 +24,11 @@ class TestSubscriptionUtility(unittest.TestCase):
     def setUp(self):
         """ set up"""
         self.portal = self.layer["portal"]
-        self.utility = getUtility(INewsLetterPendingSubscriptionsUtility)
+        self.utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
 
-    def test_create_pending_subscription(self):
+    def test_create_pending_unsubscription(self):
         """ create a new pending subscription """
-        self.utility.create_pending_subscription("email@example.com")
+        self.utility.create_pending_unsubscription("email@example.com")
 
         annotations = IAnnotations(self.portal)
         subscribers = annotations.get(
@@ -42,18 +41,22 @@ class TestSubscriptionUtility(unittest.TestCase):
             [item["email"] for item in subscribers.values()],
         )
 
-    def test_confirm_pending_subscription(self):
+    def test_confirm_pending_unsubscription(self):
         """ confirm the subscription"""
-        key = self.utility.create_pending_subscription("email@example.com")
-        result = self.utility.confirm_pending_subscription(key)
+        utility = getUtility(INewsLetterNotificationsUtility)
+        utility.subscribe_address("email@example.com")
+
+        key = self.utility.create_pending_unsubscription("email@example.com")
+
+        result = self.utility.confirm_pending_unsubscription(key)
         self.assertTrue(result)
 
     def test_confirm_invalid_subscription_key(self):
-        key = self.utility.create_pending_subscription("email@example.com")
+        key = self.utility.create_pending_unsubscription("email@example.com")
         random_key = "random_key"
         while random_key == key:
             random_key += "-1"
-        result = self.utility.confirm_pending_subscription(random_key)
+        result = self.utility.confirm_pending_unsubscription(random_key)
         self.assertFalse(result)
 
     @freeze_time("2019-01-05")
@@ -88,7 +91,7 @@ class TestSubscriptionUtility(unittest.TestCase):
 
         self.assertEqual(len(self.utility.get_keys()), 3)
 
-        self.utility.cleanup_unconfirmed_subscriptions(days=2)
+        self.utility.cleanup_unconfirmed_unsubscriptions(days=2)
 
         self.assertEqual(len(self.utility.get_keys()), 1)
 
@@ -96,8 +99,8 @@ class TestSubscriptionUtility(unittest.TestCase):
     #     """this method should raise a NonImplementedError exception because
     #     it is meant to be implemented in a subclass
     #     """
-    #     key = self.utility.create_pending_subscription("email@example.com")
-    #     self.utility.confirm_pending_subscription(key)
+    #     key = self.utility.create_pending_unsubscription("email@example.com")
+    #     self.utility.confirm_pending_unsubscription(key)
     #     annotations = IAnnotations(self.portal)
     #     subscribers = annotations.get(
     #         self.utility.ANNOTATION_KEY, PersistentMapping()
@@ -109,7 +112,6 @@ class TestSubscriptionUtility(unittest.TestCase):
     #         subscriber,
     #     )
 
-    @freeze_time("2019-01-05")
     def test_cleanup_requests(self):
         """ cleanup pending requests """
 
