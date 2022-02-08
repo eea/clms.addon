@@ -98,3 +98,17 @@ class PendingSubscriptionHandler:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         annotations[self.ANNOTATION_KEY] = PersistentMapping()
+
+    def get_keys(self):
+        """ return all registered keys"""
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        return subscribers.keys()
+
+    def get_values(self):
+        """ return all registered values"""
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        return subscribers.values()

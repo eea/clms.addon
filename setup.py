@@ -57,6 +57,7 @@ setup(
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
             "plone.restapi[test]",
+            "collective.MockMailHost"
         ],
     },
     entry_points="""

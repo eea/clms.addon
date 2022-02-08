@@ -19,13 +19,16 @@ from zope.interface import alsoProvides
 
 from clms.addon import _
 from clms.addon.utilities.event_notifications_utility import (
-    IEventPendingSubscriptionsUtility, IEventNotificationsUtility
+    IEventPendingSubscriptionsUtility,
+    IEventNotificationsUtility,
 )
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemPendingSubscriptionsUtility, INewsItemNotificationsUtility
+    INewsItemPendingSubscriptionsUtility,
+    INewsItemNotificationsUtility,
 )
 from clms.addon.utilities.newsletter_utility import (
-    INewsLetterPendingSubscriptionsUtility, INewsLetterNotificationsUtility
+    INewsLetterPendingSubscriptionsUtility,
+    INewsLetterNotificationsUtility,
 )
 
 
@@ -100,8 +103,7 @@ class BaseNotificationsSubscribeHandler(Service):
             return {
                 "status": "error",
                 "message": (
-                    "There was an error sending the email, try again"
-                    " please"
+                    "There was an error sending the email, try again please"
                 ),
             }
 
@@ -136,6 +138,7 @@ class BaseNotificationsSubscribeHandler(Service):
 
         message = MIMEText(message, "plain", encoding)
         message["Reply-To"] = from_address
+        message["From"] = from_address
         try:
             host.send(
                 message.as_string(),
@@ -183,6 +186,7 @@ class BaseNotificationsSubscribeHandler(Service):
 
         message = MIMEText(message, "plain", encoding)
         message["Reply-To"] = from_address
+        message["From"] = from_address
         try:
             host.send(
                 message.as_string(),

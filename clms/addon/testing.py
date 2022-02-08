@@ -9,10 +9,12 @@ from plone.app.testing import (
     FunctionalTesting,
     IntegrationTesting,
     PloneSandboxLayer,
+    quickInstallProduct
 )
 from plone.testing import z2
 
 import clms.addon
+import collective.MockMailHost
 
 
 class ClmsAddonLayer(PloneSandboxLayer):
@@ -30,10 +32,13 @@ class ClmsAddonLayer(PloneSandboxLayer):
 
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=clms.addon)
+        self.loadZCML(package=collective.MockMailHost)
 
     def setUpPloneSite(self, portal):
         """ setup Plone site"""
         applyProfile(portal, "clms.addon:default")
+        quickInstallProduct(portal, "collective.MockMailHost")
+        applyProfile(portal, "collective.MockMailHost:default")
 
 
 CLMS_ADDON_FIXTURE = ClmsAddonLayer()

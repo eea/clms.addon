@@ -137,6 +137,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
 
         message = MIMEText(message, "plain", encoding)
         message["Reply-To"] = from_address
+        message["From"] = from_address
         try:
             host.send(
                 message.as_string(),
@@ -185,6 +186,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
 
         message = MIMEText(message, "plain", encoding)
         message["Reply-To"] = from_address
+        message["From"] = from_address
         try:
             host.send(
                 message.as_string(),
