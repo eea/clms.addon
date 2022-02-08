@@ -59,10 +59,10 @@ class TestDatasetSearch(unittest.TestCase):
             self.doc2.UID(), [item["UID"] for item in results["items"]]
         )
 
-    def test_endpoint_allows_list_like_searches(self):
+    def test_endpoint_allows_list_like_searches_parameter_multiple_times(self):
         """the whole idea of the endpoint is to support searching multiple
         values at once, receiving a list of possible values as a
-        parameter, something like UID=a1,a2,a3
+        parameter, something like UID=a1&UID=a2&UID=a3
         """
         response = self.api_session.get(
             "@datasets_by_uid?UID=%s&UID=%s"
