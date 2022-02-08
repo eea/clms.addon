@@ -505,3 +505,23 @@ class TestNewsletterEndpoint(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 400)
+
+    def test_unsubscribe_an_already_subscribed_user(self):
+        """When user makes an unsubscription request and the user
+        is not subscribed, the user receives an email saying nothing
+        else is required on his part.
+        """
+
+        response = self.api_session.post(
+            "@newsletter-notification-unsubscribe",
+            json={"email": "email@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+    def test_subscribe_without_email(self):
+        """ if the email is not provided, the endpoint returns an error"""
+        response = self.api_session.post(
+            "@newsletter-notification-unsubscribe", json={}
+        )
+        self.assertEqual(response.status_code, 400)

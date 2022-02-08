@@ -495,3 +495,27 @@ class TestNewsletterEndpoint(unittest.TestCase):
         )
 
         self.assertEqual(response.status_code, 401)
+
+    def test_subscribe_an_already_subscribed_user(self):
+        """When a subscribed user makes a subscription request,
+        the endpoint processes the result but the user receives a confirmation
+        email saying nothing else is required on his part.
+        """
+        utility = getUtility(INewsLetterNotificationsUtility)
+        utility.subscribe_address("email@example.com")
+
+        transaction.commit()
+
+        response = self.api_session.post(
+            "@newsletter-notification-subscribe",
+            json={"email": "email@example.com"},
+        )
+
+        self.assertEqual(response.status_code, 204)
+
+    def test_subscribe_without_email(self):
+        """ if the email is not provided, the endpoint returns an erro"""
+        response = self.api_session.post(
+            "@newsletter-notification-subscribe", json={}
+        )
+        self.assertEqual(response.status_code, 400)
