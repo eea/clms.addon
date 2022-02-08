@@ -51,6 +51,12 @@ CLMS_ADDON_FUNCTIONAL_TESTING = FunctionalTesting(
 )
 
 
+CLMS_ADDON_RESTAPI_TESTING = FunctionalTesting(
+    bases=(CLMS_ADDON_FIXTURE, z2.ZSERVER_FIXTURE),
+    name="ClmsAddonLayer:RestApiTesting",
+)
+
+
 CLMS_ADDON_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
         CLMS_ADDON_FIXTURE,
