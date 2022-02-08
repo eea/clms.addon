@@ -48,6 +48,7 @@ setup(
         "collective.taxonomy",
         "plone.volto",
         "z3c.unconfigure",
+        "plone.restapi",
         "eea.restapi",
     ],
     extras_require={
@@ -55,6 +56,7 @@ setup(
             "plone.app.testing",
             "plone.app.contenttypes",
             "plone.app.robotframework[debug]",
+            "plone.restapi[test]",
         ],
     },
     entry_points="""
