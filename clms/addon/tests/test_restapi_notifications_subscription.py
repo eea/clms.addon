@@ -4,11 +4,15 @@
 import unittest
 
 import transaction
-from plone.app.testing import TEST_USER_ID, setRoles
+from plone.app.testing import (
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
+    setRoles,
+)
 from plone.restapi.testing import RelativeSession
 from zope.component import getUtility
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
+
 from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from clms.addon.utilities.event_notifications_utility import (
     IEventNotificationsUtility,
@@ -378,9 +382,10 @@ class TestNewsletterEndpoint(unittest.TestCase):
         the endpoint should return an error
         """
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
+        # to test this we will create a subscription request, then create
+        # a random key
+        # which is different to an existing key, and try to confirm the
+        # subscription with the random key
 
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         # starting from an empty list
@@ -422,9 +427,10 @@ class TestNewsletterEndpoint(unittest.TestCase):
         the endpoint should return an error
         """
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
+        # to test this we will create a subscription request, then create a
+        # random key
+        # which is different to an existing key, and try to confirm the
+        # subscription with the random key
 
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         # starting from an empty list
@@ -514,7 +520,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_subscribe_without_email(self):
-        """ if the email is not provided, the endpoint returns an erro"""
+        """ if the email is not provided, the endpoint returns an error"""
         response = self.api_session.post(
             "@newsletter-notification-subscribe", json={}
         )
