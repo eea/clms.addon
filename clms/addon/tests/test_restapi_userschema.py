@@ -66,7 +66,7 @@ class TestUserSchemaEndpoint(unittest.TestCase):
             response["fieldsets"][0]["fields"],
         )
 
-        self.assertTrue("object", response["type"])
+        self.assertEqual("object", response["type"])
 
 
 class TestCustomUserSchema(unittest.TestCase):

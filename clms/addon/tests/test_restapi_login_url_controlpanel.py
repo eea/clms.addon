@@ -3,7 +3,6 @@
 import unittest
 
 import transaction
-from plone import api
 from plone.app.testing import (
     SITE_OWNER_NAME,
     SITE_OWNER_PASSWORD,

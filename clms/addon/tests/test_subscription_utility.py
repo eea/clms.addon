@@ -92,7 +92,8 @@ class TestSubscriptionUtility(unittest.TestCase):
         self.assertEqual(len(self.utility.get_keys()), 1)
 
     def test_do_something_with_confirmed_subscriber(self):
-        """this method call adds effectively the subscriber, so check if it works"""
+        """this method call adds effectively the subscriber, so check if it
+        works"""
         key = self.utility.create_pending_subscription("email@example.com")
         self.utility.confirm_pending_subscription(key)
         utility = getUtility(INewsLetterNotificationsUtility)

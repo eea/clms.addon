@@ -1,7 +1,7 @@
 """ test that @anon-registry endpoint works as expected.
-    the endpoints allows anonymous access to all registry keys starting with clms
-    all other keys are protected by login like in the Plone's @registry endpoint
-
+    the endpoints allows anonymous access to all registry keys starting with
+    clms all other keys are protected by login like in the Plone's @registry
+    endpoint
 """
 # -*- coding: utf-8 -*-
 import unittest

@@ -18,12 +18,14 @@ class TestControlPanel(unittest.TestCase):
         self.controlpanel = api.portal.get_tool("portal_controlpanel")
 
     def test_login_url_controlpanel_installed(self):
+        """ test login url control panel is installed"""
         self.assertIn(
             "login_url_controlpanel-controlpanel",
             [item.id for item in self.controlpanel.listActions()],
         )
 
     def test_notifications_controlpanel_installed(self):
+        """ test notifications control panel is installed"""
         self.assertIn(
             "notifications-controlpanel",
             [item.id for item in self.controlpanel.listActions()],

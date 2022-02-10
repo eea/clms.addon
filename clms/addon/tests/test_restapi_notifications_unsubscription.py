@@ -95,7 +95,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@newsitem-notification-unsubscribe-confirm/{}".format(keys[0])
@@ -128,10 +128,6 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
 
         transaction.commit()
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(INewsItemPendingUnSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -154,7 +150,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -240,7 +236,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@event-notification-unsubscribe-confirm/{}".format(keys[0])
@@ -272,10 +268,6 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
 
         transaction.commit()
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(IEventPendingUnSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -298,7 +290,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -382,7 +374,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@newsletter-notification-unsubscribe-confirm/{}".format(keys[0])
@@ -414,10 +406,6 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         transaction.commit()
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -440,7 +428,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -465,10 +453,6 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         transaction.commit()
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -491,7 +475,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertTrue(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -499,8 +483,8 @@ class TestNewsletterEndpoint(unittest.TestCase):
             random_key += "-1"
 
         response = self.api_session.post(
-            "@newsletter-notification-unsubscribe-confirm/{}/{}".format(
-                random_key, random_key
+            "@newsletter-notification-unsubscribe-confirm/{0}/{0}".format(
+                random_key
             )
         )
 
