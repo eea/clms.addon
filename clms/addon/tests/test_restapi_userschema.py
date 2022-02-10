@@ -38,7 +38,8 @@ class TestUserSchemaEndpoint(unittest.TestCase):
         self.api_session.close()
 
     def test_userschema_get(self):
-        """ get the user schema which has been modified by the installation of this product"""
+        """get the user schema which has been modified by the installation
+        of this product"""
         response = self.api_session.get("/@userschema")
 
         self.assertEqual(200, response.status_code)
@@ -88,6 +89,7 @@ class TestCustomUserSchema(unittest.TestCase):
         self.api_session.headers.update({"Accept": "application/json"})
         self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 
+        # pylint: disable=line-too-long
         xml = """<model xmlns:lingua="http://namespaces.plone.org/supermodel/lingua" xmlns:users="http://namespaces.plone.org/supermodel/users" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns="http://namespaces.plone.org/supermodel/schema" i18n:domain="plone">
   <schema name="member-fields">
     <field name="home_page" type="zope.schema.URI" users:forms="In User Profile">
