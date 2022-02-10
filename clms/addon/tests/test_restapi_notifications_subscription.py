@@ -90,7 +90,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@newsitem-notification-subscribe-confirm/{}".format(keys[0])
@@ -117,11 +117,6 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         """when trying to confirm a subscription with an invalid key
         the endpoint should return an error
         """
-
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -144,7 +139,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -220,7 +215,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@event-notification-subscribe-confirm/{}".format(keys[0])
@@ -248,10 +243,6 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         the endpoint should return an error
         """
 
-        # to test this we will create a subscription request, then create a random key
-        # which is different to an existing key, and try to confirm the subscription with
-        # the random key
-
         utility = getUtility(IEventPendingSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -274,7 +265,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -354,7 +345,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         response = self.api_session.post(
             "@newsletter-notification-subscribe-confirm/{}".format(keys[0])
@@ -409,7 +400,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -454,7 +445,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertFalse(utility.is_subscribed("email@example.com"))
 
         # get this item's key and make a confirmation request
-        keys = [key for key in pending_utility.get_keys()]
+        keys = list(pending_utility.get_keys())
 
         # create a random key
         random_key = "random_key"
@@ -462,8 +453,8 @@ class TestNewsletterEndpoint(unittest.TestCase):
             random_key += "-1"
 
         response = self.api_session.post(
-            "@newsletter-notification-subscribe-confirm/{}/{}".format(
-                random_key, random_key
+            "@newsletter-notification-subscribe-confirm/{0}/{0}".format(
+                random_key
             )
         )
 
