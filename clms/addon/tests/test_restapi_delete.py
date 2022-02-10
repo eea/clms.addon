@@ -48,7 +48,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         self.api_session.close()
         self.manager_api_session.close()
 
-    def test_newsletter_notification_subscriptions_anonymous_delete_is_not_allowed(
+    def test_newsletter_subscriptions_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -57,7 +57,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsletter_notification_subscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_newsletter_subscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -66,7 +66,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsletter_notification_unsubscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_newsletter_unsubscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification unsubscriptions as anonymous """
@@ -75,7 +75,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsletter_notification_subscriptions_delete(
+    def test_newsletter_subscriptions_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -90,7 +90,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
-    def test_newsletter_notification_subscriptions_requests_delete(
+    def test_newsletter_subscriptions_requests_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -110,7 +110,7 @@ class TestDeleteNewsletterRegistries(unittest.TestCase):
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         self.assertEqual(len(utility.get_keys()), 0)
 
-    def test_newsletter_notification_unsubscriptions_requests_delete(
+    def test_newsletter_unsubscriptions_requests_delete(
         self,
     ):
         """ test deleting notification unsubscriptions as manager """
@@ -148,7 +148,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         self.api_session.close()
         self.manager_api_session.close()
 
-    def test_newsitem_notification_subscriptions_anonymous_delete_is_not_allowed(
+    def test_newsitem_subscriptions_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -157,7 +157,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsitem_notification_subscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_newsitem_subscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -166,7 +166,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsitem_notification_unsubscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_newsitem_unsubscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification unsubscriptions as anonymous """
@@ -175,7 +175,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_newsitem_notification_subscriptions_delete(
+    def test_newsitem_subscriptions_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -190,7 +190,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
-    def test_newsitem_notification_subscriptions_requests_delete(
+    def test_newsitem_subscriptions_requests_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -210,7 +210,7 @@ class TestDeleteNewsitemNotificationRegistries(unittest.TestCase):
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         self.assertEqual(len(utility.get_keys()), 0)
 
-    def test_newsitem_notification_unsubscriptions_requests_delete(
+    def test_newsitem_unsubscriptions_requests_delete(
         self,
     ):
         """ test deleting notification unsubscriptions as manager """
@@ -248,7 +248,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         self.api_session.close()
         self.manager_api_session.close()
 
-    def test_event_notification_subscriptions_anonymous_delete_is_not_allowed(
+    def test_event_subscriptions_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -257,7 +257,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_event_notification_subscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_event_subscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification subscriptions as anonymous """
@@ -266,7 +266,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_event_notification_unsubscriptions_requests_anonymous_delete_is_not_allowed(
+    def test_event_unsubscriptions_requests_anonymous_delete_not_allowed(
         self,
     ):
         """ test deleting notification unsubscriptions as anonymous """
@@ -275,7 +275,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 401)
 
-    def test_event_notification_subscriptions_delete(
+    def test_event_subscriptions_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -290,7 +290,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 204)
 
-    def test_event_notification_subscriptions_requests_delete(
+    def test_event_subscriptions_requests_delete(
         self,
     ):
         """ test deleting notification subscriptions as manager """
@@ -310,7 +310,7 @@ class TestDeleteEventNotificationRegistries(unittest.TestCase):
         utility = getUtility(IEventPendingSubscriptionsUtility)
         self.assertEqual(len(utility.get_keys()), 0)
 
-    def test_event_notification_unsubscriptions_requests_delete(
+    def test_event_unsubscriptions_requests_delete(
         self,
     ):
         """ test deleting notification unsubscriptions as manager """
