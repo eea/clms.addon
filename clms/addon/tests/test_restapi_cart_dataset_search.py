@@ -2,14 +2,16 @@
 # -*- coding: utf-8 -*-
 import unittest
 
-from plone import api
-from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING  # noqa: E501
-from plone.app.testing import TEST_USER_ID, setRoles
-from plone.restapi.testing import RelativeSession
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
-
 import transaction
+from plone.app.testing import (
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
+    setRoles,
+)
+from plone.restapi.testing import RelativeSession
+
+from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 
 
 class TestDatasetSearch(unittest.TestCase):

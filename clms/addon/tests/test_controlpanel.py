@@ -3,6 +3,7 @@
 import unittest
 
 from plone import api
+
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING  # noqa: E501
 
 

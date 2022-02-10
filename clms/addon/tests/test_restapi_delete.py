@@ -7,19 +7,17 @@
 import unittest
 
 import transaction
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 from plone.restapi.testing import RelativeSession
 from zope.component import getUtility
-from plone.app.testing import SITE_OWNER_NAME
-from plone.app.testing import SITE_OWNER_PASSWORD
+
 from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from clms.addon.utilities.event_notifications_utility import (
-    IEventNotificationsUtility,
     IEventNotificationsUtility,
     IEventPendingSubscriptionsUtility,
     IEventPendingUnSubscriptionsUtility,
 )
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility,
     INewsItemNotificationsUtility,
     INewsItemPendingSubscriptionsUtility,
     INewsItemPendingUnSubscriptionsUtility,

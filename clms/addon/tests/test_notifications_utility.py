@@ -4,16 +4,15 @@
 
 import unittest
 
+from persistent.mapping import PersistentMapping
+from plone import api
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
 from clms.addon.utilities.base_notifications_utility import (
     INotificationsUtility,
 )
-
-from plone import api
-from zope.annotation.interfaces import IAnnotations
-from persistent.mapping import PersistentMapping
 
 
 class TestNotificationsUtility(unittest.TestCase):

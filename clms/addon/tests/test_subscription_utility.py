@@ -4,17 +4,16 @@
 
 import unittest
 
+from freezegun import freeze_time
+from persistent.mapping import PersistentMapping
+from zope.annotation.interfaces import IAnnotations
 from zope.component import getUtility
 
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
-
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingSubscriptionsUtility,
 )
-from zope.annotation.interfaces import IAnnotations
-from persistent.mapping import PersistentMapping
-from freezegun import freeze_time
 
 
 class TestSubscriptionUtility(unittest.TestCase):
