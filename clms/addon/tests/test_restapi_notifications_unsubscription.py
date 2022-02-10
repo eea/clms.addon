@@ -33,7 +33,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-        self.api_session = RelativeSession(self.portal_url, test=self)
+        self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
     def test_newsitem_notifications_unsubscribe_is_registered(self):
@@ -175,7 +175,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-        self.api_session = RelativeSession(self.portal_url, test=self)
+        self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
     def test_event_notifications_unsubscribe_is_registered(self):
@@ -315,7 +315,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
-        self.api_session = RelativeSession(self.portal_url, test=self)
+        self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
     def test_newsletter_notifications_unsubscribe_is_registered(self):
