@@ -48,6 +48,7 @@ class TestSubscriptionUtility(unittest.TestCase):
         self.assertTrue(result)
 
     def test_confirm_invalid_subscription_key(self):
+        """ confirm the subscription with an invalid key"""
         key = self.utility.create_pending_subscription("email@example.com")
         random_key = "random_key"
         while random_key == key:
