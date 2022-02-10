@@ -18,9 +18,7 @@ setup(
     long_description_content_type="text/x-rst",
     long_description=(
         # pylint: disable=line-too-long
-        open("README.rst").read()
-        + "\n"
-        + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa
+        open("README.rst").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa: E501
     ),
     classifiers=[
         "Environment :: Web Environment",
