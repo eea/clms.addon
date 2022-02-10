@@ -31,6 +31,10 @@ class TestDatasetSearch(unittest.TestCase):
 
         transaction.commit()
 
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
+
     def test_controlpanel_available(self):
         """test that controlpanel information is available on REST API"""
 

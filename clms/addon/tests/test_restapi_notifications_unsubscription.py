@@ -36,6 +36,10 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
+
     def test_newsitem_notifications_unsubscribe_is_registered(self):
         """test that a subscription request is registered, to get this,
         we need to subscribe a user first.
@@ -178,6 +182,10 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
+
     def test_event_notifications_unsubscribe_is_registered(self):
         """ test that a subscription request is registered """
 
@@ -317,6 +325,10 @@ class TestNewsletterEndpoint(unittest.TestCase):
 
         self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
+
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
 
     def test_newsletter_notifications_unsubscribe_is_registered(self):
         """ test that a subscription request is registered """

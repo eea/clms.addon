@@ -37,6 +37,10 @@ class TestDatasetSearch(unittest.TestCase):
 
         transaction.commit()
 
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
+
     def test_endpoint_allows_list_like_searches(self):
         """the whole idea of the endpoint is to support searching multiple
         values at once, receiving a list of possible values as a

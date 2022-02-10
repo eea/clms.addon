@@ -37,6 +37,11 @@ class TestAnonRegistry(unittest.TestCase):
 
         # transaction.commit()
 
+    def tearDown(self):
+        """ tearDown """
+        self.api_session.close()
+        self.anonymous_session.close()
+
     def test_anonymous_clms(self):
         """ Access as an anonymous user to a clms key"""
 
