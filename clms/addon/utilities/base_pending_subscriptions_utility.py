@@ -76,16 +76,17 @@ class PendingSubscriptionHandler:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        new_subscribers = PersistentMapping()
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
                 date = subscribers[key]["date"]
                 date_difference = datetime.utcnow() - datetime.strptime(
                     date, "%Y-%m-%dT%H:%M:%S.%f"
                 )
-                if date_difference > timedelta(days=days):
-                    del subscribers[key]
+                if date_difference <= timedelta(days=days):
+                    new_subscribers[key] = subscribers[key]
 
-        annotations[self.ANNOTATION_KEY] = subscribers
+        annotations[self.ANNOTATION_KEY] = new_subscribers
 
     def do_something_with_confirmed_subscriber(self, subscriber):
         """ do something with the confirmed subscriber """
@@ -98,3 +99,17 @@ class PendingSubscriptionHandler:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         annotations[self.ANNOTATION_KEY] = PersistentMapping()
+
+    def get_keys(self):
+        """ return all registered keys"""
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        return subscribers.keys()
+
+    def get_values(self):
+        """ return all registered values"""
+        portal = api.portal.get()
+        annotations = IAnnotations(portal)
+        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        return subscribers.values()

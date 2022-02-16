@@ -4,5 +4,6 @@
   <dependencies>
     <dependency>profile-plone.app.registry:default</dependency>
     <dependency>profile-collective.taxonomy:default</dependency>
+    <dependency>profile-plone.volto:default</dependency>
   </dependencies>
 </metadata>
