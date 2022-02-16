@@ -5,6 +5,9 @@
 
   <i18n:registerTranslations directory="locales" />
   <include package="plone.app.registry" />
+  <include package="collective.taxonomy" />
+  <include package="plone.volto" />
+
   <include file="profiles.zcml" />
   <include package=".browser" />
   <include package=".upgrades" />

@@ -1,5 +1,5 @@
 """
-Cleanump registrations
+Cleanup registrations
 """
 # -*- coding: utf-8 -*-
 

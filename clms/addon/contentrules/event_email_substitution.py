@@ -22,4 +22,4 @@ class EventSubscriberSubstitution(BaseSubstitution):
     def safe_call(self):
         """ call the utility to get the subscribers """
         utility = getUtility(IEventNotificationsUtility)
-        return utility.list_subscribers()
+        return list(utility.list_subscribers().keys())

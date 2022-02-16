@@ -3,6 +3,13 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="clms">
 
+  <browser:page
+      for="pas.plugins.oidc.plugins.IOIDCPlugin"
+      name="my-custom-callback"
+      class=".loginview.MyCallBack"
+      permission="zope2.View"
+      layer="pas.plugins.oidc.interfaces.IPasPluginsOidcLayer"
+      />
 
 
 </configure>
