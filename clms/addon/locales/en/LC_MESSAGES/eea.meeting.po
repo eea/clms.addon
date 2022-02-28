@@ -1,0 +1,8 @@
+msgid "Meeting type"
+msgstr "Event type"
+
+msgid "Meeting level"
+msgstr "Event level"
+
+msgid "Allow users to register to the meeting"
+msgstr "Allow users to register to the event"
