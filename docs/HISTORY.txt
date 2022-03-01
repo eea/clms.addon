@@ -1,6 +1,10 @@
 Changelog
 =========
 
+3.0 - (2022-03-01)
+---------------------------
+* Change: custom PO file to translate eea.meeting ids [erral]
+
 2.9 - (2022-02-16)
 ---------------------------
 * Change: Develop [erral]
