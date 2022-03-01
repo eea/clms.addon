@@ -1,0 +1,7 @@
+msgid ""
+msgstr ""
+
+#. Default: "A new form has been submitted from ${url}:"
+#: collective/volto/formsupport/browser/send_mail_template.pt:7
+msgid "send_mail_text"
+msgstr "A new message has been submitted through CLMS service desk"
