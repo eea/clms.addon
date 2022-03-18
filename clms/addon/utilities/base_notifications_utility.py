@@ -40,11 +40,10 @@ class NotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
-        if email is not None and email.strip():
-            if email not in subscribers:
-                subscribers[email] = {"date": datetime.utcnow().isoformat()}
-                annotations[self.ANNOTATION_KEY] = subscribers
-                return True
+        if email is not None and email.strip() and email not in subscribers:
+            subscribers[email] = {"date": datetime.utcnow().isoformat()}
+            annotations[self.ANNOTATION_KEY] = subscribers
+            return True
 
         return False
 
@@ -53,11 +52,10 @@ class NotificationsUtility:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
-        if email is not None and email.strip():
-            if email in subscribers:
-                del subscribers[email]
-                annotations[self.ANNOTATION_KEY] = subscribers
-                return True
+        if email is not None and email.strip() and email in subscribers:
+            del subscribers[email]
+            annotations[self.ANNOTATION_KEY] = subscribers
+            return True
 
         return False
 
