@@ -1,6 +1,10 @@
 Changelog
 =========
 
+3.3 - (2022-03-18)
+---------------------------
+* Change: change sonarqube_Tag [erral]
+
 3.2 - (2022-03-18)
 ---------------------------
 * Change: setup testing [erral]
