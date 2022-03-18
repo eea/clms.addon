@@ -34,8 +34,8 @@ class MyCallBack(BrowserView):
             login_time = DateTime(login_time)
         is_initial_login = login_time == DateTime("2000/01/01")
 
-        # membership_tool = api.portal.get_tool("portal_membership")
-        # membership_tool.loginUser(self.request)
+        membership_tool = api.portal.get_tool("portal_membership")
+        membership_tool.loginUser(self.request)
 
         redirect_url = "/"
 
@@ -49,11 +49,8 @@ class MyCallBack(BrowserView):
             portal_url = api.portal.get_tool("portal_url")
 
             if came_from:
-                if came_from.startswith("http") and portal_url.isURLInPortal(
-                    came_from
-                ):
-                    redirect_url = came_from
-                elif not came_from.startswith("http"):
+                # pylint: disable=line-too-long
+                if came_from.startswith("http") and portal_url.isURLInPortal(came_from) or not came_from.startswith("http"):  # noqa: E501
                     redirect_url = came_from
 
         return self.request.response.redirect(redirect_url, status=302)

@@ -19,7 +19,8 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            " for the newsitems notifications subscription handled by the"
+            " frontend",
         ),
         default="/newsitem-notification-subscription",
         required=True,
@@ -32,7 +33,8 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            " for the newsitems notification unsubscription handled by the"
+            " frontend",
         ),
         default="/newsitem-notification-unsubscription",
         required=True,
@@ -45,7 +47,8 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            "for the events notifications subscription handled by the"
+            " frontend",
         ),
         default="/event-notification-subscription",
         required=True,
@@ -58,7 +61,8 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            " for the events notifications unsubscription handled by the"
+            " frontend",
         ),
         default="/event-notification-unsubscription",
         required=True,
@@ -71,7 +75,7 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            " for the newsletter subscription handled by the frontend",
         ),
         default="/newsletter-notification-subscription",
         required=True,
@@ -84,7 +88,7 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " handled by the frontend",
+            " for the newsletter unsubscription handled by the frontend",
         ),
         default="/newsletter-notification-unsubscription",
         required=True,

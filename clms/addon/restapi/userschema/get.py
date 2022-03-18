@@ -13,7 +13,7 @@ class UserSchemaGet(Service):
     """ Service definition"""
 
     def reply(self):
-        """ return method"""
+        """ UserSchema endpoint reply """
         user_schema = getUserDataSchema()
         fieldsets = get_fieldsets(self.context, self.request, user_schema)
 

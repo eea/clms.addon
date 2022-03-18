@@ -1,13 +1,12 @@
 """ handlers module """
 
-# from plone.app.linkintegrity.utils import referencedRelationship
 import json
 import logging
+
 from Acquisition import aq_base
+from eea.restapi.interfaces import IBlockValidator
 from plone.api.exc import CannotGetPortalError
 from zope.component import queryAdapter
-from eea.restapi.interfaces import IBlockValidator
-
 
 logger = logging.getLogger("clms.addon")
 
