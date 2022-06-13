@@ -178,11 +178,30 @@
 
   <plone:service
     method="GET"
-    factory=".get.Get"
+    factory=".get.GetNewsletterSubscribers"
     for="Products.CMFCore.interfaces.ISiteRoot"
     permission="cmf.ManagePortal"
     name="@newsletter-subscribers"
     />
+
+
+  <plone:service
+    method="GET"
+    factory=".get.GetNewsitemNotificationSubscribers"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@newsitem-notification-subscribers"
+    />
+
+
+  <plone:service
+    method="GET"
+    factory=".get.GetEventNotificationSubscribers"
+    for="Products.CMFCore.interfaces.ISiteRoot"
+    permission="cmf.ManagePortal"
+    name="@event-notification-subscribers"
+    />
+
 
 
 </configure>

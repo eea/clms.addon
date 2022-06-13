@@ -29,7 +29,7 @@ from clms.addon.utilities.newsletter_utility import (
 
 
 class TestNewsItemNotificationsEndpoint(unittest.TestCase):
-    """ test the @newsitem-notification-* endpoints. """
+    """test the @newsitem-notification-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -42,12 +42,16 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
+        self.manager_api_session = RelativeSession(self.portal_url)
+        self.manager_api_session.headers.update({"Accept": "application/json"})
+        self.manager_api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
 
     def test_newsitem_notifications_subscribe_is_registered(self):
-        """ test that a subscription request is registered """
+        """test that a subscription request is registered"""
 
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         # starting from an empty list
@@ -71,7 +75,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         )
 
     def test_confirm_subscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -156,9 +160,42 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_notification_subscribers(self):
+        """test getting all subscribers as manager"""
+
+        utility = getUtility(INewsItemNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.manager_api_session.get(
+            "@newsitem-notification-subscribers",
+        )
+
+        result = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("subscribers", result)
+        self.assertEqual(len(result["subscribers"]), 2)
+
+    def test_notification_subscribers_anonymous(self):
+        """test getting all subscribers as anonymous is not allowed"""
+
+        utility = getUtility(INewsItemNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.api_session.get(
+            "@newsitem-notification-subscribers",
+        )
+
+        self.assertEqual(response.status_code, 401)
+
 
 class TestEventNotificationsEndpoint(unittest.TestCase):
-    """ test the @event-notification-* endpoints. """
+    """test the @event-notification-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -171,12 +208,16 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.api_session = RelativeSession(self.portal_url)
         self.api_session.headers.update({"Accept": "application/json"})
 
+        self.manager_api_session = RelativeSession(self.portal_url)
+        self.manager_api_session.headers.update({"Accept": "application/json"})
+        self.manager_api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
+
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
 
     def test_event_notifications_subscribe_is_registered(self):
-        """ test that a subscription request is registered """
+        """test that a subscription request is registered"""
 
         utility = getUtility(IEventPendingSubscriptionsUtility)
         # starting from an empty list
@@ -200,7 +241,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         )
 
     def test_confirm_subscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
         utility = getUtility(IEventPendingSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -286,9 +327,42 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 400)
 
+    def test_notification_subscribers(self):
+        """test getting all subscribers as manager"""
+
+        utility = getUtility(IEventNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.manager_api_session.get(
+            "@event-notification-subscribers",
+        )
+
+        result = response.json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("subscribers", result)
+        self.assertEqual(len(result["subscribers"]), 2)
+
+    def test_notification_subscribers_anonymous(self):
+        """test getting all subscribers as anonymous is not allowed"""
+
+        utility = getUtility(IEventNotificationsUtility)
+        utility.subscribe_address("subscriber1@example.com")
+        utility.subscribe_address("subscriber2@example.com")
+        transaction.commit()
+
+        # if we make a subscription request
+        response = self.api_session.get(
+            "@event-notification-subscribers",
+        )
+
+        self.assertEqual(response.status_code, 401)
+
 
 class TestNewsletterEndpoint(unittest.TestCase):
-    """ test the @newsletter-* endpoints. """
+    """test the @newsletter-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -306,12 +380,12 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.manager_api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
         self.manager_api_session.close()
 
     def test_newsletter_notifications_subscribe_is_registered(self):
-        """ test that a subscription request is registered """
+        """test that a subscription request is registered"""
 
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         # starting from an empty list
@@ -335,7 +409,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         )
 
     def test_confirm_subscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         # starting from an empty list
         self.assertEqual(len(utility.get_keys()), 0)
@@ -474,7 +548,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_newsletter_subscribers(self):
-        """ test getting all subscribers as manager """
+        """test getting all subscribers as manager"""
 
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.subscribe_address("subscriber1@example.com")
@@ -492,7 +566,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertEqual(len(result["subscribers"]), 2)
 
     def test_newsletter_subscribers_anonymous(self):
-        """ test getting all subscribers as anonymous is not allowed """
+        """test getting all subscribers as anonymous is not allowed"""
 
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.subscribe_address("subscriber1@example.com")
@@ -524,7 +598,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_subscribe_without_email(self):
-        """ if the email is not provided, the endpoint returns an error"""
+        """if the email is not provided, the endpoint returns an error"""
         response = self.api_session.post(
             "@newsletter-notification-subscribe", json={}
         )
