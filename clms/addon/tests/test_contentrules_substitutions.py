@@ -39,25 +39,25 @@ class TestSubstitutions(unittest.TestCase):
     def test_newsitem_notification_subscribers(self):
         """ test for newsitem_notification_subscribers"""
         substitution = NewsItemSubscriberSubstitution(self.portal)()
-        self.assertEqual(substitution, [])
+        self.assertEqual(substitution, "")
 
         utility = getUtility(INewsItemNotificationsUtility)
         utility.subscribe_address("one@example.com")
         utility.subscribe_address("two@example.com")
         substitution = NewsItemSubscriberSubstitution(self.portal)()
-        self.assertEqual(substitution, ["one@example.com", "two@example.com"])
+        self.assertEqual(substitution, "one@example.com,two@example.com")
 
     def test_event_notification_subscribers(self):
         """ test for event_notification_subscribers"""
 
         substitution = EventSubscriberSubstitution(self.portal)()
-        self.assertEqual(substitution, [])
+        self.assertEqual(substitution, "")
 
         utility = getUtility(IEventNotificationsUtility)
         utility.subscribe_address("one@example.com")
         utility.subscribe_address("two@example.com")
         substitution = EventSubscriberSubstitution(self.portal)()
-        self.assertEqual(substitution, ["one@example.com", "two@example.com"])
+        self.assertEqual(substitution, "one@example.com,two@example.com")
 
     def test_volto_portal_url(self):
         """ test for volto_portal_url"""
@@ -70,27 +70,27 @@ class TestSubstitutions(unittest.TestCase):
         """ test interpolatin as string """
         string = "${newsitem_notification_subscribers}"
         value = IStringInterpolator(self.portal)(string)
-        self.assertEqual(value, "[]")
+        self.assertEqual(value, "")
 
         utility = getUtility(INewsItemNotificationsUtility)
         utility.subscribe_address("one@example.com")
         utility.subscribe_address("two@example.com")
 
         value = IStringInterpolator(self.portal)(string)
-        self.assertEqual(value, "['one@example.com', 'two@example.com']")
+        self.assertEqual(value, "one@example.com,two@example.com")
 
     def test_string_interpolation_event_subscribers(self):
         """ test interpolatin as string """
         string = "${event_notification_subscribers}"
         value = IStringInterpolator(self.portal)(string)
-        self.assertEqual(value, "[]")
+        self.assertEqual(value, "")
 
         utility = getUtility(IEventNotificationsUtility)
         utility.subscribe_address("one@example.com")
         utility.subscribe_address("two@example.com")
 
         value = IStringInterpolator(self.portal)(string)
-        self.assertEqual(value, "['one@example.com', 'two@example.com']")
+        self.assertEqual(value, "one@example.com,two@example.com")
 
     def test_string_interpolation_volto_portal_url(self):
         """ test interpolatin as string """
