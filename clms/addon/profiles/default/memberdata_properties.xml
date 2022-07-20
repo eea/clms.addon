@@ -10,4 +10,5 @@
  <property name="organisation_url" type="string"></property>
  <property name="organisation_name" type="string"></property>
  <property name="organisation_institutional_domain" type="lines"></property>
+ <property name="initial_login_time" type="date">2000/01/01 00:00:00</property>
 </object>
