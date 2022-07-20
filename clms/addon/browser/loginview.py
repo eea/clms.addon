@@ -64,9 +64,7 @@ class MyCallBack(BrowserView):
 
             if came_from:
                 # pylint: disable=line-too-long
-                if (
-                    came_from.startswith("http") and portal_url.isURLInPortal(came_from) or not came_from.startswith("http")
-                ):  # noqa: E501
+                if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or not came_from.startswith("http")):  # noqa: E501
                     redirect_url = came_from
 
         return self.request.response.redirect(redirect_url, status=302)
