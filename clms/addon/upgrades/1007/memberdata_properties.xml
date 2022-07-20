@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_memberdata" meta_type="PlonePAS MemberData Tool">
+ <property name="initial_login_time" type="date">2000/01/01 00:00:00</property>
+</object>

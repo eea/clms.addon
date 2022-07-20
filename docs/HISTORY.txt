@@ -1,6 +1,14 @@
 Changelog
 =========
 
+3.5b2 (2022-07-20)
+------------------
+* Change: Develop
+  [erral]
+
+- Nothing changed yet.
+
+
 3.5 - (2022-06-13)
 ---------------------------
 * Change: Develop
