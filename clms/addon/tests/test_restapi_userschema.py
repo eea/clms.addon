@@ -63,7 +63,7 @@ class TestUserSchemaEndpoint(unittest.TestCase):
 
 class TestCustomUserSchema(unittest.TestCase):
     """test userschema endpoint with a custom defined schema.
-    we have taken the same example as in plone.app.users, thatç
+    we have taken the same example as in plone.app.users, that
     handles all kind of schema fields
     """
 
