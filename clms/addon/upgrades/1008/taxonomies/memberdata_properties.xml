@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<object name="portal_memberdata" meta_type="PlonePAS MemberData Tool">
+ <property name="are_you_registering_on_behalf_on_an_organisation_"
+    type="boolean" remove="true">False</property>
+ <property name="how_do_you_intend_to_use_the_products"  remove="true"
+    type="lines"></property>
+ <property name="professional_thematic_domain"  remove="true" type="lines"></property>
+ <property name="organisation_url"  remove="true" type="string"></property>
+ <property name="organisation_name"  remove="true" type="string"></property>
+ <property name="organisation_institutional_domain"  remove="true" type="lines"></property>
+
+ <property name="affiliation"  remove="true" type="string"></property>
+ <property name="thematic_activity"  remove="true" type="string"></property>
+ <property name="sector_of_activity"  remove="true" type="string"></property>
+
+
+
+
+</object>
