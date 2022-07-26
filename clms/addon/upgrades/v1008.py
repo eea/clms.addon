@@ -18,6 +18,7 @@ TAXONOMIES = [
 
 
 def delete_taxonomies(context=None):
+    """unregister taxonomies and related items"""
     sm = getSiteManager()
 
     for item in TAXONOMIES:
