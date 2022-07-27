@@ -1,35 +1,47 @@
 <?xml version='1.0' encoding='utf-8'?>
 <vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd" orderSignificant="false" profileType="hierarchicalTokenTerms" language="en">
   <vocabName>
-    <langstring language="en">User Profile: Product Use Intention</langstring>
+    <langstring language="en">User Profile: Sector of activity</langstring>
   </vocabName>
-  <vocabIdentifier>userprofileproductuseintention</vocabIdentifier>
+  <vocabIdentifier>user_profile_sector_of_activity</vocabIdentifier>
   <term>
-    <termIdentifier>imdlsxp8g2</termIdentifier>
+    <termIdentifier>do91y7v9s6</termIdentifier>
     <caption>
-      <langstring language="en">Provide value added products (created by modifying the products), to a third party</langstring>
+      <langstring language="en">Policy support - support to EU policy or EU national or regional policy</langstring>
     </caption>
   </term>
   <term>
-    <termIdentifier>oe8xnmkaoy</termIdentifier>
+    <termIdentifier>xt007k6h44</termIdentifier>
     <caption>
-      <langstring language="en">Redistribute the products to a third party</langstring>
+      <langstring language="en">Policy support - other</langstring>
     </caption>
   </term>
   <term>
-    <termIdentifier>c4joocds9b</termIdentifier>
+    <termIdentifier>1fb9aklx2q</termIdentifier>
     <caption>
-      <langstring language="en">Fulfill internal use only in connection with own application or for research purpose</langstring>
+      <langstring language="en">Commercial activity</langstring>
     </caption>
   </term>
   <term>
-    <termIdentifier>9t48lncmm7</termIdentifier>
+    <termIdentifier>rpj1l5ytm7</termIdentifier>
+    <caption>
+      <langstring language="en">Research and education</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>89o68pwftu</termIdentifier>
+    <caption>
+      <langstring language="en">Media and public relations</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>hixp8faufl</termIdentifier>
     <caption>
       <langstring language="bs"></langstring>
       <langstring language="cs"></langstring>
       <langstring language="da"></langstring>
       <langstring language="de"></langstring>
-      <langstring language="en">Other purposes</langstring>
+      <langstring language="en">Other (specify – free text field)</langstring>
       <langstring language="es"></langstring>
       <langstring language="et"></langstring>
       <langstring language="fi"></langstring>

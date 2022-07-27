@@ -2,13 +2,8 @@
 <object name="portal_memberdata" meta_type="PlonePAS MemberData Tool">
  <property name="email"></property>
  <property name="country" type="string"></property>
- <property name="are_you_registering_on_behalf_on_an_organisation_"
-    type="boolean">False</property>
- <property name="how_do_you_intend_to_use_the_products"
-    type="lines"></property>
- <property name="professional_thematic_domain" type="lines"></property>
- <property name="organisation_url" type="string"></property>
- <property name="organisation_name" type="string"></property>
- <property name="organisation_institutional_domain" type="lines"></property>
+ <property name="affiliation"  type="string"></property>
+ <property name="thematic_activity"  type="string"></property>
+ <property name="sector_of_activity"  type="string"></property>
  <property name="initial_login_time" type="date">2000/01/01 00:00:00</property>
 </object>
