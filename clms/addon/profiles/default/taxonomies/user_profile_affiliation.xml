@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd" orderSignificant="false" profileType="hierarchicalTokenTerms" language="en">
+  <vocabName>
+    <langstring language="en">User Profile: Affiliation</langstring>
+  </vocabName>
+  <vocabIdentifier>user_profile_affiliation</vocabIdentifier>
+  <term>
+    <termIdentifier>ti6ml1p5pl</termIdentifier>
+    <caption>
+      <langstring language="en">Copernicus Services</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>legt8qynej</termIdentifier>
+    <caption>
+      <langstring language="en">Union institutions and bodies</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>2irkt1ljx8</termIdentifier>
+    <caption>
+      <langstring language="en">National or regional public authorities in the European Union or Copernicus participating states</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>82y2ji9mdb</termIdentifier>
+    <caption>
+      <langstring language="en">National or regional public authorities outside European Union and Copernicus participating states</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>onvq7ykwkw</termIdentifier>
+    <caption>
+      <langstring language="en">Research and education organisations (other users)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>lvw0t2jaed</termIdentifier>
+    <caption>
+      <langstring language="en">Commercial and private bodies – SMEs (≤250 employees)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>xwgw16id4x</termIdentifier>
+    <caption>
+      <langstring language="en">Commercial and private bodies – non SMEs</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>xa3nba7am2</termIdentifier>
+    <caption>
+      <langstring language="en">Charities and non-governmental organisations</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>972yxq90d9</termIdentifier>
+    <caption>
+      <langstring language="en">Intergovernmental and international public organisations</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>nhp9qibqra</termIdentifier>
+    <caption>
+      <langstring language="en">Natural persons for non-commercial purposes</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>iglcpw19qs</termIdentifier>
+    <caption>
+      <langstring language="bs"></langstring>
+      <langstring language="cs"></langstring>
+      <langstring language="da"></langstring>
+      <langstring language="de"></langstring>
+      <langstring language="en">Other</langstring>
+      <langstring language="es"></langstring>
+      <langstring language="et"></langstring>
+      <langstring language="fi"></langstring>
+      <langstring language="fr"></langstring>
+      <langstring language="hr"></langstring>
+      <langstring language="hu"></langstring>
+      <langstring language="it"></langstring>
+      <langstring language="lt"></langstring>
+      <langstring language="lv"></langstring>
+      <langstring language="mt"></langstring>
+      <langstring language="nl"></langstring>
+      <langstring language="pl"></langstring>
+      <langstring language="pt"></langstring>
+      <langstring language="ro"></langstring>
+      <langstring language="sk"></langstring>
+      <langstring language="sl"></langstring>
+      <langstring language="sv"></langstring>
+    </caption>
+  </term>
+</vdex>
