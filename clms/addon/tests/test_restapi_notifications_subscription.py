@@ -595,7 +595,9 @@ class TestNewsletterEndpoint(unittest.TestCase):
             json={"email": "email@example.com"},
         )
 
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("status", response.json())
+        self.assertEqual(response.json()["status"], "error")
 
     def test_subscribe_without_email(self):
         """if the email is not provided, the endpoint returns an error"""

@@ -23,7 +23,7 @@ from clms.addon.utilities.newsletter_utility import (
 
 
 class TestNewsItemNotificationsEndpoint(unittest.TestCase):
-    """ test the @newsitem-notification-* endpoints. """
+    """test the @newsitem-notification-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -37,7 +37,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.api_session.headers.update({"Accept": "application/json"})
 
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
 
     def test_newsitem_notifications_unsubscribe_is_registered(self):
@@ -70,7 +70,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
         self.assertEqual(len(utility.get_keys()), 1)
 
     def test_confirm_unsubscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
 
         utility = getUtility(INewsItemNotificationsUtility)
         utility.subscribe_address("email@example.com")
@@ -169,7 +169,7 @@ class TestNewsItemNotificationsEndpoint(unittest.TestCase):
 
 
 class TestEventNotificationsEndpoint(unittest.TestCase):
-    """ test the @event-notification-* endpoints. """
+    """test the @event-notification-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -183,11 +183,11 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         self.api_session.headers.update({"Accept": "application/json"})
 
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
 
     def test_event_notifications_unsubscribe_is_registered(self):
-        """ test that a subscription request is registered """
+        """test that a subscription request is registered"""
 
         utility = getUtility(IEventNotificationsUtility)
         utility.subscribe_address("email@example.com")
@@ -216,7 +216,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
         )
 
     def test_confirm_unsubscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
         utility = getUtility(IEventNotificationsUtility)
         utility.subscribe_address("email@example.com")
 
@@ -313,7 +313,7 @@ class TestEventNotificationsEndpoint(unittest.TestCase):
 
 
 class TestNewsletterEndpoint(unittest.TestCase):
-    """ test the @newsletter-* endpoints. """
+    """test the @newsletter-* endpoints."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
@@ -327,11 +327,11 @@ class TestNewsletterEndpoint(unittest.TestCase):
         self.api_session.headers.update({"Accept": "application/json"})
 
     def tearDown(self):
-        """ tearDown """
+        """tearDown"""
         self.api_session.close()
 
     def test_newsletter_notifications_unsubscribe_is_registered(self):
-        """ test that a subscription request is registered """
+        """test that a subscription request is registered"""
 
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.subscribe_address("email@example.com")
@@ -359,7 +359,7 @@ class TestNewsletterEndpoint(unittest.TestCase):
         )
 
     def test_confirm_unsubscription(self):
-        """ test that we can confirm a subscription """
+        """test that we can confirm a subscription"""
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.subscribe_address("email@example.com")
         transaction.commit()
@@ -513,10 +513,12 @@ class TestNewsletterEndpoint(unittest.TestCase):
             json={"email": "email@example.com"},
         )
 
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("status", response.json())
+        self.assertEqual(response.json()["status"], "error")
 
     def test_subscribe_without_email(self):
-        """ if the email is not provided, the endpoint returns an error"""
+        """if the email is not provided, the endpoint returns an error"""
         response = self.api_session.post(
             "@newsletter-notification-unsubscribe", json={}
         )
