@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='utf-8'?>
+<vdex xmlns="http://www.imsglobal.org/xsd/imsvdex_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsvdex_v1p0 imsvdex_v1p0.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd" orderSignificant="false" profileType="hierarchicalTokenTerms" language="en">
+  <vocabName>
+    <langstring language="en">User Profile: Thematic Activity</langstring>
+  </vocabName>
+  <vocabIdentifier>user_profile_thematic_activity</vocabIdentifier>
+  <term>
+    <termIdentifier>h2i3h3puom</termIdentifier>
+    <caption>
+      <langstring language="en">Land (includes e.g. land use, land cover, regional and urban policies, soils, inland water, agriculture, forestry, GHG emissions, biodiversity, plant health, cultural heritage)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>rqh2vtl4wq</termIdentifier>
+    <caption>
+      <langstring language="en">Marine environment, maritime affairs, fisheries (includes e.g. marine environmental monitoring, coastal management, fisheries and aquaculture, pollution at sea, maritime spatial planning);  Arctic policy, polar areas;</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>8w3mjq7qy4</termIdentifier>
+    <caption>
+      <langstring language="en">Transport (includes e.g. terrestrial, air, inland water, and maritime transport; maritime navigation and safety)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>j3wvu435s0</termIdentifier>
+    <caption>
+      <langstring language="en">Energy</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>a2qjj7ss9n</termIdentifier>
+    <caption>
+      <langstring language="en">Environmental compliance</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>1wo8e50ijr</termIdentifier>
+    <caption>
+      <langstring language="en">Raw materials</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>a5kh6ll73f</termIdentifier>
+    <caption>
+      <langstring language="en">Air quality and atmospheric composition</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>01hxoccofh</termIdentifier>
+    <caption>
+      <langstring language="en">Health</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>ujc5gxrpat</termIdentifier>
+    <caption>
+      <langstring language="en">Tourism</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>56o4852nsn</termIdentifier>
+    <caption>
+      <langstring language="en">Climate change</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>9ca4x36821</termIdentifier>
+    <caption>
+      <langstring language="en">European Civil Protection and Humanitarian Aid Operations (includes e.g. support to natural and manmade disasters, resilience to climate risks);</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>or6dpqq8lr</termIdentifier>
+    <caption>
+      <langstring language="en">International development and cooperation (includes e.g. cooperation with developing countries, rural development, food and water security, humanitarian aid and emergency management outside the EU, sustainable development goals)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>r2g0bripws</termIdentifier>
+    <caption>
+      <langstring language="en">Migration/home affairs (includes e.g. EU border surveillance, police investigations, critical infrastructures)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>unexpw16t8</termIdentifier>
+    <caption>
+      <langstring language="en">Security (includes e.g. support to EU external action, maritime security)</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>5qety3xhwg</termIdentifier>
+    <caption>
+      <langstring language="en">Research/innovation</langstring>
+    </caption>
+  </term>
+  <term>
+    <termIdentifier>m48btin6ed</termIdentifier>
+    <caption>
+      <langstring language="bs"></langstring>
+      <langstring language="cs"></langstring>
+      <langstring language="da"></langstring>
+      <langstring language="de"></langstring>
+      <langstring language="en">Other</langstring>
+      <langstring language="es"></langstring>
+      <langstring language="et"></langstring>
+      <langstring language="fi"></langstring>
+      <langstring language="fr"></langstring>
+      <langstring language="hr"></langstring>
+      <langstring language="hu"></langstring>
+      <langstring language="it"></langstring>
+      <langstring language="lt"></langstring>
+      <langstring language="lv"></langstring>
+      <langstring language="mt"></langstring>
+      <langstring language="nl"></langstring>
+      <langstring language="pl"></langstring>
+      <langstring language="pt"></langstring>
+      <langstring language="ro"></langstring>
+      <langstring language="sk"></langstring>
+      <langstring language="sl"></langstring>
+      <langstring language="sv"></langstring>
+    </caption>
+  </term>
+</vdex>

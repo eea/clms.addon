@@ -17,12 +17,12 @@ from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 
 
 class TestUserSchemaEndpoint(unittest.TestCase):
-    """ test the @userschema endpoint. """
+    """test the @userschema endpoint."""
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
     def setUp(self):
-        """ setup method"""
+        """setup method"""
         self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
@@ -34,7 +34,7 @@ class TestUserSchemaEndpoint(unittest.TestCase):
         self.api_session.auth = (SITE_OWNER_NAME, SITE_OWNER_PASSWORD)
 
     def tearDown(self):
-        """ tear down"""
+        """tear down"""
         self.api_session.close()
 
     def test_userschema_get(self):
@@ -49,36 +49,28 @@ class TestUserSchemaEndpoint(unittest.TestCase):
         self.assertIn("email", response["fieldsets"][0]["fields"])
         self.assertIn("country", response["fieldsets"][0]["fields"])
         self.assertIn(
-            "are_you_registering_on_behalf_on_an_organisation_",
+            "affiliation",
             response["fieldsets"][0]["fields"],
         )
         self.assertIn(
-            "how_do_you_intend_to_use_the_products",
+            "thematic_activity",
             response["fieldsets"][0]["fields"],
         )
-        self.assertIn(
-            "professional_thematic_domain", response["fieldsets"][0]["fields"]
-        )
-        self.assertIn("organisation_url", response["fieldsets"][0]["fields"])
-        self.assertIn("organisation_name", response["fieldsets"][0]["fields"])
-        self.assertIn(
-            "organisation_institutional_domain",
-            response["fieldsets"][0]["fields"],
-        )
+        self.assertIn("sector_of_activity", response["fieldsets"][0]["fields"])
 
         self.assertEqual("object", response["type"])
 
 
 class TestCustomUserSchema(unittest.TestCase):
     """test userschema endpoint with a custom defined schema.
-    we have taken the same example as in plone.app.users, thatç
+    we have taken the same example as in plone.app.users, that
     handles all kind of schema fields
     """
 
     layer = CLMS_ADDON_RESTAPI_TESTING
 
     def setUp(self):
-        """ setup """
+        """setup"""
         self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
@@ -179,11 +171,11 @@ class TestCustomUserSchema(unittest.TestCase):
         transaction.commit()
 
     def tearDown(self):
-        """ tear down """
+        """tear down"""
         self.api_session.close()
 
     def test_userschema_get(self):
-        """ get the user schema"""
+        """get the user schema"""
         response = self.api_session.get("/@userschema")
 
         self.assertEqual(200, response.status_code)
