@@ -2,10 +2,13 @@
 REST API information for notification subscriptions
 """
 # -*- coding: utf-8 -*-
-
+import os
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 from smtplib import SMTPException
 
+from chameleon import PageTemplateLoader
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
@@ -16,25 +19,28 @@ from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from zope.component import getUtility
 from zope.i18n import translate
 from zope.interface import alsoProvides
-
+from Products.CMFPlone.utils import safe_text
 from clms.addon import _
 from clms.addon.utilities.event_notifications_utility import (
-    IEventPendingUnSubscriptionsUtility, IEventNotificationsUtility
+    IEventNotificationsUtility,
+    IEventPendingUnSubscriptionsUtility,
 )
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemPendingUnSubscriptionsUtility, INewsItemNotificationsUtility
+    INewsItemNotificationsUtility,
+    INewsItemPendingUnSubscriptionsUtility,
 )
 from clms.addon.utilities.newsletter_utility import (
-    INewsLetterPendingUnSubscriptionsUtility, INewsLetterNotificationsUtility
+    INewsLetterNotificationsUtility,
+    INewsLetterPendingUnSubscriptionsUtility,
 )
 
 
 class BaseNotificationsUnSubscribeHandler(Service):
-    """ base class for the handlers"""
+    """base class for the handlers"""
 
     @property
     def utility_interface(self):
-        """ utility to save the actual unsubscription request """
+        """utility to save the actual unsubscription request"""
         raise NotImplementedError(
             "You need to define the interface in your class"
         )
@@ -51,38 +57,51 @@ class BaseNotificationsUnSubscribeHandler(Service):
 
     @property
     def registry_key_for_base_url(self):
-        """ the key to get the base url from the registry """
+        """the key to get the base url from the registry"""
+        raise NotImplementedError("You need to define the key in your class")
+
+    @property
+    def subscribe_base_url(self):
+        """the registry key for the unsubsribe url"""
         raise NotImplementedError("You need to define the key in your class")
 
     @property
     def email_subject(self):
-        """ the subject of the email """
+        """the subject of the email"""
         raise NotImplementedError(
             "You need to define the subject in your class"
         )
 
-    def email_message(self, url, portal_title):
-        """ return the message to be sent """
+    @property
+    def unsubscribe_email_message_template(self):
+        """return the email subject"""
         raise NotImplementedError(
-            "You need to define the message in your class"
+            "You need to define the unsubscribe_email_message_template in your"
+            " class"
         )
 
-    def email_message_not_subscribed(self, url, portal_title):
-        """return the email message to be sent to the user when she is
-        not subscribed
-        """
-        raise NotImplementedError(
-            "You need to define the message in your class"
+    def email_message(self, url, portal_title, subscribe_url):
+        """return the message"""
+        path = os.path.dirname(__file__)
+        templates = PageTemplateLoader(path)
+        template = templates[self.unsubscribe_email_message_template]
+
+        return template(
+            portal_title=portal_title,
+            url=url,
+            subscribe_url=subscribe_url,
         )
 
     def reply(self):
-        """ return the real response """
+        """return the real response"""
         alsoProvides(self.request, IDisableCSRFProtection)
         body = json_body(self.request)
         email = body.get("email")
         if email is not None:
             # pylint: disable=line-too-long
-            subscription_utility = getUtility(self.subscription_handler_utility)  # noqa: E501
+            subscription_utility = getUtility(
+                self.subscription_handler_utility
+            )  # noqa: E501
             if subscription_utility.is_subscribed(email):
                 utility = getUtility(self.utility_interface)
                 key = utility.create_pending_unsubscription(email)
@@ -100,9 +119,11 @@ class BaseNotificationsUnSubscribeHandler(Service):
                     ),
                 }
 
-            self.send_not_subscribed_email(email)
-            self.request.response.setStatus(204)
-            return _no_content_marker
+            self.request.response.setStatus(400)
+            return {
+                "status": "error",
+                "message": "This e-mail address is not subscribed",
+            }
 
         self.request.response.setStatus(400)
         return {"status": "error", "message": "No email address provided"}
@@ -113,7 +134,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
         """
         registry = getUtility(IRegistry)
         url = registry.get(self.registry_key_for_base_url)
-
+        subscribe_url = self.subscribe_base_url
         frontend_domain = api.portal.get_registry_record(
             "volto.frontend_domain"
         )
@@ -121,7 +142,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
             frontend_domain = frontend_domain[:-1]
 
         url = frontend_domain + "/en" + url + "/" + key
-
+        subscribe_url = frontend_domain + "/en" + subscribe_url
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
         from_address = mail_settings.email_from_address
@@ -133,60 +154,22 @@ class BaseNotificationsUnSubscribeHandler(Service):
         )
         portal_title = site_settings.site_title
         subject = self.email_subject
-        message = self.email_message(url, portal_title)
+        contents = self.email_message(url, portal_title, subscribe_url)
 
-        message = MIMEText(message, "plain", encoding)
+        message = MIMEMultipart("related")
+        message["Subject"] = subject
         message["Reply-To"] = from_address
         message["From"] = from_address
-        try:
-            host.send(
-                message.as_string(),
-                email,
-                from_address,
-                subject=subject,
-                charset=encoding,
-            )
+        message.preamble = "This is a multi-part message in MIME format"
 
-        except (SMTPException, RuntimeError):
-            plone_utils = api.portal.get_tool("plone_utils")
-            exception = plone_utils.exceptionString()
-            message = "Unable to send mail: {exception}".format(
-                exception=exception
-            )
+        msg_alternative = MIMEMultipart("alternative")
+        message.attach(msg_alternative)
 
-            return False
+        msg_txt = MIMEText("This is the alternative plain text message.")
+        msg_alternative.attach(msg_txt)
 
-        return True
-
-    def send_not_subscribed_email(self, email):
-        """send an email to the user stating that she is not subsribed"""
-        registry = getUtility(IRegistry)
-        url = registry.get(self.registry_key_for_base_url)
-
-        frontend_domain = api.portal.get_registry_record(
-            "volto.frontend_domain"
-        )
-        if frontend_domain.endswith("/"):
-            frontend_domain = frontend_domain[:-1]
-
-        url = frontend_domain + "/en" + url
-
-        registry = getUtility(IRegistry)
-        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
-        from_address = mail_settings.email_from_address
-        encoding = registry.get("plone.email_charset", "utf-8")
-        host = api.portal.get_tool("MailHost")
-        registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False
-        )
-        portal_title = site_settings.site_title
-        subject = self.email_subject
-        message = self.email_message_not_subscribed(url, portal_title)
-
-        message = MIMEText(message, "plain", encoding)
-        message["Reply-To"] = from_address
-        message["From"] = from_address
+        msg_html = MIMEText(safe_text(contents), "html")
+        msg_alternative.attach(msg_html)
         try:
             host.send(
                 message.as_string(),
@@ -209,126 +192,42 @@ class BaseNotificationsUnSubscribeHandler(Service):
 
 
 class NewsItemNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
-    """News Item implementation """
+    """News Item implementation"""
 
     utility_interface = INewsItemPendingUnSubscriptionsUtility
     subscription_handler_utility = INewsItemNotificationsUtility
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsitem_notification_unsubscriptions_url"  # noqa
+    subscribe_base_url = "/subscribe/news"
     email_subject = _("News item notification unsubscription")
-
-    def email_message(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving notifications about news items"
-                " from the ${portal_title} website. Please visit the following"
-                " URL to confirm your unsubscription: ${url}.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
-
-    def email_message_not_subscribed(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving notifications about news items"
-                " from the ${portal_title} website at ${url}. We are glad to "
-                " inform you that you are not subscribed to receive those "
-                " notifications. This requires no additional action on your "
-                " part.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
+    unsubscribe_email_message_template = (
+        "news_notifications_unsubscribe_template.pt"
+    )
 
 
 class EventNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
-    """ base class """
+    """base class"""
 
     utility_interface = IEventPendingUnSubscriptionsUtility
     subscription_handler_utility = IEventNotificationsUtility
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.event_notification_unsubscriptions_url"  # noqa
+    subscribe_base_url = "/subscribe/events"
     email_subject = _("Event notification unsubscription")
-
-    def email_message(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving notifications about events from"
-                " the ${portal_title} website. Please visit the following URL"
-                " to confirm your subscription: ${url}.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
-
-    def email_message_not_subscribed(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving notifications about events"
-                " from the ${portal_title} website at ${url}. We are glad to "
-                " inform you that you are not subscribed to receive those "
-                " notifications. This requires no additional action on your "
-                " part.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
+    unsubscribe_email_message_template = (
+        "event_notifications_unsubscribe_template.pt"
+    )
 
 
 class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
-    """ base class """
+    """base class"""
 
     utility_interface = INewsLetterPendingUnSubscriptionsUtility
     subscription_handler_utility = INewsLetterNotificationsUtility
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsletter_notification_unsubscriptions_url"  # noqa
+    subscribe_base_url = "/subscribe/newsletter"
     email_subject = _("NewsLetter notification unsubscription")
-
-    def email_message(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving the newsletter from"
-                " the ${portal_title} website. Please visit the following URL"
-                " to confirm your subscription: ${url}.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
-
-    def email_message_not_subscribed(self, url, portal_title):
-        """ return the message """
-        return translate(
-            _(
-                "You are receiving this email because you have requested to"
-                " unsubscribe from receiving the newsletter "
-                " from the ${portal_title} website at ${url}. We are glad to "
-                " inform you that you are not subscribed to receive the "
-                " newsletter. This requires no additional action on your "
-                " part.",
-                mapping={
-                    "portal_title": portal_title,
-                    "url": url,
-                },
-            )
-        )
+    unsubscribe_email_message_template = (
+        "newsletter_notifications_unsubscribe_template.pt"
+    )
