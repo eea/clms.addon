@@ -1,0 +1,23 @@
+<html xmlns:i18n="http://namespaces.zope.org/i18n">
+  <body>
+    <p i18n:translate="">Hello,</p>
+    <p i18n:translate="">
+      We have received your request to subscribe to news notifications on the
+      website of the Copernicus Land Monitoring Service. Please follow this
+      <a i18n:translate="" i18n:name="url" href="${url}">link</a> to confirm
+      your choice.
+    </p>
+
+    <p i18n:translate="">
+      You can cancel your subscription anytime by clicking on this
+      <a i18n:translate="" i18n:name="url" href="${unsubscribe_url}">link</a>.
+    </p>
+
+    <p i18n:translate="">
+      If you have any questions please contact us at copernicus@eea.europa.eu.
+    </p>
+    <p i18n:translate="">
+      Best regards, <br />Copernicus Land Monitoring Service
+    </p>
+  </body>
+</html>
