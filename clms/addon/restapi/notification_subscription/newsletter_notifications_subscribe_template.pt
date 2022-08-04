@@ -1,21 +1,24 @@
 <html>
   <body>
-    <p>Hello,</p>
-    <p>
+    <p i18n:translate="">Hello,</p>
+    <p i18n:translate="">
       We have received your request to subscribe to the newsletter of the
       Copernicus Land Monitoring Service. Please follow this
-      <a href="${url}">link</a> to confirm your choice.
+      <a i18n:translate="" i18n:name="url" href="${url}">link</a> to confirm
+      your choice.
     </p>
 
-    <p>
+    <p i18n:translate="">
       You can cancel your subscription anytime by clicking on this
-      <a href="${unsubscribe_url}">link</a>. All newsletter issues also have
-      Unsubscribe link.
+      <a i18n:translate="" i18n:name="url" href="${unsubscribe_url}">link</a>.
+      All newsletter issues also have Unsubscribe link.
     </p>
 
-    <p>
+    <p i18n:translate="">
       If you have any questions please contact us at copernicus@eea.europa.eu.
     </p>
-    <p>Best regards, <br />Copernicus Land Monitoring Service</p>
+    <p i18n:translate="">
+      Best regards, <br />Copernicus Land Monitoring Service
+    </p>
   </body>
 </html>
