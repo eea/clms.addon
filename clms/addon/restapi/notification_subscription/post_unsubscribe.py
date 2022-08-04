@@ -3,9 +3,8 @@ REST API information for notification subscriptions
 """
 # -*- coding: utf-8 -*-
 import os
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+from email.mime.text import MIMEText
 from smtplib import SMTPException
 
 from chameleon import PageTemplateLoader
@@ -16,23 +15,17 @@ from plone.restapi.deserializer import json_body
 from plone.restapi.services import Service, _no_content_marker
 from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
-from zope.component import getUtility
-from zope.i18n import translate
-from zope.interface import alsoProvides
 from Products.CMFPlone.utils import safe_text
+from zope.component import getUtility
+from zope.interface import alsoProvides
+
 from clms.addon import _
 from clms.addon.utilities.event_notifications_utility import (
-    IEventNotificationsUtility,
-    IEventPendingUnSubscriptionsUtility,
-)
+    IEventNotificationsUtility, IEventPendingUnSubscriptionsUtility)
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility,
-    INewsItemPendingUnSubscriptionsUtility,
-)
+    INewsItemNotificationsUtility, INewsItemPendingUnSubscriptionsUtility)
 from clms.addon.utilities.newsletter_utility import (
-    INewsLetterNotificationsUtility,
-    INewsLetterPendingUnSubscriptionsUtility,
-)
+    INewsLetterNotificationsUtility, INewsLetterPendingUnSubscriptionsUtility)
 
 
 class BaseNotificationsUnSubscribeHandler(Service):

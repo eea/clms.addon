@@ -17,7 +17,6 @@ from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_text
 from zope.component import getUtility
-from zope.i18n import translate
 from zope.interface import alsoProvides
 
 from clms.addon import _
