@@ -1,4 +1,4 @@
-<html>
+<html xmlns:i18n="http://namespaces.zope.org/i18n">
   <body>
     <p i18n:translate="">Hello,</p>
     <p i18n:translate="">
