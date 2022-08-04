@@ -1,0 +1,25 @@
+
+<model xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:users="http://namespaces.plone.org/supermodel/users" xmlns:lingua="http://namespaces.plone.org/supermodel/lingua" xmlns="http://namespaces.plone.org/supermodel/schema">
+  <schema name="member-fields">
+    <field name="country" type="zope.schema.Choice" users:forms="In User Profile">
+      <description/>
+      <title>Country</title>
+      <vocabulary>collective.taxonomy.user_profile_country</vocabulary>
+    </field>
+    <field name="affiliation" type="zope.schema.Choice" users:forms="In User Profile">
+      <description/>
+      <title>Affiliation</title>
+      <vocabulary>collective.taxonomy.user_profile_affiliation</vocabulary>
+    </field>
+    <field name="thematic_activity" type="zope.schema.Choice" users:forms="In User Profile">
+      <description/>
+      <title>Thematic Activity</title>
+      <vocabulary>collective.taxonomy.user_profile_thematic_activity</vocabulary>
+    </field>
+    <field name="sector_of_activity" type="zope.schema.Choice" users:forms="In User Profile">
+      <description/>
+      <title>Sector of Activity</title>
+      <vocabulary>collective.taxonomy.user_profile_sector_of_activity</vocabulary>
+    </field>
+  </schema>
+</model>
