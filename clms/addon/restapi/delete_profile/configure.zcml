@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    >
+
+  <plone:service
+      method="DELETE"
+      factory=".delete.DeleteUserProfile"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@delete-user-profile"
+      />
+
+</configure>
