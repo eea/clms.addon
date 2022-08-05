@@ -1,5 +1,7 @@
 """ REST API endpoint to delete user profile information"""
 # -*- coding: utf-8 -*-
+from logging import getLogger
+
 from plone import api
 from plone.restapi.services import Service
 from zope.component import getUtility
@@ -19,8 +21,6 @@ subscription_utilities = [
     IEventNotificationsUtility,
     INewsLetterNotificationsUtility,
 ]
-
-from logging import getLogger
 
 
 class DeleteUserProfile(Service):
