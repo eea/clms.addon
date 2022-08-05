@@ -11,6 +11,7 @@
   <include package=".cart_dataset_search"/>
   <include package=".notification_subscription"/>
   <include package=".notifications_controlpanel"/>
+  <include package=".delete_profile"/>
 
 
 </configure>
