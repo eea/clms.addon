@@ -6,6 +6,12 @@ from setuptools import setup, find_packages
 
 NAME = "clms.addon"
 PATH = NAME.split(".") + ["version.txt"]
+with open(join(*PATH)) as version_file:
+    VERSION = version_file.read().strip()
+with open("README.rst") as readme_file:
+    readme = readme_file.read()
+with open(join("docs", "HISTORY.txt")) as history_file:
+    history = history_file.read()
 
 # pylint: disable=R1732
 VERSION = open(join(*PATH)).read().strip()
@@ -16,9 +22,9 @@ setup(
     version=VERSION,
     description="An add-on for customization of the CLMS portal",
     long_description_content_type="text/x-rst",
-    long_description=(
-        # pylint: disable=line-too-long
-        open("README.rst").read() + "\n" + open(os.path.join("docs", "HISTORY.txt")).read()  # noqa: E501
+    long_description="{}\n{}".format(
+        readme,
+        history,
     ),
     classifiers=[
         "Environment :: Web Environment",
