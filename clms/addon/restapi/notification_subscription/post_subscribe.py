@@ -197,7 +197,7 @@ class NewsItemNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsitem_notification_subscriptions_url"  # noqa
     unsubscribe_base_url = "/unsubscribe/news"
-    email_subject = _("News item notification subscription")
+    email_subject = _("Subscription to news notifications")
     subscribe_email_message_template = (
         "news_notifications_subscribe_template.pt"
     )
@@ -211,7 +211,7 @@ class EventNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.event_notification_subscriptions_url"  # noqa
     unsubscribe_base_url = "/unsubscribe/events"
-    email_subject = _("Event notification subscription")
+    email_subject = _("Subscription to event notifications")
     subscribe_email_message_template = (
         "event_notifications_subscribe_template.pt"
     )
@@ -225,7 +225,7 @@ class NewsLetterNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsletter_notification_subscriptions_url"  # noqa
     unsubscribe_base_url = "/unsubscribe/newsletter"
-    email_subject = _("Newsletter notification subscription")
+    email_subject = _("Subscription to newsletter")
     subscribe_email_message_template = (
         "newsletter_notifications_subscribe_template.pt"
     )

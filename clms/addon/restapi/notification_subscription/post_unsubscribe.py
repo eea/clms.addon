@@ -21,11 +21,17 @@ from zope.interface import alsoProvides
 
 from clms.addon import _
 from clms.addon.utilities.event_notifications_utility import (
-    IEventNotificationsUtility, IEventPendingUnSubscriptionsUtility)
+    IEventNotificationsUtility,
+    IEventPendingUnSubscriptionsUtility,
+)
 from clms.addon.utilities.newsitem_notifications_utility import (
-    INewsItemNotificationsUtility, INewsItemPendingUnSubscriptionsUtility)
+    INewsItemNotificationsUtility,
+    INewsItemPendingUnSubscriptionsUtility,
+)
 from clms.addon.utilities.newsletter_utility import (
-    INewsLetterNotificationsUtility, INewsLetterPendingUnSubscriptionsUtility)
+    INewsLetterNotificationsUtility,
+    INewsLetterPendingUnSubscriptionsUtility,
+)
 
 
 class BaseNotificationsUnSubscribeHandler(Service):
@@ -192,7 +198,7 @@ class NewsItemNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsitem_notification_unsubscriptions_url"  # noqa
     subscribe_base_url = "/subscribe/news"
-    email_subject = _("News item notification unsubscription")
+    email_subject = _("Unsubscription from news notifications")
     unsubscribe_email_message_template = (
         "news_notifications_unsubscribe_template.pt"
     )
@@ -206,7 +212,7 @@ class EventNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.event_notification_unsubscriptions_url"  # noqa
     subscribe_base_url = "/subscribe/events"
-    email_subject = _("Event notification unsubscription")
+    email_subject = _("Unsubscription from event notifications")
     unsubscribe_email_message_template = (
         "event_notifications_unsubscribe_template.pt"
     )
@@ -220,7 +226,7 @@ class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
     # pylint: disable=line-too-long
     registry_key_for_base_url = "clms.addon.notifications_controlpanel.newsletter_notification_unsubscriptions_url"  # noqa
     subscribe_base_url = "/subscribe/newsletter"
-    email_subject = _("NewsLetter notification unsubscription")
+    email_subject = _("Unsubscription from newsletter")
     unsubscribe_email_message_template = (
         "newsletter_notifications_unsubscribe_template.pt"
     )
