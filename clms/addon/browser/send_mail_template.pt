@@ -10,7 +10,7 @@
     <tal:field repeat="field parameters">
       <li tal:define="value field/value|nothing;
                       label field/label|nothing">
-          <strong>${label}:</strong> <div tal:define="pss modules/Products/PythonScripts/standard" tal:replace="structure python:pss.newline_to_br(value)"></div>
+          <strong i18n:translate="send_mail_field_label">${label}:</strong> <div tal:define="pss modules/Products/PythonScripts/standard" tal:replace="structure python:pss.newline_to_br(value)"></div>
       </li>
     </tal:field>
   </ul>
