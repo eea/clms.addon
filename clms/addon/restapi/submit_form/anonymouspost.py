@@ -1,25 +1,25 @@
+"""Submit form endpoint"""
 # -*- coding: utf-8 -*-
 import json
 import random
 import string
 
 import plone.protect.interfaces
-from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from collective.volto.formsupport.restapi.services.submit_form.post import \
     SubmitPost
 from eea.meeting.browser.views import add_subscriber
 from plone import api
 from plone.restapi.deserializer import json_body
-from plone.restapi.services import Service
 from zope.interface import alsoProvides
 
 
 class Register(SubmitPost):
     """register the form submit"""
     def reply(self):
+        """submit reply"""
         if self.context.portal_type != "AnonymousForm":
-            return super(Register, self).reply()
+            return super().reply()
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
             alsoProvides(
                 self.request, plone.protect.interfaces.IDisableCSRFProtection
@@ -118,8 +118,7 @@ class Register(SubmitPost):
                     anonymous_extra_data=json.dumps(data),
                 )
                 return props
-            else:
-                return {}
+            return {}
         except:
             return {}
 
