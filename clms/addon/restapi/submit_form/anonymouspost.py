@@ -1,20 +1,22 @@
-from plone.restapi.services import Service
-import plone.api as api
-from eea.meeting.browser.views import add_subscriber
-import plone.protect.interfaces
-from zope.interface import alsoProvides
-from plone.restapi.deserializer import json_body
-from AccessControl import getSecurityManager
-import string
-import random
-from Acquisition import aq_parent
+# -*- coding: utf-8 -*-
 import json
-from collective.volto.formsupport.restapi.services.submit_form.post import (
-    SubmitPost,
-)
+import random
+import string
+
+import plone.protect.interfaces
+from AccessControl import getSecurityManager
+from Acquisition import aq_parent
+from collective.volto.formsupport.restapi.services.submit_form.post import \
+    SubmitPost
+from eea.meeting.browser.views import add_subscriber
+from plone import api
+from plone.restapi.deserializer import json_body
+from plone.restapi.services import Service
+from zope.interface import alsoProvides
 
 
 class Register(SubmitPost):
+    """register the form submit"""
     def reply(self):
         if self.context.portal_type != "AnonymousForm":
             return super(Register, self).reply()
@@ -76,14 +78,17 @@ class Register(SubmitPost):
             raise Exception("User already registered")
 
     def anonymous_registration_allowed(self):
+        """allowed anonymous registration"""
         eea_meeting = aq_parent(self.context)
         return eea_meeting.allow_anonymous_registration
 
     def get_body_data(self):
+        """get body data"""
         data = json_body(self.request)
         return data
 
     def anonymous_registration_dict(self):
+        """anonymous registration as dict"""
         try:
             data = self.get_body_data()
             anonymous_fullname = ""
