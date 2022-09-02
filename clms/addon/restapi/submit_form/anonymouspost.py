@@ -5,7 +5,8 @@ import plone.protect.interfaces
 from zope.interface import alsoProvides
 from plone.restapi.deserializer import json_body
 from AccessControl import getSecurityManager
-import string, random
+import string
+import random
 from Acquisition import aq_parent
 import json
 from collective.volto.formsupport.restapi.services.submit_form.post import (
@@ -90,13 +91,11 @@ class Register(SubmitPost):
             fields = data.get("data")
             for field in fields:
                 if (
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "email"
+                    "field_custom_id" in field and field.get("field_custom_id") == "email"
                 ):
                     anonymous_email = field.get("value", None)
                 elif (
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "fullname"
+                    "field_custom_id" in field and field.get("field_custom_id") == "fullname"
                 ):
                     anonymous_fullname = field.get("value", None)
 
@@ -131,8 +130,7 @@ class Register(SubmitPost):
         skip_fields = [
             x.get("field_id", "")
             for x in self.block.get("subblocks", [])
-            if x.get("field_type", "") == "attachment"
-            or x.get("field_custom_id", "") == "gdpr"
+            if x.get("field_type", "") == "attachment" or x.get("field_custom_id", "") == "gdpr"
         ]
         return [
             x
