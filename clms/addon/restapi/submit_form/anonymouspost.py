@@ -119,7 +119,7 @@ class Register(SubmitPost):
                 return props
             return {}
         except Exception as e:
-            return {}
+            return dict(message=str(e))
 
     def randomStringDigits(self, stringLength=8):
         """Generate a random string of letters and digits"""
