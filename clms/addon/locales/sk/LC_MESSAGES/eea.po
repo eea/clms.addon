@@ -1,0 +1,142 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2022-09-02 10:32+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: utf-8 latin1\n"
+"Domain: DOMAIN\n"
+
+#: ../../addon/contentrules/volto_portal_url.py:17
+#: ../../addon/contentrules/volto_url_substitution.py:17
+msgid "All Content"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:45
+msgid "Base URL for the event notification subscription"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:59
+msgid "Base URL for the event notification unsubscription"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:17
+msgid "Base URL for the newsitem notification subscription"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:31
+msgid "Base URL for the newsitem notification unsubscription"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:73
+msgid "Base URL for the newsletter notification subscription"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:86
+msgid "Base URL for the newsletter notification unsubscription"
+msgstr ""
+
+#: ../../addon/contentrules/event_email_substitution.py:20
+msgid "Email addresses subscribed to event notifications"
+msgstr ""
+
+#: ../../addon/contentrules/newsitem_email_substitution.py:20
+msgid "Email addresses subscribed to newsitem notifications"
+msgstr ""
+
+#: ../../addon/controlpanels/login_url_controlpanel/controlpanel.py:17
+msgid "Enter the URL, relative to the portal root to be used as a login url"
+msgstr ""
+
+#: ../../addon/profiles.zcml:16
+msgid "Installs the clms.addon add-on."
+msgstr ""
+
+#: ../../addon/controlpanels/login_url_controlpanel/controlpanel.py:36
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:104
+msgid "Login URL Control Panel"
+msgstr ""
+
+#: ../../addon/contentrules/event_email_substitution.py:19
+#: ../../addon/contentrules/newsitem_email_substitution.py:19
+msgid "Portal"
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_subscribe.py:214
+msgid "Subscription to event notifications"
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_subscribe.py:200
+msgid "Subscription to news notifications"
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_subscribe.py:228
+msgid "Subscription to newsletter"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:62
+msgid "This base URL will be used to build the actual confirmation URL for the events notifications unsubscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:34
+msgid "This base URL will be used to build the actual confirmation URL for the newsitems notification unsubscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:20
+msgid "This base URL will be used to build the actual confirmation URL for the newsitems notifications subscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:76
+msgid "This base URL will be used to build the actual confirmation URL for the newsletter subscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:89
+msgid "This base URL will be used to build the actual confirmation URL for the newsletter unsubscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/notifications_controlpanel/controlpanel.py:48
+msgid "This base URL will be used to build the actual confirmation URLfor the events notifications subscription handled by the frontend"
+msgstr ""
+
+#: ../../addon/controlpanels/login_url_controlpanel/controlpanel.py:21
+msgid "This will be used to login using EU Login and needs to point to the OIDC PAS Plugin"
+msgstr ""
+
+#: ../../addon/profiles.zcml:25
+msgid "Uninstalls the clms.addon add-on."
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_unsubscribe.py:215
+msgid "Unsubscription from event notifications"
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_unsubscribe.py:201
+msgid "Unsubscription from news notifications"
+msgstr ""
+
+#: ../../addon/restapi/notification_subscription/post_unsubscribe.py:229
+msgid "Unsubscription from newsletter"
+msgstr ""
+
+#: ../../addon/contentrules/volto_portal_url.py:18
+msgid "Volto Portal URL"
+msgstr ""
+
+#: ../../addon/contentrules/volto_url_substitution.py:18
+msgid "Volto URL"
+msgstr ""
+
+#: ../../addon/profiles.zcml:16
+msgid "clms.addon"
+msgstr ""
+
+#: ../../addon/profiles.zcml:25
+msgid "clms.addon (uninstall)"
+msgstr ""
