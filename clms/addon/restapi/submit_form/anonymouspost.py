@@ -91,13 +91,13 @@ class Register(SubmitPost):
             fields = data.get("data")
             for field in fields:
                 if (
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "email"
+                    "field_custom_id" in field and
+                    field.get("field_custom_id") == "email"
                 ):
                     anonymous_email = field.get("value", None)
                 elif (
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "fullname"
+                    "field_custom_id" in field and
+                    field.get("field_custom_id") == "fullname"
                 ):
                     anonymous_fullname = field.get("value", None)
 
@@ -132,8 +132,8 @@ class Register(SubmitPost):
         skip_fields = [
             x.get("field_id", "")
             for x in self.block.get("subblocks", [])
-            if x.get("field_type", "") == "attachment"
-            or x.get("field_custom_id", "") == "gdpr"
+            if x.get("field_type", "") == "attachment" or
+            x.get("field_custom_id", "") == "gdpr"
         ]
         return [
             x
