@@ -9,7 +9,6 @@ from Acquisition import aq_parent
 from collective.volto.formsupport.restapi.services.submit_form.post import \
     SubmitPost
 from eea.meeting.browser.views import add_subscriber
-from plone import api
 from plone.restapi.deserializer import json_body
 from zope.interface import alsoProvides
 
@@ -119,7 +118,7 @@ class Register(SubmitPost):
                 )
                 return props
             return {}
-        except:
+        except Exception as e:
             return {}
 
     def randomStringDigits(self, stringLength=8):
