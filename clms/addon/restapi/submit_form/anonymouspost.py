@@ -24,7 +24,7 @@ class Register(SubmitPost):
             )
         subscribers = aq_parent(self.context).get("subscribers")
         anonymous_registration_allowed = self.anonymous_registration_allowed()
-        if not (anonymous_registration_allowed):
+        if not anonymous_registration_allowed:
             self.request.response.setStatus(400)
             result = {
                 "message": "Anonymous registration not allowed",
@@ -32,7 +32,7 @@ class Register(SubmitPost):
             return result
 
         props = self.anonymous_registration_dict()
-        if not (props):
+        if not props:
             self.request.response.setStatus(400)
             result = {
                 "message": "Error getting anonymous user data",
@@ -91,11 +91,13 @@ class Register(SubmitPost):
             fields = data.get("data")
             for field in fields:
                 if (
-                    "field_custom_id" in field and field.get("field_custom_id") == "email"
+                    "field_custom_id" in field
+                    and field.get("field_custom_id") == "email"
                 ):
                     anonymous_email = field.get("value", None)
                 elif (
-                    "field_custom_id" in field and field.get("field_custom_id") == "fullname"
+                    "field_custom_id" in field
+                    and field.get("field_custom_id") == "fullname"
                 ):
                     anonymous_fullname = field.get("value", None)
 
@@ -130,7 +132,8 @@ class Register(SubmitPost):
         skip_fields = [
             x.get("field_id", "")
             for x in self.block.get("subblocks", [])
-            if x.get("field_type", "") == "attachment" or x.get("field_custom_id", "") == "gdpr"
+            if x.get("field_type", "") == "attachment"
+            or x.get("field_custom_id", "") == "gdpr"
         ]
         return [
             x
