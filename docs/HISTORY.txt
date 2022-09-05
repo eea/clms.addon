@@ -1,6 +1,11 @@
 Changelog
 =========
 
+4.3 - (2022-09-05)
+---------------------------
+* Change: Develop
+  [erral]
+
 4.2 - (2022-09-01)
 ---------------------------
 * Change: dummy readme changes for a new release.
