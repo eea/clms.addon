@@ -81,6 +81,3 @@ class AccordionPanelSearchableText(object):
         blocks_text.append(block_value.get('title', ''))
 
         return " ".join([text.strip() for text in blocks_text if text.strip()])
-
-
-
