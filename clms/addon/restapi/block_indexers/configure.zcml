@@ -8,4 +8,15 @@
         name="tabs_block"
         />
 
+    <adapter
+        factory=".indexers.AccordionSearchableText"
+        name="accordion"
+        />
+
+    <adapter
+        factory=".indexers.AccordionPanelSearchableText"
+        name="accordionPanel"
+        />
+
+
 </configure>
