@@ -10,7 +10,7 @@ from plone.restapi.indexers import extract_text
 
 @implementer(IBlockSearchableText)
 @adapter(IBlocks, IBrowserRequest)
-class TabSearchableText(object):
+class TabSearchableText:
     """ Tab content searchable text """
     def __init__(self, context, request):
         """ constructor """
@@ -35,7 +35,7 @@ class TabSearchableText(object):
 
 @implementer(IBlockSearchableText)
 @adapter(IBlocks, IBrowserRequest)
-class AccordionSearchableText(object):
+class AccordionSearchableText:
     """ Accordion searchable text """
     def __init__(self, context, request):
         """ constructor """
@@ -60,7 +60,7 @@ class AccordionSearchableText(object):
 
 @implementer(IBlockSearchableText)
 @adapter(IBlocks, IBrowserRequest)
-class AccordionPanelSearchableText(object):
+class AccordionPanelSearchableText:
     """ accordion panel searchable text"""
     def __init__(self, context, request):
         """ constructor """
