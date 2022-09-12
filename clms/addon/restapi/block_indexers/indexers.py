@@ -1,11 +1,11 @@
 """ custom indexers for special blocks"""
 # -*- coding: utf-8 -*-
 from plone.restapi.behaviors import IBlocks
+from plone.restapi.indexers import extract_text
 from plone.restapi.interfaces import IBlockSearchableText
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-from plone.restapi.indexers import extract_text
 
 
 @implementer(IBlockSearchableText)
