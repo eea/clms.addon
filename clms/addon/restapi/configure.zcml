@@ -12,6 +12,7 @@
   <include package=".notification_subscription"/>
   <include package=".notifications_controlpanel"/>
   <include package=".delete_profile"/>
+  <include package=".block_indexers"/>
 
 
 </configure>
