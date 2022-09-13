@@ -54,6 +54,7 @@ setup(
         "z3c.unconfigure",
         "plone.restapi",
         "eea.restapi",
+        "collective.volto.formsupport"
     ],
     extras_require={
         "test": [
