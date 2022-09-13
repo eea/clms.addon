@@ -56,6 +56,7 @@ setup(
         "eea.restapi",
         "collective.volto.formsupport",
         "eea.meeting",
+    ],
     extras_require={
         "test": [
             "plone.testing",
