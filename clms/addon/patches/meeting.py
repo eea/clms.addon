@@ -9,10 +9,13 @@ from plone.supermodel.model import Fieldset
 def move_field(
     schema, fieldname, to_fieldset_name, label=None, description=None, order=None
 ):
-    """Moves a field named "fieldname" on a Zope "schema" to a new fieldset "to_field_name".
+    """Moves a field named "fieldname" on a Zope "schema" to a new fieldset
+        "to_field_name".
 
-    - creates a new fieldset on demand (then label, description and order are passed to the new one).
-    - if value of "to_fieldset_name" is "default", then the field sticks on the main form.
+    - creates a new fieldset on demand (then label, description and order are passed
+        to the new one).
+    - if value of "to_fieldset_name" is "default", then the field sticks on the
+        main form.
     """
     # find schema with field in inheritance tree
     schema_with_field = None
