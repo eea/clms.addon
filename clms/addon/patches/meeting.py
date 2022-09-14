@@ -1,4 +1,6 @@
+""" patch eea.meeting to move a field"""
 # -*- coding: utf-8 -*-
+from eea.meeting.interfaces.meeting import IMeeting
 from logging import getLogger
 from plone.supermodel.interfaces import FIELDSETS_KEY
 from plone.supermodel.model import Fieldset
@@ -59,27 +61,7 @@ def move_field(
     # Done!
 
 
-
-# example
-from plone.app.contenttypes.behaviors.leadimage import ILeadImageBehavior
-from plone.app.dexterity.behaviors.metadata import ICategorization
-from plone.app.dexterity.behaviors.metadata import IDublinCore
-from eea.meeting.interfaces.meeting import IMeeting
-
 move_field(IMeeting, "meeting_level", "Event Level")
-
-# # 1) move direct field language on ICategorization from fieldset
-# #    categorization to settings
-# move_field(ICategorization, "language", "settings")
-
-# # 2) move inherited field subject on IDublinCore from fieldset
-# #    categorization to settings
-# move_field(IDublinCore, "subjects", "settings")
-
-# # 3) move inherited field image on ILeadImage from main form
-# #    to new fiedset images
-# move_field(ILeadImageBehavior, "image", "images", label="Images", order=10)
-
 
 log = getLogger(__name__)
 log.info("Patched eea.meeting interface to move field")
