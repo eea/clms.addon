@@ -7,7 +7,11 @@ from plone.supermodel.model import Fieldset
 
 
 def move_field(
-    schema, fieldname, to_fieldset_name, label=None, description=None, order=None
+    schema, fieldname,
+    to_fieldset_name,
+    label=None,
+    description=None,
+    order=None
 ):
     """Moves a field named "fieldname" on a Zope "schema" to a new fieldset
         "to_field_name".
