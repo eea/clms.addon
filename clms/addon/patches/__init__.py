@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-import clms.addon.patches.meeting # noqa
+import clms.addon.patches.meeting  # noqa

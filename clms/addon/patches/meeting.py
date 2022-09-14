@@ -16,8 +16,8 @@ def move_field(
     """Moves a field named "fieldname" on a Zope "schema" to a new fieldset
         "to_field_name".
 
-    - creates a new fieldset on demand (then label, description and order are passed
-        to the new one).
+    - creates a new fieldset on demand (then label, description and order are
+        passed to the new one).
     - if value of "to_fieldset_name" is "default", then the field sticks on the
         main form.
     """
