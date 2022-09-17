@@ -1,7 +1,6 @@
 """ REST API endpoint to delete user profile information"""
 # -*- coding: utf-8 -*-
 from logging import getLogger
-from clms.downloadtool.utility import IDownloadToolUtility
 
 from plone import api
 from plone.restapi.services import Service
@@ -16,6 +15,7 @@ from clms.addon.utilities.newsitem_notifications_utility import (
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
 )
+from clms.downloadtool.utility import IDownloadToolUtility
 
 subscription_utilities = [
     INewsItemNotificationsUtility,
