@@ -1,7 +1,14 @@
 """ patches """
 # -*- coding: utf-8 -*-
-# flake: noqa: F401
-# pylint: disable=unused-import
-import clms.addon.patches.meeting  # noqa
-# pylint: disable=unused-import
-import clms.addon.patches.restapi  # noqa
+
+from logging import getLogger
+
+import clms.addon.patches.meeting
+
+import clms.addon.patches.restapi
+
+log = getLogger(__name__)
+
+# Stupid logging to avoid pyflakes errors
+log.info(clms.addon.patches.meeting)
+log.info(clms.addon.patches.restapi)
