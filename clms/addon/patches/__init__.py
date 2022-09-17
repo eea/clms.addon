@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from logging import getLogger
-
 import clms.addon.patches.meeting
-
 import clms.addon.patches.restapi
 
 log = getLogger(__name__)
