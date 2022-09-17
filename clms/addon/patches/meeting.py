@@ -1,7 +1,7 @@
 """ patch eea.meeting to move a field"""
 # -*- coding: utf-8 -*-
-from eea.meeting.interfaces.meeting import IMeeting
 from logging import getLogger
+from eea.meeting.interfaces.meeting import IMeeting
 from plone.supermodel.interfaces import FIELDSETS_KEY
 from plone.supermodel.model import Fieldset
 
