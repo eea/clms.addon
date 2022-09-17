@@ -56,6 +56,7 @@ setup(
         "eea.restapi",
         "collective.volto.formsupport",
         "eea.meeting",
+        "clms.downloadtool"
     ],
     extras_require={
         "test": [
