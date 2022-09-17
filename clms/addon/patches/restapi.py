@@ -4,14 +4,12 @@
 from plone.restapi.serializer import blocks as ser_blocks
 from logging import getLogger
 from plone.outputfilters.browser.resolveuid import uuidToObject
-from plone.outputfilters.browser.resolveuid import uuidToURL
-from plone.restapi.interfaces import IObjectPrimaryFieldTarget
-from zope.component import queryMultiAdapter
 from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 import re
 
 
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
+
 
 def my_transform_links(context, value, transformer):
     """ handle internal and external links"""
