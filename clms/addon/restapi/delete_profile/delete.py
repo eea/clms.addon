@@ -77,5 +77,5 @@ class DeleteUserProfile(Service):
         user_id = user.getId()
         downloads = utility.datarequest_search(user_id, None)
         for key in downloads.keys():
-            utility.datarequest_delete(key, user_id)
+            utility.datarequest_remove_task(key)
             log.info('Download request deleted: %s', key)
