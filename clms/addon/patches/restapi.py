@@ -1,11 +1,14 @@
 """ patch transfor_links from plone.restapi"""
 # -*- coding: utf-8 -*-
 # from plone.restapi.deserializer import blocks as des_blocks
-from plone.restapi.serializer import blocks as ser_blocks
+import re
+
 from logging import getLogger
+
+from plone.restapi.serializer import blocks as ser_blocks
 from plone.outputfilters.browser.resolveuid import uuidToObject
 from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
-import re
+
 
 
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
@@ -60,3 +63,5 @@ def uid_to_obj_url(path):
             return target_object.absolute_url() + suffix, False
 
         return target_object.absolute_url(), False
+
+    return "", False
