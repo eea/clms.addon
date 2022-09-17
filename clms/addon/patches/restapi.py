@@ -10,7 +10,6 @@ from plone.outputfilters.browser.resolveuid import uuidToObject
 from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 
 
-
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
 
 
