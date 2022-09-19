@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+  >
+
+    <adapter
+        factory=".indexers.TabSearchableText"
+        name="tabs_block"
+        />
+
+    <adapter
+        factory=".indexers.AccordionSearchableText"
+        name="accordion"
+        />
+
+    <adapter
+        factory=".indexers.AccordionPanelSearchableText"
+        name="accordionPanel"
+        />
+
+
+</configure>

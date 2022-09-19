@@ -54,6 +54,9 @@ setup(
         "z3c.unconfigure",
         "plone.restapi",
         "eea.restapi",
+        "collective.volto.formsupport",
+        "eea.meeting",
+        "clms.downloadtool"
     ],
     extras_require={
         "test": [
