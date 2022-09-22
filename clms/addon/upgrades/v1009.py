@@ -10,4 +10,3 @@ def upgrade(setup_tool=None):
     """upgrade function"""
     logger.info("Running upgrade (Python): v1009")
     logger.info('done')
-
