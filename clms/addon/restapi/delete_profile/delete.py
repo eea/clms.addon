@@ -15,6 +15,7 @@ from clms.addon.utilities.newsitem_notifications_utility import (
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
 )
+from clms.downloadtool.utility import IDownloadToolUtility
 
 subscription_utilities = [
     INewsItemNotificationsUtility,
@@ -46,6 +47,7 @@ class DeleteUserProfile(Service):
 
         with api.env.adopt_roles(["Manager"]):
             self.remove_all_subscriptions(current_user.getProperty("email"))
+            self.remove_all_downloads_information()
             api.user.delete(user=current_user)
             return self.reply_no_content()
 
@@ -66,3 +68,14 @@ class DeleteUserProfile(Service):
                 log.info("User not suscribed: %s %s", email, utility)
 
         return 1
+
+    def remove_all_downloads_information(self):
+        """ remove all the downloads created by the current user"""
+        log = getLogger(__name__)
+        utility = getUtility(IDownloadToolUtility)
+        user = api.user.get_current()
+        user_id = user.getId()
+        downloads = utility.datarequest_search(user_id, None)
+        for key in downloads.keys():
+            utility.datarequest_remove_task(key)
+            log.info('Download request deleted: %s', key)

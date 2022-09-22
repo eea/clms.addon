@@ -1,7 +1,8 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:i18n="http://namespaces.zope.org/i18n"
-  i18n_domain="eea">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="eea"
+    >
 
   <i18n:registerTranslations directory="locales" />
   <include package="plone.app.registry" />
@@ -15,5 +16,6 @@
   <include package=".restapi" />
   <include package=".utilities" />
   <include package=".contentrules" />
+  <include package=".patches" />
 
 </configure>

@@ -144,7 +144,9 @@ class BaseNotificationsUnSubscribeHandler(Service):
         subscribe_url = frontend_domain + "/en" + subscribe_url
         registry = getUtility(IRegistry)
         mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        from_name = mail_settings.email_from_name
         from_address = mail_settings.email_from_address
+        source = '"{0}" <{1}>'.format(from_name, from_address)
         encoding = registry.get("plone.email_charset", "utf-8")
         host = api.portal.get_tool("MailHost")
         registry = getUtility(IRegistry)
@@ -158,7 +160,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
         message = MIMEMultipart("related")
         message["Subject"] = subject
         message["Reply-To"] = from_address
-        message["From"] = from_address
+        message["From"] = source
         message.preamble = "This is a multi-part message in MIME format"
 
         msg_alternative = MIMEMultipart("alternative")
@@ -173,7 +175,7 @@ class BaseNotificationsUnSubscribeHandler(Service):
             host.send(
                 message.as_string(),
                 email,
-                from_address,
+                source,
                 subject=subject,
                 charset=encoding,
             )
