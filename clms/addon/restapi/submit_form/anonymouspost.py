@@ -9,6 +9,7 @@ from Acquisition import aq_parent
 from collective.volto.formsupport.restapi.services.submit_form.post import \
     SubmitPost
 from eea.meeting.browser.views import add_subscriber
+from plone import api
 from plone.restapi.deserializer import json_body
 from zope.interface import alsoProvides
 
@@ -53,7 +54,8 @@ class Register(SubmitPost):
             return result
 
         try:
-            add_subscriber(subscribers, **props)
+            with api.env.adopt_roles(['Manager', 'Member']):
+                add_subscriber(subscribers, **props)
         except Exception as e:
             self.request.response.setStatus(400)
             result = {
