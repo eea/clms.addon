@@ -1,17 +1,19 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-  i18n_domain="eea">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="eea"
+    >
 
   <genericsetup:upgradeSteps
-    source="*"
-    destination="1.0"
-    profile="clms.addon:default">
+      profile="clms.addon:default"
+      source="*"
+      destination="1.0"
+      >
 
     <genericsetup:upgradeDepends
-       title="Import all steps from clms.addon default profile"
-       import_profile="clms.addon:default"
-      />
+        title="Import all steps from clms.addon default profile"
+        import_profile="clms.addon:default"
+        />
 
   </genericsetup:upgradeSteps>
 
@@ -23,5 +25,6 @@
   <include file="1006.zcml" />
   <include file="1007.zcml" />
   <include file="1008.zcml" />
+  <include file="1009.zcml" />
 
 </configure>
