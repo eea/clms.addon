@@ -8,7 +8,7 @@ clms.addon
   :target: https://ci.eionet.europa.eu/job/eea/job/clms.addon/job/master/display/redirect
   :alt: Master
 
-The clms.addon is a Plone add-on with some customizations for the CLMS project.
+The clms.addon is a Plone add-on with some customizations for the CLMS project. 
 
 .. contents::
 

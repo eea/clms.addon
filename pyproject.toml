@@ -1,5 +1,4 @@
 [tool.black]
 line-length = 79
 max_line_length = 79
-extend-ignore = E203,W503
 verbose = 1
