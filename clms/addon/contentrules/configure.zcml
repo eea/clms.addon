@@ -1,40 +1,77 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:i18n="http://namespaces.zope.org/i18n"
-  i18n_domain="eea">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="clms"
+    >
+
 
 
 
   <adapter
-      for="*"
-      provides="plone.stringinterp.interfaces.IStringSubstitution"
       factory=".newsitem_email_substitution.NewsItemSubscriberSubstitution"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
       name="newsitem_notification_subscribers"
       />
 
 
   <adapter
-      for="*"
-      provides="plone.stringinterp.interfaces.IStringSubstitution"
       factory=".event_email_substitution.EventSubscriberSubstitution"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
       name="event_notification_subscribers"
       />
 
 
   <adapter
-      for="*"
-      provides="plone.stringinterp.interfaces.IStringSubstitution"
       factory=".volto_url_substitution.VoltoURLSubstitution"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
       name="volto_absolute_url"
       />
 
   <adapter
-      for="*"
-      provides="plone.stringinterp.interfaces.IStringSubstitution"
       factory=".volto_portal_url.VoltoPortalURLSubstitution"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
       name="volto_portal_url"
       />
 
+  <adapter
+      factory=".meeting_start.MeetingStart"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
+      name="meeting_start_datetime"
+      />
 
+  <adapter factory=".mail.MailActionExecutor" />
+
+  <browser:page
+      name="clms.addon.actions.Mail"
+      for="plone.app.contentrules.browser.interfaces.IRuleActionAdding"
+      class=".mail.MailAddFormView"
+      permission="plone.app.contentrules.ManageContentRules"
+      />
+
+  <browser:page
+      name="edit"
+      for=".mail.IMailAction"
+      class=".mail.MailEditFormView"
+      permission="plone.app.contentrules.ManageContentRules"
+      />
+
+  <plone:ruleAction
+      name="clms.addon.actions.Mail"
+      title="Send HTML email"
+      description="Send an HTML formatted email on the triggering object"
+      for="*"
+      event="*"
+      schema=".mail.IMailAction"
+      factory=".mail.MailAction"
+      addview="clms.addon.actions.Mail"
+      editview="edit"
+      />
 
 </configure>
