@@ -161,8 +161,6 @@ class MailActionExecutor(object):
 
         subject = interpolator(self.element.subject)
 
-
-
         for email_recipient in recipients:
             msgRoot = MIMEMultipart("related")
             msgRoot["Subject"] = subject

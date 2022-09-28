@@ -56,7 +56,8 @@ setup(
         "eea.restapi",
         "collective.volto.formsupport",
         "eea.meeting",
-        "clms.downloadtool"
+        "clms.downloadtool",
+        "ftw.upgrade",
     ],
     extras_require={
         "test": [
