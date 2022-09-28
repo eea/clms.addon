@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+""" content rule action to send HTML mails"""
 import logging
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -86,7 +87,7 @@ class MailAction(SimpleItem):
 
 @implementer(IExecutable)
 @adapter(Interface, IMailAction, Interface)
-class MailActionExecutor(object):
+class MailActionExecutor:
     """The executor for this action.
     """
 
@@ -139,6 +140,7 @@ class MailActionExecutor(object):
 
         recip_string = interpolator(self.element.recipients)
         if recip_string:  # check recipient is not None or empty string
+            # pylint: disable=consider-using-set-comprehension
             recipients = set([
                 str(mail.strip()) for mail in recip_string.split(',')
                 if mail.strip()
@@ -179,7 +181,7 @@ class MailActionExecutor(object):
             )
             msgAlternative.attach(msgHTML)
             try:
-                # XXX: We're using "immediate=True" because otherwise we won't
+                # We're using "immediateTrue" because otherwise we won't
                 # be able to catch SMTPException as the smtp connection is made
                 # as part of the transaction apparatus.
                 # AlecM thinks this wouldn't be a problem if mail queuing was
