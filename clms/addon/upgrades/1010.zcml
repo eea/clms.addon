@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:registerProfile
+      name="1010"
+      title="Upgrade folders to Pages"
+      description="Configuration for version 1010"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      directory="1010"
+      />
+
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1009"
+      destination="1010"
+      >
+
+    <gs:upgradeStep
+        title="Upgrade folders to Pages"
+        description="Configuration for version 1010"
+        handler=".v1010.upgrade"
+        />
+
+    <gs:upgradeDepends
+        title="Upgrade folders to Pages (GS profile)"
+        description="Configuration for version 1010"
+        import_profile="clms.addon.upgrades:1010"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>
