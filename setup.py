@@ -57,7 +57,7 @@ setup(
         "collective.volto.formsupport",
         "eea.meeting",
         "clms.downloadtool",
-        "ftw.upgrade",
+        "collective.relationhelpers",
     ],
     extras_require={
         "test": [
