@@ -20,7 +20,9 @@ from clms.addon import _
 def user_already_registered(subscribers_folder, email):
     """check if the email is already registered"""
     registered_emails = [
-        item.email for item in subscribers_folder.get_subscribers()
+        item.email
+        for item in subscribers_folder.get_subscribers()
+        if item.state() != "rejected"
     ]
     return email in registered_emails
 
