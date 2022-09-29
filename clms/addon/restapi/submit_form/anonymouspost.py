@@ -6,16 +6,28 @@ import string
 
 import plone.protect.interfaces
 from Acquisition import aq_parent
-from collective.volto.formsupport.restapi.services.submit_form.post import \
-    SubmitPost
+from collective.volto.formsupport.restapi.services.submit_form.post import (
+    SubmitPost,
+)
 from eea.meeting.browser.views import add_subscriber
 from plone import api
 from plone.restapi.deserializer import json_body
 from zope.interface import alsoProvides
 
+from clms.addon import _
+
+
+def user_already_registered(subscribers_folder, email):
+    """check if the email is already registered"""
+    registered_emails = [
+        item.email for item in subscribers_folder.get_subscribers()
+    ]
+    return email in registered_emails
+
 
 class Register(SubmitPost):
     """register the form submit"""
+
     def reply(self):
         """submit reply"""
         if self.context.portal_type != "AnonymousForm":
@@ -53,8 +65,18 @@ class Register(SubmitPost):
             }
             return result
 
+        if user_already_registered(
+            subscribers,
+            props["email"],
+        ):
+            self.request.response.setStatus(400)
+            result = {
+                "message": _("This user is already registered"),
+            }
+            return result
+
         try:
-            with api.env.adopt_roles(['Manager', 'Member']):
+            with api.env.adopt_roles(["Manager", "Member"]):
                 add_subscriber(subscribers, **props)
         except Exception as e:
             self.request.response.setStatus(400)
@@ -97,13 +119,13 @@ class Register(SubmitPost):
             fields = data.get("data")
             for field in fields:
                 if (
-                    "field_custom_id" in field and
-                    field.get("field_custom_id") == "email"
+                    # pylint: disable=line-too-long
+                    "field_custom_id" in field and field.get("field_custom_id") == "email"  # noqa
                 ):
                     anonymous_email = field.get("value", None)
                 elif (
-                    "field_custom_id" in field and
-                    field.get("field_custom_id") == "fullname"
+                    # pylint: disable=line-too-long
+                    "field_custom_id" in field and field.get("field_custom_id") == "fullname"  # noqa
                 ):
                     anonymous_fullname = field.get("value", None)
 
@@ -137,8 +159,8 @@ class Register(SubmitPost):
         skip_fields = [
             x.get("field_id", "")
             for x in self.block.get("subblocks", [])
-            if x.get("field_type", "") == "attachment" or
-            x.get("field_custom_id", "") == "gdpr"
+            # pylint: disable=line-too-long
+            if x.get("field_type", "") == "attachment" or x.get("field_custom_id", "") == "gdpr"  # noqa
         ]
         return [
             x
