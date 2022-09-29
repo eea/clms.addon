@@ -230,4 +230,5 @@ class MailEditForm(ActionEditForm):
 
 
 class MailEditFormView(ContentRuleFormWrapper):
+    """ Edit view""""
     form = MailEditForm
