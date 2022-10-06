@@ -45,7 +45,7 @@ from plone.app.contenttypes.migration.dxmigration import (  # noqa
 def upgrade(setup_tool=None):
     """upgrade function"""
     logger.info("Running upgrade (Python): v1010")
-    upgrade_folders_to_pages()
+    # upgrade_folders_to_pages()
     logger.info("done")
 
 
