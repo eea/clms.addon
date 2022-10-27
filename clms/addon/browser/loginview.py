@@ -1,6 +1,8 @@
 """
 Override OIDC PAS Plugin redirect url
 """
+from urllib.parse import urlparse
+
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from pas.plugins.oidc.browser.view import Session
@@ -8,7 +10,6 @@ from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from zope.interface import alsoProvides
-from urllib.parse import urlparse
 
 
 class CallbackView(BaseCallbackView):
