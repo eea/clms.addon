@@ -8,6 +8,7 @@ from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from zope.interface import alsoProvides
+from urllib.parse import urlparse
 
 
 class CallbackView(BaseCallbackView):
@@ -64,7 +65,19 @@ class MyCallBack(BrowserView):
 
             if came_from:
                 # pylint: disable=line-too-long
-                if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or not came_from.startswith("http")):  # noqa: E501
+                if came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http"):  # noqa: E501
                     redirect_url = came_from
 
         return self.request.response.redirect(redirect_url, status=302)
+
+
+def same_domain(url1, url2):
+    """detect whether both URLs are from the same domain. We need to check this
+    because the URL when coming from EU Login has the /api prefix
+    """
+    if url1.startswith("http") and url2.startswith("http"):
+        parsed_url1 = urlparse(url1)
+        parsed_url2 = urlparse(url2)
+        return parsed_url1.hostname == parsed_url2.hostname
+
+    return False
