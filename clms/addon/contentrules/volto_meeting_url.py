@@ -8,7 +8,7 @@ from plone import api
 class SetMeetingURL(BaseSubstitution):
     """Meeting URL"""
 
-    category = _("eea.meeting")
+    category = _("eea.meeting (clms.addon)")
     description = _("Finds the closest meeting and returns it's URL.")
 
     def safe_call(self):
