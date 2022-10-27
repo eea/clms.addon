@@ -1,8 +1,8 @@
 """ Adapters """
-from plone.stringinterp.adapters import BaseSubstitution
 from eea.meeting import _
 from eea.meeting.interfaces import IMeeting
 from plone import api
+from plone.stringinterp.adapters import BaseSubstitution
 
 
 class SetMeetingURL(BaseSubstitution):
