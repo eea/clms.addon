@@ -46,6 +46,13 @@
       name="meeting_start_datetime"
       />
 
+  <adapter
+      factory=".volto_meeting_url.SetMeetingURL"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
+      name="volto_meeting_url"
+      />
+
   <adapter factory=".mail.MailActionExecutor" />
 
   <browser:page
