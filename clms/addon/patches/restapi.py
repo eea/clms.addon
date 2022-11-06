@@ -2,14 +2,13 @@
 # -*- coding: utf-8 -*-
 # from plone.restapi.deserializer import blocks as des_blocks
 import re
-
 from logging import getLogger
 
-from plone.restapi.serializer import blocks as ser_blocks
-from plone.outputfilters.browser.resolveuid import uuidToObject
-from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 from plone import api
+from plone.outputfilters.browser.resolveuid import uuidToObject
+from plone.restapi.serializer import blocks as ser_blocks
 
+from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
 
