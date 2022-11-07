@@ -67,7 +67,8 @@ def uid_to_obj_url(path):
 
 def resolve_path_to_obj_url(path):
     """try to resolve the path as if it was a Plone object path"""
-    portal_url = api.portal.get().absolute_url()
+    portal = api.portal.get()
+    portal_url = portal.absolute_url()
     # Replace the /api marker
     if portal_url.endswith("/api"):
         portal_url = portal_url.replace("/api")
@@ -82,7 +83,7 @@ def resolve_path_to_obj_url(path):
             # This is a portal_url entered as if it was an external link
             # So remove the domain part, and try to find the object in the DB
             newpath = path.replace(portal_url, "")
-            newpath = "/Plone" + path
+            newpath = f"/{portal.getId()}" + newpath
 
             url, newwindow = find_path_url_in_catalog(newpath)
             if url is not None:
@@ -94,8 +95,8 @@ def resolve_path_to_obj_url(path):
         # This is an absolute path to an object in the DB
         # Try to get the object and render the link
         newpath = path
-        if not path.startswith("/Plone"):
-            newpath = "/Plone" + path
+        if not path.startswith(f"/{portal.getId()}"):
+            newpath = f"/{portal.getId()}" + path
 
         url, newwindow = find_path_url_in_catalog(newpath)
 
@@ -117,5 +118,7 @@ def find_path_url_in_catalog(path):
                     f"{target_object.absolute_url()}/@@download/file",
                     True,
                 )
+            else:
+                return target_object.absolute_url(), False
 
     return None, False
