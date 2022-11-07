@@ -66,21 +66,55 @@ def uid_to_obj_url(path):
 
 
 def resolve_path_to_obj_url(path):
-    """try to resolve the path as if it were a Plone object path"""
-    if not path.startswith("."):
-        if not path.startswith("/Plone/"):
-            path = "/Plone/" + path
+    """try to resolve the path as if it was a Plone object path"""
+    portal_url = api.portal.get().absolute_url()
+    # Replace the /api marker
+    if portal_url.endswith("/api"):
+        portal_url = portal_url.replace("/api")
 
-        brains = api.content.find(path=path)
-        if brains:
-            for brain in brains:
-                target_object = brain.getObject()
-                if target_object.portal_type in DIRECT_LINK_PORTAL_TYPES:
-                    return (
-                        f"{target_object.absolute_url()}/@@download/file",
-                        True,
-                    )
+    # Is an absolute URL with http?
+    if path.startswith("http"):
+        # Check if it ends with a download marker
+        if path.endswith("@@download/file"):
+            return path, True
 
-                return target_object.absolute_url(), False
+        if path.startswith(portal_url):
+            # This is a portal_url entered as if it was an external link
+            # So remove the domain part, and try to find the object in the DB
+            newpath = path.replace(portal_url, "")
+            newpath = "/Plone" + path
+
+            url, newwindow = find_path_url_in_catalog(newpath)
+            if url is not None:
+                return url, newwindow
+
+        return path, False
+
+    if path.startswith("/"):
+        # This is an absolute path to an object in the DB
+        # Try to get the object and render the link
+        newpath = path
+        if not path.startswith("/Plone"):
+            newpath = "/Plone" + path
+
+        url, newwindow = find_path_url_in_catalog(newpath)
+
+        if url is not None:
+            return url, newwindow
 
     return path, False
+
+
+def find_path_url_in_catalog(path):
+    """find the given path in the catalog, and return the object url and whether it should be opened in a new window"""
+    brains = api.content.find(path=path)
+    if brains:
+        for brain in brains:
+            target_object = brain.getObject()
+            if target_object.portal_type in DIRECT_LINK_PORTAL_TYPES:
+                return (
+                    f"{target_object.absolute_url()}/@@download/file",
+                    True,
+                )
+
+    return None, False
