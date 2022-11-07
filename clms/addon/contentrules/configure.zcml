@@ -53,6 +53,14 @@
       name="volto_meeting_url"
       />
 
+  <adapter
+      factory=".event_subscriber_email.EventSubscriberEmail"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
+      name="event_subscriber_email"
+      />
+
+
   <adapter factory=".mail.MailActionExecutor" />
 
   <browser:page
