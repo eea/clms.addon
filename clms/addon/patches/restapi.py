@@ -106,7 +106,8 @@ def resolve_path_to_obj_url(path):
 
 
 def find_path_url_in_catalog(path):
-    """find the given path in the catalog, and return the object url and whether it should be opened in a new window"""
+    """find the given path in the catalog, and return the object
+    url and whether it should be opened in a new window"""
     brains = api.content.find(path=path)
     if brains:
         for brain in brains:
