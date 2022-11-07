@@ -117,3 +117,21 @@ class TestPaches(unittest.TestCase):
         url, download = resolve_path_to_obj_url(path)
         self.assertEqual(url, path)
         self.assertTrue(download)
+
+    def test_uid_to_obj_url_folder(self):
+        """test the uid_to_obj_url function"""
+        uid = api.content.get_uuid(self.folder)
+        path = f"./resolveuid/{uid}"
+
+        url, download = uid_to_obj_url(path)
+        self.assertEqual(url, self.folder.absolute_url())
+        self.assertFalse(download)
+
+    def test_uid_to_obj_url_file(self):
+        """test the uid_to_obj_url function"""
+        uid = api.content.get_uuid(self.file)
+        path = f"./resolveuid/{uid}"
+
+        url, download = uid_to_obj_url(path)
+        self.assertEqual(url, self.file.absolute_url() + "/@@download/file")
+        self.assertTrue(download)
