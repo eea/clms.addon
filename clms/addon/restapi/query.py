@@ -38,6 +38,8 @@ class ZCatalogCompatibleQueryAdapter(Base):
             if isinstance(idx_query, current_value):
                 return future_value(idx_query)
 
+        return idx_query
+
     def __call__(self, query):
         """call the adapter"""
         for idx_name, idx_query in query.items():
@@ -57,7 +59,7 @@ class ZCatalogCompatibleQueryAdapter(Base):
             index = self.get_index(idx_name)
             if index is None:
                 if idx_name not in self.ignore_query_params:
-                    log.warning("No such index: %r" % idx_name)
+                    log.warning("No such index: %r", idx_name)
                 continue
 
             query_opts_parser = getMultiAdapter(
