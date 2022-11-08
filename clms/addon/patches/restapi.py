@@ -118,7 +118,7 @@ def find_path_url_in_catalog(path):
                     f"{target_object.absolute_url()}/@@download/file",
                     True,
                 )
-            else:
-                return target_object.absolute_url(), False
+
+            return target_object.absolute_url(), False
 
     return None, False
