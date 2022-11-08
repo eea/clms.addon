@@ -17,6 +17,8 @@ from plone import api
 
 
 class TestPaches(unittest.TestCase):
+    """some tests for the restapi link handling patches"""
+
     layer = CLMS_ADDON_INTEGRATION_TESTING
 
     def setUp(self):
