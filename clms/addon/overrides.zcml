@@ -1,46 +1,60 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:i18n="http://namespaces.zope.org/i18n"
-  xmlns:plone="http://namespaces.plone.org/plone"
-  i18n_domain="eea">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="eea"
+    >
 
-  <include package=".browser" file="overrides.zcml" />
+  <include
+      package=".browser"
+      file="overrides.zcml"
+      />
 
 
 
 
-  <include package="z3c.unconfigure" file="meta.zcml" />
+  <include
+      package="z3c.unconfigure"
+      file="meta.zcml"
+      />
   <unconfigure package="eea.restapi">
 
     <subscriber
-    for="Products.CMFCore.interfaces.IContentish
-         zope.lifecycleevent.interfaces.IObjectAddedEvent"
-    handler=".handlers.validate_blocks" />
+        for="Products.CMFCore.interfaces.IContentish
+             zope.lifecycleevent.interfaces.IObjectAddedEvent"
+        handler=".handlers.validate_blocks"
+        />
 
-  <subscriber
-    for="Products.CMFCore.interfaces.IContentish
-         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
-    handler=".handlers.validate_blocks" />
+    <subscriber
+        for="Products.CMFCore.interfaces.IContentish
+             zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+        handler=".handlers.validate_blocks"
+        />
 
 
   </unconfigure>
   <subscriber
-    for="Products.CMFCore.interfaces.IContentish
-         zope.lifecycleevent.interfaces.IObjectAddedEvent"
-    handler=".handlers.validate_blocks" />
+      for="Products.CMFCore.interfaces.IContentish
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".handlers.validate_blocks"
+      />
 
   <subscriber
-    for="Products.CMFCore.interfaces.IContentish
-         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
-    handler=".handlers.validate_blocks" />
+      for="Products.CMFCore.interfaces.IContentish
+           zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+      handler=".handlers.validate_blocks"
+      />
 
   <plone:service
-    method="POST"
-    name="@submit-form"
-    for="plone.restapi.behaviors.IBlocks"
-    factory=".restapi.submit_form.anonymouspost.Register"
-    permission="zope2.View"
-    layer="collective.volto.formsupport.interfaces.ICollectiveVoltoFormsupportLayer"
-    />
+      method="POST"
+      factory=".restapi.submit_form.anonymouspost.Register"
+      for="plone.restapi.behaviors.IBlocks"
+      permission="zope2.View"
+      layer="collective.volto.formsupport.interfaces.ICollectiveVoltoFormsupportLayer"
+      name="@submit-form"
+      />
+
+  <adapter factory=".restapi.query.ZCatalogCompatibleQueryAdapter" />
+
 
 </configure>
