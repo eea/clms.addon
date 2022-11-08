@@ -137,3 +137,36 @@ class TestPaches(unittest.TestCase):
         url, download = uid_to_obj_url(path)
         self.assertEqual(url, self.file.absolute_url() + "/@@download/file")
         self.assertTrue(download)
+
+    def test_uid_to_obj_url_emtpy(self):
+        """test with an empty string"""
+        url, download = uid_to_obj_url("")
+        self.assertEqual(url, "")
+        self.assertFalse(download)
+
+    def test_uid_to_obj_url_none(self):
+        """test with none"""
+        url, download = uid_to_obj_url(None)
+        self.assertEqual(url, "")
+        self.assertFalse(download)
+
+    def test_uid_to_obj_url_no_uid_folder(self):
+        """test withouth passing a uid but a folder url"""
+        path = "/folder/document"
+        url, download = uid_to_obj_url(path)
+        self.assertEqual(url, self.document.absolute_url())
+        self.assertFalse(download)
+
+    def test_uid_to_obj_url_no_uid_file(self):
+        """test withouth passing a uid but a file url"""
+        path = "/folder/file"
+        url, download = uid_to_obj_url(path)
+        self.assertEqual(url, self.file.absolute_url() + "/@@download/file")
+        self.assertTrue(download)
+
+    def test_uid_to_obj_url_no_uid_unknown(self):
+        """test withouth passing a uid but an unknown url"""
+        path = "/this/is/unknown"
+        url, download = uid_to_obj_url(path)
+        self.assertEqual(path, url)
+        self.assertFalse(download)
