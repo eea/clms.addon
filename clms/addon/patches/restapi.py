@@ -71,7 +71,7 @@ def resolve_path_to_obj_url(path):
     portal_url = portal.absolute_url()
     # Replace the /api marker
     if portal_url.endswith("/api"):
-        portal_url = portal_url.replace("/api")
+        portal_url = portal_url.replace("/api", "")
 
     # Is an absolute URL with http?
     if path.startswith("http"):
