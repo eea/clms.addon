@@ -51,7 +51,8 @@ class MyCallBack(BrowserView):
                 redirect_url = "/"
 
                 if is_initial_login:
-                    # Allow write-on-read to update user properties on first login
+                    # Allow write-on-read to update user properties
+                    # on first login
                     alsoProvides(self.request, IDisableCSRFProtection)
                     redirect_url = "/en/profile"
                     member.setMemberProperties(
