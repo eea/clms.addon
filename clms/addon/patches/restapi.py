@@ -4,12 +4,10 @@
 import re
 from logging import getLogger
 
+from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 from plone import api
 from plone.outputfilters.browser.resolveuid import uuidToObject
 from plone.restapi.serializer import blocks as ser_blocks
-from plone.restapi.serializer import utils
-
-from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
 
@@ -34,6 +32,7 @@ def my_transform_links(context, value, transformer):
 
 
 def my_uid_to_url(path):
+    """ uid to url """
     return uid_to_obj_url(path)[0]
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import os
+""" patch"""
 from copy import deepcopy
 from logging import getLogger
 
@@ -9,6 +9,7 @@ from .restapi import my_uid_to_url
 
 
 def my__call__(self, value):
+    """ call"""
     for field in self.fields:
         if field in value.keys():
             link = value.get(field, "")
