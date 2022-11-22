@@ -7,6 +7,7 @@ from logging import getLogger
 from plone import api
 from plone.outputfilters.browser.resolveuid import uuidToObject
 from plone.restapi.serializer import blocks as ser_blocks
+from plone.restapi.serializer import utils
 
 from clms.addon.utils import DIRECT_LINK_PORTAL_TYPES
 
@@ -32,10 +33,12 @@ def my_transform_links(context, value, transformer):
         external_link["target"] = "_blank"
 
 
+def my_uid_to_url(path):
+    return uid_to_obj_url(path)[0]
+
+
 log = getLogger(__name__)
 
-# des_blocks.transform_links = my_transform_links
-# log.info('Patched plone.restapi.deserializer.blocks.transform_links')
 
 ser_blocks.transform_links = my_transform_links
 log.info("Patched plone.restapi.serializer.blocks.transform_links")
@@ -75,6 +78,8 @@ def resolve_path_to_obj_url(path):
 
     # Is an absolute URL with http?
     if path.startswith("http"):
+        if path.startswith("http://backend:8080/Plone/"):
+            path = path.replace("http://backend:8080/Plone", portal_url)
         # Check if it ends with a download marker
         if path.endswith("@@download/file"):
             return path, True
