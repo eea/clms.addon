@@ -15,11 +15,8 @@ def my__call__(self, value):
             if isinstance(link, str):
                 value[field] = my_uid_to_url(link)
             elif isinstance(link, list):
-                if (
-                    len(link) > 0
-                    and isinstance(link[0], dict)
-                    and "@id" in link[0]
-                ):
+                # pylint: disable=line-too-long
+                if (len(link) > 0 and isinstance(link[0], dict) and "@id" in link[0]):  # noqa
                     result = []
                     for item in link:
                         item_clone = deepcopy(item)
