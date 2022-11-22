@@ -1,3 +1,4 @@
+""" transformers for slateTable blocks"""
 # -*- coding: utf-8 -*-
 from collections import deque
 
