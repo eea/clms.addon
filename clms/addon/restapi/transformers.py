@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from plone.restapi.serializer.blocks import SlateBlockSerializerBase
-from plone.restapi.interfaces import IBlockFieldSerializationTransformer
+from collections import deque
+
 from plone.restapi.behaviors import IBlocks
+from plone.restapi.interfaces import IBlockFieldSerializationTransformer
+from plone.restapi.serializer.blocks import SlateBlockSerializerBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.component import adapter
 from zope.interface import implementer
-from collections import deque
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 def iterate_children(value):
