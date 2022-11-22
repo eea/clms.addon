@@ -42,11 +42,6 @@ class SlateTableBlockSerializerBase(SlateBlockSerializerBase):
                 for child in children:
                     node_type = child.get("type")
                     if node_type:
-                        # if node_type == "a":
-                        #     import pdb
-
-                        #     pdb.set_trace()
-                        #     a = 1
                         handler = getattr(self, f"handle_{node_type}", None)
                         if handler:
                             handler(child)
