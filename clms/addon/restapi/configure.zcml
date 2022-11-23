@@ -15,4 +15,14 @@
   <include package=".block_indexers"/>
 
 
+  <subscriber
+      factory=".transformers.SlateTableBlockSerializerRoot"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+
+  <subscriber
+      factory=".transformers.SlateTableBlockSerializer"
+      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+      />
+
 </configure>
