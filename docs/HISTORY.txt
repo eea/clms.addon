@@ -1,6 +1,10 @@
 Changelog
 =========
 
+5.8 - (2022-11-25)
+---------------------------
+* Change: fix: leave the target as it is if it is coming explicitely from the f… [erral]
+
 5.8-dev0 - (unreleased)
 ---------------------------
 
