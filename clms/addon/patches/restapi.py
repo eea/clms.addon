@@ -22,17 +22,24 @@ def my_transform_links(context, value, transformer):
             if url:
                 link["@id"] = url
                 if target:
+                    # We set to open in a new tab when
+                    # the previous function has returned True
+                    # That function checks if the item is downloadable
                     link["target"] = "_blank"
             else:
                 link["@id"] = transformer(context, link["@id"])
 
     if data.get("link", {}).get("external", {}).get("external_link"):
         external_link = data["link"]["external"]
-        external_link["target"] = "_blank"
+        if "target" not in external_link:
+            # Open external links by default in new tabs
+            # If they have some kind of target set manually
+            # we leave it as it is
+            external_link["target"] = "_blank"
 
 
 def my_uid_to_url(path):
-    """ uid to url """
+    """uid to url"""
     return uid_to_obj_url(path)[0]
 
 
@@ -45,7 +52,7 @@ log.info("Patched plone.restapi.serializer.blocks.transform_links")
 
 def uid_to_obj_url(path):
     """return the URL of an object, and if it
-    should be opened in a new tab"""
+    should be opened in a new tab checking its content-type"""
     if not path:
         return "", False
     match = RESOLVEUID_RE.match(path)
