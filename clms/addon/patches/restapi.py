@@ -57,21 +57,42 @@ def uid_to_obj_url(path):
         return "", False
     match = RESOLVEUID_RE.match(path)
     if match is None:
-        return resolve_path_to_obj_url(path)
+        url, download = resolve_path_to_obj_url(path)
+        return remove_portal_url_from_url(url), download
 
     uid, suffix = match.groups()
     target_object = uuidToObject(uid)
 
     if target_object:
         if target_object.portal_type in DIRECT_LINK_PORTAL_TYPES:
-            return f"{target_object.absolute_url()}/@@download/file", True
+            return (
+                "{}/@@download/file".format(
+                    remove_portal_url_from_url(target_object.absolute_url())
+                ),
+                True,
+            )
 
         if suffix:
-            return target_object.absolute_url() + suffix, False
+            return (
+                remove_portal_url_from_url(
+                    target_object.absolute_url() + suffix
+                ),
+                False,
+            )
 
-        return target_object.absolute_url(), False
+        return remove_portal_url_from_url(target_object.absolute_url()), False
 
     return "", False
+
+
+def remove_portal_url_from_url(url):
+    """replace the portal_url from url"""
+    portal_url = api.portal.get().absolute_url()
+    value = url.replace(portal_url, "")
+    if value.startswith("/api/"):
+        value = value.replace("/api/, " / "")
+
+    return value
 
 
 def resolve_path_to_obj_url(path):

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+6.0 - (2022-11-30)
+---------------------------
+* Change: Develop
+  [erral]
+
 5.9 - (2022-11-25)
 ---------------------------
 * Change: fix: leave the target as it is if it is coming explicitely from the f… [erral]

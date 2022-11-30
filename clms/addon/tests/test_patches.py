@@ -23,6 +23,7 @@ class TestPaches(unittest.TestCase):
 
     def setUp(self):
         self.portal = self.layer["portal"]
+        self.portal_url = self.portal.absolute_url()
         setRoles(self.portal, TEST_USER_ID, ["Manager"])
 
         self.folder = api.content.create(
@@ -126,7 +127,8 @@ class TestPaches(unittest.TestCase):
         path = f"./resolveuid/{uid}"
 
         url, download = uid_to_obj_url(path)
-        self.assertEqual(url, self.folder.absolute_url())
+        folder_url = self.folder.absolute_url().replace(self.portal_url, "")
+        self.assertEqual(url, folder_url)
         self.assertFalse(download)
 
     def test_uid_to_obj_url_file(self):
@@ -135,7 +137,8 @@ class TestPaches(unittest.TestCase):
         path = f"./resolveuid/{uid}"
 
         url, download = uid_to_obj_url(path)
-        self.assertEqual(url, self.file.absolute_url() + "/@@download/file")
+        file_url = self.file.absolute_url().replace(self.portal_url, "")
+        self.assertEqual(url, file_url + "/@@download/file")
         self.assertTrue(download)
 
     def test_uid_to_obj_url_emtpy(self):
@@ -154,14 +157,19 @@ class TestPaches(unittest.TestCase):
         """test withouth passing a uid but a folder url"""
         path = "/folder/document"
         url, download = uid_to_obj_url(path)
-        self.assertEqual(url, self.document.absolute_url())
+        document_url = self.document.absolute_url().replace(
+            self.portal_url, ""
+        )
+        self.assertEqual(url, document_url)
         self.assertFalse(download)
 
     def test_uid_to_obj_url_no_uid_file(self):
         """test withouth passing a uid but a file url"""
         path = "/folder/file"
         url, download = uid_to_obj_url(path)
-        self.assertEqual(url, self.file.absolute_url() + "/@@download/file")
+        url = url.replace(self.portal_url, "")
+        file_url = self.file.absolute_url().replace(self.portal_url, "")
+        self.assertEqual(url, file_url + "/@@download/file")
         self.assertTrue(download)
 
     def test_uid_to_obj_url_no_uid_unknown(self):
