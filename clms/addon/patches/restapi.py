@@ -90,7 +90,7 @@ def remove_portal_url_from_url(url):
     portal_url = api.portal.get().absolute_url()
     value = url.replace(portal_url, "")
     if value.startswith("/api/"):
-        value = value.replace("/api/, " / "")
+        value = value.replace("/api/", "/")
 
     return value
 
