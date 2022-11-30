@@ -57,7 +57,7 @@ def uid_to_obj_url(path):
         return "", False
     match = RESOLVEUID_RE.match(path)
     if match is None:
-        return resolve_path_to_obj_url(path)
+        return remove_portal_url_from_url(resolve_path_to_obj_url(path))
 
     uid, suffix = match.groups()
     target_object = uuidToObject(uid)
@@ -108,7 +108,7 @@ def resolve_path_to_obj_url(path):
             path = path.replace("http://backend:8080/Plone", portal_url)
         # Check if it ends with a download marker
         if path.endswith("@@download/file"):
-            return remove_portal_url_from_url(path), True
+            return path, True
 
         if path.startswith(portal_url):
             # This is a portal_url entered as if it was an external link
@@ -118,9 +118,9 @@ def resolve_path_to_obj_url(path):
 
             url, newwindow = find_path_url_in_catalog(newpath)
             if url is not None:
-                return remove_portal_url_from_url(url), newwindow
+                return url, newwindow
 
-        return remove_portal_url_from_url(path), False
+        return path, False
 
     if path.startswith("/"):
         # This is an absolute path to an object in the DB
@@ -132,7 +132,7 @@ def resolve_path_to_obj_url(path):
         url, newwindow = find_path_url_in_catalog(newpath)
 
         if url is not None:
-            return remove_portal_url_from_url(url), newwindow
+            return url, newwindow
 
     return path, False
 
