@@ -57,7 +57,8 @@ def uid_to_obj_url(path):
         return "", False
     match = RESOLVEUID_RE.match(path)
     if match is None:
-        return remove_portal_url_from_url(resolve_path_to_obj_url(path))
+        url, download = resolve_path_to_obj_url(path)
+        return remove_portal_url_from_url(url), download
 
     uid, suffix = match.groups()
     target_object = uuidToObject(uid)
