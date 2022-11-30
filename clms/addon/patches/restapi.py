@@ -64,14 +64,34 @@ def uid_to_obj_url(path):
 
     if target_object:
         if target_object.portal_type in DIRECT_LINK_PORTAL_TYPES:
-            return f"{target_object.absolute_url()}/@@download/file", True
+            return (
+                "{}/@@download/file".format(
+                    remove_portal_url_from_url(target_object.absolute_url())
+                ),
+                True,
+            )
 
         if suffix:
-            return target_object.absolute_url() + suffix, False
+            return (
+                remove_portal_url_from_url(
+                    target_object.absolute_url() + suffix
+                ),
+                False,
+            )
 
-        return target_object.absolute_url(), False
+        return remove_portal_url_from_url(target_object.absolute_url()), False
 
     return "", False
+
+
+def remove_portal_url_from_url(url):
+    """replace the portal_url from url"""
+    portal_url = api.portal.get().absolute_url()
+    value = url.replace(portal_url, "")
+    if value.startswith("/api/"):
+        value = value.replace("/api/, " / "")
+
+    return value
 
 
 def resolve_path_to_obj_url(path):
@@ -88,7 +108,7 @@ def resolve_path_to_obj_url(path):
             path = path.replace("http://backend:8080/Plone", portal_url)
         # Check if it ends with a download marker
         if path.endswith("@@download/file"):
-            return path, True
+            return remove_portal_url_from_url(path), True
 
         if path.startswith(portal_url):
             # This is a portal_url entered as if it was an external link
@@ -98,9 +118,9 @@ def resolve_path_to_obj_url(path):
 
             url, newwindow = find_path_url_in_catalog(newpath)
             if url is not None:
-                return url, newwindow
+                return remove_portal_url_from_url(url), newwindow
 
-        return path, False
+        return remove_portal_url_from_url(path), False
 
     if path.startswith("/"):
         # This is an absolute path to an object in the DB
@@ -112,7 +132,7 @@ def resolve_path_to_obj_url(path):
         url, newwindow = find_path_url_in_catalog(newpath)
 
         if url is not None:
-            return url, newwindow
+            return remove_portal_url_from_url(url), newwindow
 
     return path, False
 
