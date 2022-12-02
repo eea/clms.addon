@@ -5,6 +5,7 @@ from logging import getLogger
 import clms.addon.patches.meeting as a
 import clms.addon.patches.restapi as b
 import clms.addon.patches.blocks as c
+import clms.addon.patches.sortable_title as d
 
 log = getLogger(__name__)
 
@@ -12,3 +13,4 @@ log = getLogger(__name__)
 log.info(a)
 log.info(b)
 log.info(c)
+log.info(d)
