@@ -1,6 +1,9 @@
 Changelog
 =========
 
+6.3-dev0 - (unreleased)
+---------------------------
+
 6.2 - (2022-12-02)
 ---------------------------
 * Change: allow longer sortable_titles
