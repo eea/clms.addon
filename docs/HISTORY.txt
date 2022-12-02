@@ -1,8 +1,10 @@
 Changelog
 =========
 
-6.2-dev0 - (unreleased)
+6.2 - (2022-12-02)
 ---------------------------
+* Change: allow longer sortable_titles
+  [erral]
 
 6.1 - (2022-11-30)
 ---------------------------
