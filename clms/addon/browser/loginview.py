@@ -1,6 +1,8 @@
 """
 Override OIDC PAS Plugin redirect url
 """
+import base64
+from logging import getLogger
 from urllib.parse import urlparse
 
 from DateTime import DateTime
@@ -32,6 +34,7 @@ class MyCallBack(BrowserView):
             use_session_data_manager=self.context.use_session_data_manager,
         )
         redirect_url = "/"
+        # pylint: disable=too-many-nested-blocks
         if not api.user.is_anonymous():
             member = api.user.get_current()
             if member:
@@ -64,6 +67,15 @@ class MyCallBack(BrowserView):
                     came_from = self.request.get("came_from")
                     if not came_from and session:
                         came_from = session.get("came_from")
+                        if not came_from.startswith("http"):
+                            # try to convert from base64
+                            try:
+                                came_from = base64.standard_b64decode(
+                                    came_from
+                                ).decode("utf-8")
+                            except Exception as e:
+                                log = getLogger(__name__)
+                                log.info(e)
 
                     portal_url = api.portal.get_tool("portal_url")
 
