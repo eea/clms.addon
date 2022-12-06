@@ -34,6 +34,7 @@ class MyCallBack(BrowserView):
             use_session_data_manager=self.context.use_session_data_manager,
         )
         redirect_url = "/"
+        # pylint: disable=too-many-nested-blocks
         if not api.user.is_anonymous():
             member = api.user.get_current()
             if member:
