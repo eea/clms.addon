@@ -1,5 +1,6 @@
 """
-Patch plone.behavior.registration to add an attribute that collective.taxonomy behaviors lack
+Patch plone.behavior.registration to add an attribute that collective.taxonomy
+behaviors lack
 
 """
 # -*- coding: utf-8 -*-
