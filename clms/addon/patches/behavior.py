@@ -24,6 +24,7 @@ def my_lookup_behavior_registration(
     try:
         assert name or identifier
     except AssertionError:
+        # pylint: disable=raise-missing-from
         raise ValueError("Either ``name`` or ``identifier`` must be given")
     # identifier rules if given
     if identifier:
@@ -31,6 +32,7 @@ def my_lookup_behavior_registration(
     try:
         return getUtility(IBehavior, name=name)
     except ComponentLookupError:
+        # pylint: disable=unused-variable
         for id_, behavior in getUtilitiesFor(IBehavior):
             # Before we raise an error, iterate over all behaviors and check
             # if the requested name is registered as a former dotted name.
@@ -48,6 +50,7 @@ def my_lookup_behavior_registration(
                     )
                 return behavior
 
+        # pylint: disable=raise-missing-from
         raise registration.BehaviorRegistrationNotFound(name)
 
 
