@@ -1,6 +1,5 @@
 """ patch transfor_links from plone.restapi"""
 # -*- coding: utf-8 -*-
-# from plone.restapi.deserializer import blocks as des_blocks
 import re
 from logging import getLogger
 
@@ -12,8 +11,18 @@ from plone.restapi.serializer import blocks as ser_blocks
 RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
 
 
+def is_url_in_portal(url):
+    """ check if the URL is in portal """
+    new_url, _ = uid_to_obj_url(url)
+    if url != new_url:
+        return True
+
+    return False
+
+
 def my_transform_links(context, value, transformer):
     """handle internal and external links"""
+
     data = value.get("data", {})
     if data.get("link", {}).get("internal", {}).get("internal_link"):
         internal_link = data["link"]["internal"]["internal_link"]
@@ -30,12 +39,21 @@ def my_transform_links(context, value, transformer):
                 link["@id"] = transformer(context, link["@id"])
 
     if data.get("link", {}).get("external", {}).get("external_link"):
-        external_link = data["link"]["external"]
-        if "target" not in external_link:
-            # Open external links by default in new tabs
-            # If they have some kind of target set manually
-            # we leave it as it is
-            external_link["target"] = "_blank"
+        url = data.get("link", {}).get("external", {}).get("external_link")
+        if is_url_in_portal(url):
+            new_url, _ = uid_to_obj_url(url)
+            del data["link"]["external"]
+            data["link"]["internal"] = {
+                "internal_link": new_url,
+            }
+
+        else:
+            external_link = data["link"]["external"]
+            if "target" not in external_link:
+                # Open external links by default in new tabs
+                # If they have some kind of target set manually
+                # we leave it as it is
+                external_link["target"] = "_blank"
 
 
 def my_uid_to_url(path):
