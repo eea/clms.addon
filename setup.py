@@ -49,7 +49,7 @@ setup(
         "setuptools",
         # -*- Extra requirements: -*-
         "pas.plugins.oidc",
-        "collective.taxonomy",
+        "collective.taxonomy<3.0",
         "plone.volto",
         "z3c.unconfigure",
         "plone.restapi",
