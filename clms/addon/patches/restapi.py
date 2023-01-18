@@ -19,6 +19,7 @@ def is_url_in_portal(url):
 
     return False
 
+
 def my_transform_links(context, value, transformer):
     """handle internal and external links"""
 
