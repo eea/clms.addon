@@ -8,6 +8,7 @@ from clms.addon.patches.restapi import (
     find_path_url_in_catalog,
     resolve_path_to_obj_url,
     uid_to_obj_url,
+    is_url_in_portal
 )
 from plone.app.testing import (
     TEST_USER_ID,
@@ -16,7 +17,7 @@ from plone.app.testing import (
 from plone import api
 
 
-class TestPaches(unittest.TestCase):
+class TestPatches(unittest.TestCase):
     """some tests for the restapi link handling patches"""
 
     layer = CLMS_ADDON_INTEGRATION_TESTING
@@ -178,3 +179,30 @@ class TestPaches(unittest.TestCase):
         url, download = uid_to_obj_url(path)
         self.assertEqual(path, url)
         self.assertFalse(download)
+
+    def test_portal_url_in_portal(self):
+        """ test with portal url"""
+        url = self.portal_url
+        self.assertTrue(is_url_in_portal(url))
+
+    def test_portal_url_with_api_in_portal(self):
+        """ test with portal url"""
+        url = f"{self.portal_url}/api/en"
+        self.assertTrue(is_url_in_portal(url))
+
+
+    def test_internal_url_in_portal(self):
+        """ test with portal url"""
+        url = f"{self.portal_url}/en"
+        self.assertTrue(is_url_in_portal(url))
+
+    def test_internal_url_with_api_in_portal(self):
+        """ test with portal url"""
+        url = f"{self.portal_url}/api/en"
+        self.assertTrue(is_url_in_portal(url))
+
+
+    def test_external_url_with_api_in_portal(self):
+        """ test with external url"""
+        url = "http://www.google.com"
+        self.assertFalse(is_url_in_portal(url))
