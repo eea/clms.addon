@@ -78,12 +78,8 @@ class DownloadableLinkFilter:
             # an 'a' anchor element has no href
             if not href:
                 continue
-            if (
-                not href.startswith("mailto<")
-                and not href.startswith("mailto:")
-                and not href.startswith("tel:")
-                and not href.startswith("#")
-            ):
+            # pylint: disable=line-too-long
+            if (not href.startswith("mailto<") and not href.startswith("mailto:") and not href.startswith("tel:") and not href.startswith("#")):  # noqa
                 attributes["href"] = self._render_internal_link(href)
         return six.text_type(soup)
 
@@ -106,7 +102,9 @@ class DownloadableLinkFilter:
         return None, "", ""
 
     def _render_internal_link(self, href):
-        """check whether the link is of a portal item and if so render the proper link"""
+        """check whether the link is of a portal item and if so render
+           the proper link
+        """
         url_parts = urlsplit(href)
         path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
         obj, subpath, appendix = self.resolve_link(path_parts)
