@@ -17,5 +17,6 @@
   <include package=".utilities" />
   <include package=".contentrules" />
   <include package=".patches" />
+  <include package=".adapters" />
 
 </configure>
