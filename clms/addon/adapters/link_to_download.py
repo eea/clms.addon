@@ -54,18 +54,15 @@ class DownloadableLinkFilter:
 
     def is_enabled(self):
         """return whether it is enabled"""
-        if self.context is None:
-            return False
-        else:
-            return True
+        return self.context is not None
 
     def _shorttag_replace(self, match):
         """replace short tags"""
         tag = match.group(1)
         if tag in self.singleton_tags:
             return "<" + tag + " />"
-        else:
-            return "<" + tag + "></" + tag + ">"
+
+        return "<" + tag + "></" + tag + ">"
 
     def __call__(self, data):
         """filter implementation"""
