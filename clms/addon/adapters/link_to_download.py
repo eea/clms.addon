@@ -91,12 +91,12 @@ class DownloadableLinkFilter:
         try:
             item = portal.restrictedTraverse(href)
             if item:
-                return item, "", ""
+                return item
         except KeyError:
 
             log = getLogger(__name__)
             log.info("Item does not exist in portal: %s", href)
-        return None, "", ""
+        return None
 
     def _render_internal_link(self, href):
         """check whether the link is of a portal item and if so render
@@ -104,7 +104,7 @@ class DownloadableLinkFilter:
         """
         url_parts = urlsplit(href)
         path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
-        obj, subpath, appendix = self.resolve_link(path_parts)
+        obj = self.resolve_link(path_parts)
         if obj is not None:
             # pylint: disable=line-too-long
             if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
