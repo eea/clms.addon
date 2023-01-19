@@ -3,16 +3,16 @@ Filter to render some internal links as download links
 """
 # -*- coding: utf-8 -*-
 from logging import getLogger
-from plone import api
-from plone.outputfilters.interfaces import IFilter
 
-from zope.interface import implementer
-from bs4 import BeautifulSoup
-from Products.CMFPlone.utils import safe_unicode
 import re
 import six
-from six.moves.urllib.parse import urlsplit
-from six.moves.urllib.parse import urlunsplit
+
+from bs4 import BeautifulSoup
+from plone import api
+from plone.outputfilters.interfaces import IFilter
+from Products.CMFPlone.utils import safe_unicode
+from six.moves.urllib.parse import urlsplit, urlunsplit
+from zope.interface import implementer
 
 
 @implementer(IFilter)
