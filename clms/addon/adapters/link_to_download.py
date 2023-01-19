@@ -13,6 +13,7 @@ from plone.outputfilters.interfaces import IFilter
 from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlsplit, urlunsplit
 from zope.interface import implementer
+from zExceptions import NotFound
 
 
 @implementer(IFilter)
@@ -93,6 +94,10 @@ class DownloadableLinkFilter:
             if item:
                 return item
         except KeyError:
+
+            log = getLogger(__name__)
+            log.info("Item does not exist in portal: %s", href)
+        except NotFound:
 
             log = getLogger(__name__)
             log.info("Item does not exist in portal: %s", href)
