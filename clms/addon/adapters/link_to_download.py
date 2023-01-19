@@ -94,11 +94,9 @@ class DownloadableLinkFilter:
             if item:
                 return item
         except KeyError:
-
             log = getLogger(__name__)
             log.info("Item does not exist in portal: %s", href)
         except NotFound:
-
             log = getLogger(__name__)
             log.info("Item does not exist in portal: %s", href)
         return None
