@@ -5,8 +5,10 @@ Changelog
 ---------------------------
 * Change: whitespace [erral]
 
-6.6-dev0 - (unreleased)
+6.6 - (2023-01-19)
 ---------------------------
+* Change: whitespace
+  [erral]
 
 6.5 - (2023-01-18)
 ---------------------------
