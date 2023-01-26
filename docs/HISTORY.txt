@@ -1,13 +1,19 @@
 Changelog
 =========
 
-6.6 - (2023-01-26)
+
+6.8 - (2023-01-26)
 ---------------------------
 * Change: remove unneeded endpoint [erral]
 
-6.6 - (2023-01-26)
+6.7 - (2023-01-19)
 ---------------------------
-* Change: remove unneeded endpoint
+* Change: whitespace [erral]
+
+6.6 - (2023-01-19)
+---------------------------
+
+* Change: Develop
   [erral]
 
 6.5 - (2023-01-18)
