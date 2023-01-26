@@ -5,8 +5,10 @@ Changelog
 ---------------------------
 * Change: remove unneeded endpoint [erral]
 
-6.6-dev0 - (unreleased)
+6.6 - (2023-01-26)
 ---------------------------
+* Change: remove unneeded endpoint
+  [erral]
 
 6.5 - (2023-01-18)
 ---------------------------
