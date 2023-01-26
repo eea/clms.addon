@@ -7,7 +7,6 @@
 
   <include package=".login_url_controlpanel"  />
   <include package=".registry_endpoint"/>
-  <include package=".userschema"/>
   <include package=".cart_dataset_search"/>
   <include package=".notification_subscription"/>
   <include package=".notifications_controlpanel"/>
