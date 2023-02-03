@@ -106,7 +106,8 @@ class DownloadableLinkFilter:
         the proper link
         """
         url_parts = urlsplit(href)
-        if url_parts.netloc in [CLMS_DOMAINS]:
+        # pylint: disable=line-too-long
+        if url_parts.netloc and url_parts.netloc in [CLMS_DOMAINS] or not url_parts.netloc:  # noqa
             path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
             obj = self.resolve_link(path_parts)
             if obj is not None:
