@@ -111,10 +111,7 @@ class DownloadableLinkFilter:
             obj = self.resolve_link(path_parts)
             if obj is not None:
                 # pylint: disable=line-too-long
-                if (
-                    hasattr(obj, "portal_type")
-                    and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES
-                ):  # noqa
+                if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
                     return f"{obj.absolute_url()}/@@download/file"
 
                 return obj.absolute_url()
