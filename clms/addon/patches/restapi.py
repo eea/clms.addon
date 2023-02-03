@@ -12,7 +12,7 @@ RESOLVEUID_RE = re.compile("^[./]*resolve[Uu]id/([^/]*)/?(.*)$")
 
 
 def is_url_in_portal(url):
-    """ check if the URL is in portal """
+    """check if the URL is in portal"""
     new_url, _ = uid_to_obj_url(url)
     if url != new_url:
         return True
@@ -43,8 +43,11 @@ def my_transform_links(context, value, transformer):
         if is_url_in_portal(url):
             new_url, _ = uid_to_obj_url(url)
             del data["link"]["external"]
+            # data["link"]["internal"] = {
+            #     "internal_link": new_url,
+            # }
             data["link"]["internal"] = {
-                "internal_link": new_url,
+                "internal_link": [{"@id": new_url, "title": new_url}],
             }
 
         else:
