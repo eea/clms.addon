@@ -2,18 +2,18 @@
 Filter to render some internal links as download links
 """
 # -*- coding: utf-8 -*-
+import re
 from logging import getLogger
 
-import re
 import six
-
 from bs4 import BeautifulSoup
+from clms.addon.utils import CLMS_DOMAINS
 from plone import api
 from plone.outputfilters.interfaces import IFilter
 from Products.CMFPlone.utils import safe_unicode
 from six.moves.urllib.parse import urlsplit, urlunsplit
-from zope.interface import implementer
 from zExceptions import NotFound
+from zope.interface import implementer
 
 
 @implementer(IFilter)
@@ -103,16 +103,18 @@ class DownloadableLinkFilter:
 
     def _render_internal_link(self, href):
         """check whether the link is of a portal item and if so render
-           the proper link
+        the proper link
         """
         url_parts = urlsplit(href)
-        path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
-        obj = self.resolve_link(path_parts)
-        if obj is not None:
-            # pylint: disable=line-too-long
-            if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
-                return f"{obj.absolute_url()}/@@download/file"
+        # pylint: disable=line-too-long
+        if url_parts.netloc and url_parts.netloc in [CLMS_DOMAINS] or not url_parts.netloc:  # noqa
+            path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
+            obj = self.resolve_link(path_parts)
+            if obj is not None:
+                # pylint: disable=line-too-long
+                if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
+                    return f"{obj.absolute_url()}/@@download/file"
 
-            return obj.absolute_url()
+                return obj.absolute_url()
 
         return href
