@@ -2,13 +2,13 @@
   xmlns="http://namespaces.zope.org/zope"
   i18n_domain="clms.addon">
 
-  <adapter
+  <!-- <adapter
     provides="plone.outputfilters.interfaces.IFilter"
     name="file_and_technical_library_links"
     for="* *"
     factory=".link_to_download.DownloadableLinkFilter"
     />
-
+ -->
 
 
 
