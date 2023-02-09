@@ -3,22 +3,21 @@ Filter to render some internal links as download links
 """
 # -*- coding: utf-8 -*-
 import re
-from logging import getLogger
 
 import six
 from bs4 import BeautifulSoup
 from clms.addon.utils import CLMS_DOMAINS
-from plone import api
 from plone.outputfilters.interfaces import IFilter
 from Products.CMFPlone.utils import safe_unicode
-from six.moves.urllib.parse import urlsplit, urlunsplit
-from zExceptions import NotFound
+from six.moves.urllib.parse import urlsplit
 from zope.interface import implementer
 
 
 @implementer(IFilter)
-class DownloadableLinkFilter:
-    """adapter implementation"""
+class ExternalLinkNewWindowFilter:
+    """adapter implementation. This should catch all external links and
+    configure them to open in new window if they are not otherwise configured
+    """
 
     def __init__(self, context=None, request=None):
         """initializer"""
@@ -27,7 +26,7 @@ class DownloadableLinkFilter:
         self.request = request
 
     # IFilter implementation
-    order = 900
+    order = 950
     DOWNLOADABLE_PORTAL_TYPES = ["TechnicalLibrary", "File"]
     singleton_tags = set(
         [
@@ -76,45 +75,19 @@ class DownloadableLinkFilter:
             # an 'a' anchor element has no href
             if not href:
                 continue
-            # pylint: disable=line-too-long
-            if (not href.startswith("mailto<") and not href.startswith("mailto:") and not href.startswith("tel:") and not href.startswith("#")):  # noqa
-                attributes["href"] = self._render_internal_link(href)
+
+            if self.is_external_link(href):
+                target = attributes.get("target")
+                if target is None:
+                    attributes["target"] = "_blank"
+
         return six.text_type(soup)
 
-    def resolve_link(self, href):
-        """resolve a link into a Plone object"""
-
-        portal = api.portal.get()
-
-        if href.startswith("/"):
-            href = href[1:]
-
-        try:
-            item = portal.restrictedTraverse(href)
-            if item:
-                return item
-        except KeyError:
-            log = getLogger(__name__)
-            log.info("Item does not exist in portal: %s", href)
-        except NotFound:
-            log = getLogger(__name__)
-            log.info("Item does not exist in portal: %s", href)
-        return None
-
-    def _render_internal_link(self, href):
-        """check whether the link is of a portal item and if so render
-        the proper link
-        """
-        url_parts = urlsplit(href)
+    def is_external_link(self, url):
+        """ check if this url is external """
+        url_parts = urlsplit(url)
         # pylint: disable=line-too-long
         if url_parts.hostname and url_parts.hostname in CLMS_DOMAINS or not url_parts.hostname:  # noqa
-            path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
-            obj = self.resolve_link(path_parts)
-            if obj is not None:
-                # pylint: disable=line-too-long
-                if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
-                    return f"{obj.absolute_url()}/@@download/file"
+            return False
 
-                return obj.absolute_url()
-
-        return href
+        return True
