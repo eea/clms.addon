@@ -2,28 +2,32 @@
 testing basics
 """
 # -*- coding: utf-8 -*-
+import clms.addon
+import collective.MockMailHost
 from plone.app.contenttypes.testing import PLONE_APP_CONTENTTYPES_FIXTURE
 from plone.app.robotframework.testing import REMOTE_LIBRARY_BUNDLE_FIXTURE
 from plone.app.testing import (
-    applyProfile,
+    SITE_OWNER_NAME,
+    SITE_OWNER_PASSWORD,
+    TEST_USER_ID,
     FunctionalTesting,
     IntegrationTesting,
     PloneSandboxLayer,
+    applyProfile,
+    login,
     quickInstallProduct,
+    setRoles,
 )
 from plone.testing.zope import WSGI_SERVER_FIXTURE
 
-import clms.addon
-import collective.MockMailHost
-
 
 class ClmsAddonLayer(PloneSandboxLayer):
-    """ base layer"""
+    """base layer"""
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
-        """ setup zope """
+        """setup zope"""
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
@@ -35,7 +39,12 @@ class ClmsAddonLayer(PloneSandboxLayer):
         self.loadZCML(package=collective.MockMailHost)
 
     def setUpPloneSite(self, portal):
-        """ setup Plone site"""
+        """setup Plone site"""
+        portal.acl_users.userFolderAddUser(
+            SITE_OWNER_NAME, SITE_OWNER_PASSWORD, ["Manager"], []
+        )
+        login(portal, SITE_OWNER_NAME)
+        setRoles(portal, TEST_USER_ID, ["Manager"])
         applyProfile(portal, "clms.addon:default")
         quickInstallProduct(portal, "collective.MockMailHost")
         applyProfile(portal, "collective.MockMailHost:default")
