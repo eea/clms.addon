@@ -1,0 +1,17 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    i18n_domain="clms.addon"
+    >
+
+
+  <adapter
+      factory=".resolveuid_and_caption.ResolveUIDAndCaptionFilter"
+      provides="plone.outputfilters.interfaces.IFilter"
+      for="*
+           *"
+      name="resolveuid_and_caption"
+      />
+
+</configure>

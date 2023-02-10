@@ -54,8 +54,13 @@ class DownloadableLinkFilter:
     )
 
     def is_enabled(self):
-        """return whether it is enabled"""
-        return self.context is not None
+        """return whether it is enabled. Enable only for users
+        that can't modify the context
+        """
+        return not api.user.has_permission(
+            "cmf.ModifyPortalContent",
+            obj=self.context,
+        )
 
     def _shorttag_replace(self, match):
         """replace short tags"""
@@ -77,7 +82,12 @@ class DownloadableLinkFilter:
             if not href:
                 continue
             # pylint: disable=line-too-long
-            if (not href.startswith("mailto<") and not href.startswith("mailto:") and not href.startswith("tel:") and not href.startswith("#")):  # noqa
+            if (
+                not href.startswith("mailto<")
+                and not href.startswith("mailto:")
+                and not href.startswith("tel:")
+                and not href.startswith("#")
+            ):  # noqa
                 attributes["href"] = self._render_internal_link(href)
         return six.text_type(soup)
 
@@ -107,12 +117,19 @@ class DownloadableLinkFilter:
         """
         url_parts = urlsplit(href)
         # pylint: disable=line-too-long
-        if url_parts.hostname and url_parts.hostname in CLMS_DOMAINS or not url_parts.hostname:  # noqa
+        if (
+            url_parts.hostname
+            and url_parts.hostname in CLMS_DOMAINS
+            or not url_parts.hostname
+        ):  # noqa
             path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
             obj = self.resolve_link(path_parts)
             if obj is not None:
                 # pylint: disable=line-too-long
-                if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
+                if (
+                    hasattr(obj, "portal_type")
+                    and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES
+                ):  # noqa
                     return f"{obj.absolute_url()}/@@download/file"
 
                 return obj.absolute_url()
