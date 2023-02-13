@@ -14,8 +14,6 @@ from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from zope.interface import alsoProvides
 
-from logging import getLogger
-
 
 class CallbackView(BaseCallbackView):
     """Callback view"""
@@ -43,8 +41,7 @@ class LoginView(BaseLoginView):
             self.request.response.setHeader(
                 "Cache-Control", "no-cache, must-revalidate"
             )
-            self.request.response.redirect("/")
-            return
+            return self.request.response.redirect("/")
 
 
 class MyCallBack(BrowserView):
