@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
+from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
 from pas.plugins.oidc.browser.view import Session
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
@@ -22,6 +23,25 @@ class CallbackView(BaseCallbackView):
         the user will be logged in and we can check the last login time
         """
         return "{}/my-custom-callback".format(self.context.absolute_url())
+
+
+class LoginView(BaseLoginView):
+    """Override of Login view to avoid Timeout and other errors from EU Login
+    services
+    """
+
+    def __call__(self):
+        """custom __call__ method"""
+        try:
+            return super().__call__()
+        except Exception as e:
+            log = getLogger(__name__)
+            log.info("There was an error handling the login process")
+            log.exception(e)
+            self.request.response.setHeader(
+                "Cache-Control", "no-cache, must-revalidate"
+            )
+            return self.request.response.redirect("/")
 
 
 class MyCallBack(BrowserView):

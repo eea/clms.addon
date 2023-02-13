@@ -1,20 +1,28 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:browser="http://namespaces.zope.org/browser"
-  i18n_domain="clms">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="clms"
+    >
 
   <browser:page
-      for="pas.plugins.oidc.plugins.IOIDCPlugin"
       name="callback"
+      for="pas.plugins.oidc.plugins.IOIDCPlugin"
       class=".loginview.CallbackView"
       permission="zope2.View"
       layer="pas.plugins.oidc.interfaces.IPasPluginsOidcLayer"
       />
 
-  
   <browser:page
-      for="*"
+      name="login"
+      for="pas.plugins.oidc.plugins.IOIDCPlugin"
+      class=".loginview.LoginView"
+      permission="zope2.View"
+      layer="pas.plugins.oidc.interfaces.IPasPluginsOidcLayer"
+      />
+
+  <browser:page
       name="send_mail_template"
+      for="*"
       template="send_mail_template.pt"
       permission="zope2.View"
       />
