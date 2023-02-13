@@ -18,5 +18,6 @@
   <include package=".contentrules" />
   <include package=".patches" />
   <include package=".adapters" />
+  <include package=".subscribers" />
 
 </configure>
