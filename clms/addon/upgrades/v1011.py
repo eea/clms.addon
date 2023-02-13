@@ -58,7 +58,7 @@ def path2title(context, link):
     context_url = context.absolute_url()
     relative_up = len(context_url.split("/")) - len(portal_url.split("/"))
     if path.startswith(portal_url):
-        path = path[len(portal_url) + 1 :]
+        path = path[len(portal_url)+1:]
     if not path.startswith(portal_path):
         path = "{portal_path}/{path}".format(
             portal_path=portal_path, path=path.lstrip("/")
@@ -178,7 +178,8 @@ def transform_internal_links_to_uid(context, value):
         for internal_link in internal_links:
             internal_link_url = internal_link.get("@id")
             if internal_link_url.find("resolveuid") == -1:
-                # it doesn't contain the resolveuid marker, we have to convert it.
+                # it doesn't contain the resolveuid marker,
+                # we have to convert it.
                 if is_url_in_portal(internal_link_url):
                     internal_link_url_without_domain = remove_domain(
                         internal_link_url
@@ -278,13 +279,7 @@ def upgrade_links():
     for brain in brains:
         obj = brain.getObject()
         if IBlocks.providedBy(obj):
-            status = upgrade_links_in_object(brain.getObject())
-            # if status is OK:
-            #     logger.info(
-            #         f"{green}Correctly upgraded:{reset} %s", brain.getURL()
-            #     )
-            # else:
-            #     logger.info(f"{green}NOT UPGRADED:{reset} %s", brain.getURL())
+            upgrade_links_in_object(brain.getObject())
 
     sm = getGlobalSiteManager()
     sm.adapters.unsubscribe(
