@@ -1,35 +1,23 @@
 """ upgrade step implementation """
 # -*- coding: utf-8 -*-
-from Acquisition import aq_parent
-from plone.uuid.interfaces import IUUID
-from plone.uuid.interfaces import IUUIDAware
-from zope.component import getMultiAdapter
-
 import json
 from logging import getLogger
 from urllib.parse import urlparse
 
+from Acquisition import aq_parent
+from clms.addon.utils import CLMS_DOMAINS
 from plone import api
 from plone.restapi.behaviors import IBlocks
-from plone.restapi.deserializer.blocks import (
-    SlateBlockTransformer,
-    iterate_children,
-)
+from plone.restapi.deserializer.blocks import SlateBlockTransformer
 from plone.restapi.deserializer.utils import path2uid
-from plone.restapi.interfaces import (
-    IBlockFieldDeserializationTransformer,
-    IDeserializeFromJson,
-)
-from zope.component import (
-    adapter,
-    getGlobalSiteManager,
-    getMultiAdapter,
-    provideSubscriptionAdapter,
-)
+from plone.restapi.interfaces import (IBlockFieldDeserializationTransformer,
+                                      IDeserializeFromJson)
+from plone.uuid.interfaces import IUUIDAware
+from zope.component import (adapter, getGlobalSiteManager, getMultiAdapter,
+                            provideSubscriptionAdapter)
 from zope.globalrequest import getRequest
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-from clms.addon.utils import CLMS_DOMAINS
 
 logger = getLogger(__name__)
 

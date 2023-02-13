@@ -1,24 +1,13 @@
 """ tesst for specific slate block serializer"""
 # -*- coding: utf-8 -*-
-from plone.dexterity.interfaces import IDexterityFTI
-from plone.dexterity.interfaces import IDexterityItem
-from plone.dexterity.utils import iterSchemata
-from plone.restapi.behaviors import IBlocks
-from plone.restapi.interfaces import IBlockFieldSerializationTransformer
-from plone.restapi.interfaces import IFieldSerializer
-from plone.uuid.interfaces import IUUID
-from z3c.form.interfaces import IDataManager
-from zope.component import adapter
-from zope.component import getGlobalSiteManager
-from zope.component import getMultiAdapter
-from zope.component import provideSubscriptionAdapter
-from zope.component import queryUtility
-from zope.interface import implementer
-from zope.publisher.interfaces.browser import IBrowserRequest
+import unittest
 
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
-
-import unittest
+from plone.dexterity.interfaces import IDexterityFTI
+from plone.dexterity.utils import iterSchemata
+from plone.restapi.interfaces import IFieldSerializer
+from z3c.form.interfaces import IDataManager
+from zope.component import getMultiAdapter, queryUtility
 
 
 class TextSlateExternalLinkBlockSerializerBase(unittest.TestCase):
