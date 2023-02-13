@@ -11,9 +11,12 @@ from zope.component import getMultiAdapter, queryUtility
 
 
 class TextSlateExternalLinkBlockSerializerBase(unittest.TestCase):
+    """ test case for external link block serializer transformer"""
+
     layer = CLMS_ADDON_INTEGRATION_TESTING
 
     def setUp(self):
+        """ setup tests"""
         self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.request = self.layer["request"]
@@ -31,6 +34,7 @@ class TextSlateExternalLinkBlockSerializerBase(unittest.TestCase):
         ]
 
     def serialize(self, context, blocks):
+        """ utility method to serialize block"""
         fieldname = "blocks"
         field = None
         for schema in iterSchemata(context):

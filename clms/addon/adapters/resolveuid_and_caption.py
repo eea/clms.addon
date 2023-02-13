@@ -12,7 +12,11 @@ from six.moves.urllib.parse import urljoin, urlsplit, urlunsplit
 
 
 class ResolveUIDAndCaptionFilter(Base):
+    """ Filter that resolves resolveuid-like links, and leaves
+        the rest as they are
+    """
     def _render_resolveuid(self, href):
+        """ resolve the uid into a path """
         url_parts = urlsplit(href)
         scheme = url_parts[0]
         path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
