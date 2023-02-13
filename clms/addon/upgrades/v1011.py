@@ -25,12 +25,6 @@ OK = 1
 ERROR = 2
 
 
-green = "\033[32m"
-red = "\033[31m"
-
-reset = "\033[0m"
-
-
 def path2title(context, link):
     """use the origina path2uid to get the objects Title"""
     # unrestrictedTraverse requires a string on py3. see:
@@ -132,7 +126,7 @@ def transform_external_links(context, value):
                 }
                 del data["link"]["external"]
                 logger.info(
-                    f"{green}%s. External -> internal:{reset} %s -> %s",
+                    "%s. External -> internal: %s -> %s",
                     context.absolute_url(),
                     external_link,
                     uid_link,
@@ -140,7 +134,7 @@ def transform_external_links(context, value):
 
         if "url" in value:
             logger.info(
-                f"{green}%s. Remove wrong url:{reset} %s ",
+                "%s. Remove wrong url:%s ",
                 context.absolute_url(),
                 value["url"],
             )
@@ -254,6 +248,7 @@ def upgrade_links_in_object(item):
         deserialize(blocks=item.blocks, context=item)
         return OK
     except Exception as e:
+        logger.info(e)
         return ERROR
 
 
