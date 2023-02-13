@@ -7,11 +7,14 @@ from urllib.parse import urlparse
 
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
+from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
 from pas.plugins.oidc.browser.view import Session
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from zope.interface import alsoProvides
+
+from logging import getLogger
 
 
 class CallbackView(BaseCallbackView):
@@ -22,6 +25,26 @@ class CallbackView(BaseCallbackView):
         the user will be logged in and we can check the last login time
         """
         return "{}/my-custom-callback".format(self.context.absolute_url())
+
+
+class LoginView(BaseLoginView):
+    """Override of Login view to avoid Timeout and other errors from EU Login
+    services
+    """
+
+    def __call__(self):
+        """custom __call__ method"""
+        try:
+            return super().__call__()
+        except Exception as e:
+            log = getLogger(__name__)
+            log.info("There was an error handling the login process")
+            log.exception(e)
+            self.request.response.setHeader(
+                "Cache-Control", "no-cache, must-revalidate"
+            )
+            self.request.response.redirect("/")
+            return
 
 
 class MyCallBack(BrowserView):
@@ -81,7 +104,12 @@ class MyCallBack(BrowserView):
 
                     if came_from:
                         # pylint: disable=line-too-long
-                        if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
+                        if (
+                            came_from.startswith("http")
+                            and portal_url.isURLInPortal(came_from)
+                            or same_domain(portal_url(), came_from)
+                            or not came_from.startswith("http")
+                        ):  # noqa: E501
                             redirect_url = came_from
 
         return self.request.response.redirect(redirect_url, status=302)
