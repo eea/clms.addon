@@ -1,6 +1,5 @@
 """ transformers for slateTable blocks"""
 # -*- coding: utf-8 -*-
-from collections import deque
 from logging import getLogger
 
 from plone.restapi.behaviors import IBlocks

@@ -94,7 +94,6 @@ def transform_external_links(context, value):
     data = value.get("data", {})
     if data.get("link", {}).get("external", {}).get("external_link"):
         external_link = data["link"]["external"]["external_link"]
-        # logger.info(f"{green}External link{reset}: %s", external_link)
         explicit_target = data["link"]["external"].get("target", None)
         # If an external link that points to the current portal has an explicit
         # target, means that it has been entered on purpose as external to be
@@ -177,9 +176,6 @@ def transform_internal_links_to_uid(context, value):
                             "/@@download/file", ""
                         )
                     )
-                    import pdb
-
-                    pdb.set_trace()
                     if internal_link_url_without_domain.startswith("//"):
                         internal_link_url_without_domain = (
                             internal_link_url_without_domain.replace("//", "/")
@@ -203,7 +199,7 @@ def transform_internal_links_to_uid(context, value):
                     )
 
                     logger.info(
-                        f"{green}%s. External -> internal:{reset} %s -> %s",
+                        "%s. External -> internal: %s -> %s",
                         context.absolute_url(),
                         internal_link_url,
                         uid_link,
