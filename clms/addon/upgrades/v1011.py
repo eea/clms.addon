@@ -43,8 +43,6 @@ def path2title(context, link):
     portal_url = portal.portal_url()
     portal_path = "/".join(portal.getPhysicalPath())
     path = link
-    context_url = context.absolute_url()
-    relative_up = len(context_url.split("/")) - len(portal_url.split("/"))
     if path.startswith(portal_url):
         path = path[len(portal_url)+1:]
     if not path.startswith(portal_path):
@@ -242,6 +240,7 @@ class SlateBlockExternalLinkDetector(SlateBlockTransformer):
 
 
 def deserialize(blocks=None, validate_all=False, context=None):
+    """ utility function to deserialize block JSON into an object"""
     blocks = blocks or ""
     request = getRequest()
     request["BODY"] = json.dumps({"blocks": blocks})
@@ -250,6 +249,7 @@ def deserialize(blocks=None, validate_all=False, context=None):
 
 
 def upgrade_links_in_object(item):
+    """ function to upgrade links in an object"""
     try:
         deserialize(blocks=item.blocks, context=item)
         return OK
@@ -258,6 +258,7 @@ def upgrade_links_in_object(item):
 
 
 def upgrade_links():
+    """ function to upgrade links in all IBlocks enabled content """
     provideSubscriptionAdapter(
         SlateBlockExternalLinkDetector,
         (IBlocks, IBrowserRequest),
