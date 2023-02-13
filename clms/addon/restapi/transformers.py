@@ -1,27 +1,15 @@
 """ transformers for slateTable blocks"""
 # -*- coding: utf-8 -*-
-from collections import deque
+from logging import getLogger
 
 from plone.restapi.behaviors import IBlocks
+from plone.restapi.deserializer.blocks import iterate_children
 from plone.restapi.interfaces import IBlockFieldSerializationTransformer
 from plone.restapi.serializer.blocks import SlateBlockSerializerBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-
-
-def iterate_children(value):
-    """iterate_children.
-
-    :param value:
-    """
-    queue = deque(value)
-    while queue:
-        child = queue.pop()
-        yield child
-        if child.get("children"):
-            queue.extend(child["children"] or [])
 
 
 class SlateTableBlockSerializerBase(SlateBlockSerializerBase):
@@ -58,4 +46,62 @@ class SlateTableBlockSerializer(SlateTableBlockSerializerBase):
 @implementer(IBlockFieldSerializationTransformer)
 @adapter(IPloneSiteRoot, IBrowserRequest)
 class SlateTableBlockSerializerRoot(SlateTableBlockSerializerBase):
+    """Serializer for site root"""
+
+
+class SlateExternalLinkBlockSerializerBase:
+    """Slate block serializer to handle external links that are not
+    explicitely marked to be opened in a given target.
+
+    They will be modified here to be opened in a new window
+    """
+
+    field = "value"
+    order = 200
+    block_type = "slate"
+
+    log = getLogger(__name__)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, block):
+        """execute the serializer"""
+        value = (block or {}).get(self.field, [])
+        children = iterate_children(value or [])
+
+        for child in children:
+            node_type = child.get("type")
+            if node_type == "a":
+                external = (
+                    child.get("data", {}).get("link", {}).get("external", {})
+                )
+                if external:
+                    # Check if it has an explicit target
+                    target = external.get("target", None)
+                    if target is None:
+                        # It has no explicit target, mark it to be
+                        # opened in a new window with target=_blank
+                        child["data"]["link"]["external"]["target"] = "_blank"
+
+                        self.log.info(
+                            "Link converted to target=_blank: %s",
+                            child["data"]["link"]["external"]["external_link"],
+                        )
+
+        return block
+
+
+@implementer(IBlockFieldSerializationTransformer)
+@adapter(IBlocks, IBrowserRequest)
+class SlateExternalLinkBlockSerializer(SlateExternalLinkBlockSerializerBase):
+    """Serializer for content-types with IBlocks behavior"""
+
+
+@implementer(IBlockFieldSerializationTransformer)
+@adapter(IPloneSiteRoot, IBrowserRequest)
+class SlateExternalLinkBlockSerializerRoot(
+    SlateExternalLinkBlockSerializerBase
+):
     """Serializer for site root"""

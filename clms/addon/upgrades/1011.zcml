@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:registerProfile
+      name="1011"
+      title="Upgrade links"
+      description="Configuration for version 1011"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      directory="1011"
+      />
+
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1010"
+      destination="1011"
+      >
+
+    <gs:upgradeStep
+        title="Upgrade links"
+        description="Configuration for version 1011"
+        handler=".v1011.upgrade"
+        />
+
+    <gs:upgradeDepends
+        title="Upgrade links (GS profile)"
+        description="Configuration for version 1011"
+        import_profile="clms.addon.upgrades:1011"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>

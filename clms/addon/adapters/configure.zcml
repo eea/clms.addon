@@ -1,14 +1,25 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  i18n_domain="clms.addon">
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="clms.addon"
+    >
 
-  <!-- <adapter
-    provides="plone.outputfilters.interfaces.IFilter"
-    name="file_and_technical_library_links"
-    for="* *"
-    factory=".link_to_download.DownloadableLinkFilter"
-    />
- -->
+  <adapter
+      factory=".link_to_download.DownloadableLinkFilter"
+      provides="plone.outputfilters.interfaces.IFilter"
+      for="*
+           *"
+      name="file_and_technical_library_links"
+      />
+
+
+  <adapter
+      factory=".external_link_new_window.ExternalLinkNewWindowFilter"
+      provides="plone.outputfilters.interfaces.IFilter"
+      for="*
+           *"
+      name="external_links_in_new_window"
+      />
+
 
 
 

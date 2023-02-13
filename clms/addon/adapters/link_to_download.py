@@ -54,8 +54,13 @@ class DownloadableLinkFilter:
     )
 
     def is_enabled(self):
-        """return whether it is enabled"""
-        return self.context is not None
+        """return whether it is enabled. Enable only for users
+        that can't modify the context
+        """
+        return not api.user.has_permission(
+            "cmf.ModifyPortalContent",
+            obj=self.context,
+        )
 
     def _shorttag_replace(self, match):
         """replace short tags"""
@@ -107,7 +112,7 @@ class DownloadableLinkFilter:
         """
         url_parts = urlsplit(href)
         # pylint: disable=line-too-long
-        if url_parts.netloc and url_parts.netloc in CLMS_DOMAINS or not url_parts.netloc:  # noqa
+        if (url_parts.hostname and url_parts.hostname in CLMS_DOMAINS or not url_parts.hostname):  # noqa
             path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
             obj = self.resolve_link(path_parts)
             if obj is not None:
