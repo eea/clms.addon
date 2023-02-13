@@ -5,10 +5,8 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from plone import api
-
-from plone.outputfilters.filters.resolveuid_and_caption import (
-    ResolveUIDAndCaptionFilter as Base,
-)
+from plone.outputfilters.filters.resolveuid_and_caption import \
+    ResolveUIDAndCaptionFilter as Base
 from plone.outputfilters.filters.resolveuid_and_caption import resolveuid_re
 from six.moves.urllib.parse import urljoin, urlsplit, urlunsplit
 
@@ -24,11 +22,8 @@ class ResolveUIDAndCaptionFilter(Base):
             if subpath:
                 href += "/" + subpath
             href += appendix
-        elif (
-            resolveuid_re.match(href) is None
-            and not scheme
-            and not href.startswith("/")
-        ):
+        # pylint: disable=line-too-long
+        elif (resolveuid_re.match(href) is None and not scheme and not href.startswith("/")):  # noqa
             # absolutize relative URIs; this text isn't necessarily
             # being rendered in the context where it was stored
             relative_root = self.context

@@ -112,11 +112,7 @@ class DownloadableLinkFilter:
         """
         url_parts = urlsplit(href)
         # pylint: disable=line-too-long
-        if (
-            url_parts.hostname
-            and url_parts.hostname in CLMS_DOMAINS
-            or not url_parts.hostname
-        ):  # noqa
+        if (url_parts.hostname and url_parts.hostname in CLMS_DOMAINS or not url_parts.hostname):  # noqa
             path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
             obj = self.resolve_link(path_parts)
             if obj is not None:
