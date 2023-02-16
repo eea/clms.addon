@@ -1,13 +1,12 @@
 """ Subscriber to set expiration date of the 'public' folder
     that is automatically created in Meetings
 """
-import datetime
 from logging import getLogger
 
 from Acquisition import aq_parent
+from DateTime import DateTime
 from zope.event import notify
 from zope.lifecycleevent import ObjectModifiedEvent
-from DateTime import DateTime
 
 
 def set_folder_expired(context, event):
