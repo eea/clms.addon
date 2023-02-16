@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="eea"
+    >
+
+  <subscriber
+      for="plone.app.contenttypes.interfaces.IDocument
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".hide_public_folder_in_events.set_folder_expired"
+      />
+
+  <subscriber
+      for="plone.app.contenttypes.interfaces.IFolder
+           zope.lifecycleevent.interfaces.IObjectAddedEvent"
+      handler=".hide_public_folder_in_events.set_folder_expired"
+      />
+
+
+
+
+</configure>
