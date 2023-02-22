@@ -115,6 +115,8 @@ class SlateExternalLinkBlockSerializerRoot(
 
 
 class SlateTableBlockTransformer(SlateBlockTransformer):
+    """Salte table block transformer base"""
+
     def __call__(self, block):
 
         rows = block.get("table", {}).get("rows", [])
