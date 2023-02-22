@@ -34,4 +34,13 @@
       provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
       />
 
+  <subscriber
+      factory=".transformers.SlateTableBlockDeserializer"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+  <subscriber
+      factory=".transformers.SlateTableBlockDeserializerRoot"
+      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+      />
+
 </configure>
