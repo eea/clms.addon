@@ -3,8 +3,15 @@
 from logging import getLogger
 
 from plone.restapi.behaviors import IBlocks
-from plone.restapi.deserializer.blocks import iterate_children
-from plone.restapi.interfaces import IBlockFieldSerializationTransformer
+from plone.restapi.deserializer.blocks import (
+    SlateBlockDeserializerBase,
+    SlateBlockTransformer,
+    iterate_children,
+)
+from plone.restapi.interfaces import (
+    IBlockFieldDeserializationTransformer,
+    IBlockFieldSerializationTransformer,
+)
 from plone.restapi.serializer.blocks import SlateBlockSerializerBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from zope.component import adapter
@@ -105,3 +112,46 @@ class SlateExternalLinkBlockSerializerRoot(
     SlateExternalLinkBlockSerializerBase
 ):
     """Serializer for site root"""
+
+
+class SlateTableBlockTransformer(SlateBlockTransformer):
+    """Salte table block transformer base"""
+
+    def __call__(self, block):
+
+        rows = block.get("table", {}).get("rows", [])
+        for row in rows:
+            cells = row.get("cells", [])
+
+            for cell in cells:
+                cellvalue = cell.get("value", [])
+                children = iterate_children(cellvalue or [])
+                for child in children:
+                    node_type = child.get("type")
+                    if node_type:
+                        handler = getattr(self, f"handle_{node_type}", None)
+                        if handler:
+                            handler(child)
+
+        return block
+
+
+class SlateTableBlockDeserializerBase(
+    SlateTableBlockTransformer, SlateBlockDeserializerBase
+):
+    """SlateTableBlockDeserializerBase."""
+
+    order = 100
+    block_type = "slateTable"
+
+
+@adapter(IBlocks, IBrowserRequest)
+@implementer(IBlockFieldDeserializationTransformer)
+class SlateTableBlockDeserializer(SlateTableBlockDeserializerBase):
+    """Deserializer for content-types that implements IBlocks behavior"""
+
+
+@adapter(IPloneSiteRoot, IBrowserRequest)
+@implementer(IBlockFieldDeserializationTransformer)
+class SlateTableBlockDeserializerRoot(SlateTableBlockDeserializerBase):
+    """Deserializer for site root"""
