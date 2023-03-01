@@ -11,11 +11,19 @@ from clms.addon import _
 
 @adapter(Interface)
 class MeetingStart(BaseSubstitution):
-    """ Subscriber substitution adapter"""
+    """Subscriber substitution adapter"""
 
     category = _(u"eea.meeting (clms.addon)")
     description = _(u"Meeting start date")
 
     def safe_call(self):
-        """ format the start date """
-        return self.context.start.strftime('%d.%m.%Y %H:%M')
+        """format the start date"""
+        start = self.context.start.strftime("%d.%m.%Y")
+        end = self.context.end.strftime("%d.%m.%Y")
+
+        if start == end:
+            return self.context.start.strftime("%d.%m.%Y %H:%M")
+        return "{} - {}".format(
+            self.context.start.strftime("%d.%m.%Y %H:%M"),
+            self.context.end.strftime("%d.%m.%Y %H:%M"),
+        )
