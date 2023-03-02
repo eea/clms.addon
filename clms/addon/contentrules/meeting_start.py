@@ -23,10 +23,10 @@ class MeetingStart(BaseSubstitution):
         timezone = "Time zone: Copenhagen, Denmark"
         if start == end:
             return "{} {}".format(
-                self.context.start.strftime("%d.%m.%Y %H:%M"), timezone
+                self.context.start.strftime("%b %d, %Y %H.%M"), timezone
             )
         return "{} - {} {}".format(
-            self.context.start.strftime("%d.%m.%Y %H:%M"),
-            self.context.end.strftime("%d.%m.%Y %H:%M"),
+            self.context.start.strftime("%b %d, %Y %H.%M"),
+            self.context.end.strftime("%b %d, %Y %H.%M"),
             timezone,
         )
