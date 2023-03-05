@@ -37,9 +37,14 @@ except ImportError:
 
 # pylint: disable=wrong-import-position
 # pylint: disable=ungrouped-imports
-from plone.app.contenttypes.migration.dxmigration import (  # noqa
-    migrate_base_class_to_new_class,  # noqa
-)  # noqa
+try:
+    from plone.app.contenttypes.migration.dxmigration import (  # noqa
+        migrate_base_class_to_new_class,  # noqa
+    )  # noqa
+except ImportError:
+
+    def migrate_base_class_to_new_class(*args, **kwargs):
+        print("Dummy function")
 
 
 def upgrade(setup_tool=None):
