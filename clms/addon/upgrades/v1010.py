@@ -44,6 +44,7 @@ try:
 except ImportError:
 
     def migrate_base_class_to_new_class(*args, **kwargs):
+        """ dummy function """
         print("Dummy function")
 
 
