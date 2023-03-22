@@ -16,10 +16,12 @@ import transaction
 
 
 class TestServicesNavroot(unittest.TestCase):
+    """navroot services test"""
 
     layer = PLONE_RESTAPI_DX_FUNCTIONAL_TESTING
 
     def setUp(self):
+        """test setup"""
         self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.portal_url = self.portal.absolute_url()
@@ -38,13 +40,16 @@ class TestServicesNavroot(unittest.TestCase):
             type="Document",
         )
         api.content.transition(obj=self.portal.news, transition="publish")
-        api.content.transition(obj=self.portal.news.document, transition="publish")
+        api.content.transition(
+            obj=self.portal.news.document, transition="publish"
+        )
         transaction.commit()
 
         self.api_session = RelativeSession(self.portal_url, test=self)
         self.api_session.headers.update({"Accept": "application/json"})
 
     def test_get_navroot(self):
+        """test the navroot endpoint in the site"""
         response = self.api_session.get(
             "/@navroot",
         )
@@ -53,10 +58,13 @@ class TestServicesNavroot(unittest.TestCase):
         portal_state = getMultiAdapter(
             (self.portal, self.layer["request"]), name="plone_portal_state"
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
         self.assertEqual(response.json()["@id"], self.portal_url + "/@navroot")
 
     def test_get_navroot_non_multilingual_navigation_root(self):
+        """test the navroot in a navigation root that is not the site"""
         """test that the navroot is computed correctly when a section
         implements INavigationRoot
         """
@@ -72,12 +80,16 @@ class TestServicesNavroot(unittest.TestCase):
             (self.portal.news, self.layer["request"]),
             name="plone_portal_state",
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
-        self.assertEqual(response.json()["url"], portal_state.navigation_root_url())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["url"], portal_state.navigation_root_url()
+        )
 
     def test_get_navroot_non_multilingual_navigation_root_content(self):
-        """test that the navroot is computed correctly in a content inside a section
-        that implements INavigationRoot
+        """test that the navroot is computed correctly in a content inside
+        a section that implements INavigationRoot
         """
         alsoProvides(self.portal.news, INavigationRoot)
         transaction.commit()
@@ -91,15 +103,21 @@ class TestServicesNavroot(unittest.TestCase):
             (self.portal.news, self.layer["request"]),
             name="plone_portal_state",
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
-        self.assertEqual(response.json()["url"], portal_state.navigation_root_url())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["url"], portal_state.navigation_root_url()
+        )
 
 
 class TestServicesNavrootMultilingual(unittest.TestCase):
+    """tests navroot in multilingual sites"""
 
     layer = PLONE_RESTAPI_DX_PAM_FUNCTIONAL_TESTING
 
     def setUp(self):
+        """test setup"""
         self.app = self.layer["app"]
         self.portal = self.layer["portal"]
         self.portal_url = self.portal.absolute_url()
@@ -118,7 +136,9 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
             type="Document",
         )
         api.content.transition(obj=self.portal.en.news, transition="publish")
-        api.content.transition(obj=self.portal.en.news.document, transition="publish")
+        api.content.transition(
+            obj=self.portal.en.news.document, transition="publish"
+        )
 
         self.api_session = RelativeSession(self.portal_url, test=self)
         self.api_session.headers.update({"Accept": "application/json"})
@@ -126,6 +146,7 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
         transaction.commit()
 
     def test_get_navroot_site(self):
+        """navroot in the site"""
         response = self.api_session.get(
             "/@navroot",
         )
@@ -134,12 +155,16 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
         portal_state = getMultiAdapter(
             (self.portal, self.layer["request"]), name="plone_portal_state"
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
         self.assertEqual(
-            response.json()["@id"], portal_state.navigation_root_url() + "/@navroot"
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["@id"],
+            portal_state.navigation_root_url() + "/@navroot",
         )
 
     def test_get_navroot_language_folder(self):
+        """navroot in the LRF"""
         response = self.api_session.get(
             "/en/@navroot",
         )
@@ -148,12 +173,16 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
         portal_state = getMultiAdapter(
             (self.portal.en, self.layer["request"]), name="plone_portal_state"
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
         self.assertEqual(
-            response.json()["@id"], portal_state.navigation_root_url() + "/@navroot"
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["@id"],
+            portal_state.navigation_root_url() + "/@navroot",
         )
 
     def test_get_navroot_language_content(self):
+        """navroot in a content inside LRF"""
         response = self.api_session.get(
             "/en/news/@navroot",
         )
@@ -163,8 +192,12 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
             (self.portal.en.news, self.layer["request"]),
             name="plone_portal_state",
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
-        self.assertEqual(response.json()["url"], portal_state.navigation_root_url())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["url"], portal_state.navigation_root_url()
+        )
 
     def test_get_navroot_non_multilingual_navigation_root(self):
         """test that the navroot is computed correctly when a section
@@ -182,8 +215,12 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
             (self.portal.en.news, self.layer["request"]),
             name="plone_portal_state",
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
-        self.assertEqual(response.json()["url"], portal_state.navigation_root_url())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["url"], portal_state.navigation_root_url()
+        )
 
     def test_get_navroot_non_multilingual_navigation_root_content(self):
         """test that the navroot is computed correctly in a content inside a section
@@ -201,5 +238,9 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
             (self.portal.en.news, self.layer["request"]),
             name="plone_portal_state",
         )
-        self.assertEqual(response.json()["title"], portal_state.navigation_root_title())
-        self.assertEqual(response.json()["url"], portal_state.navigation_root_url())
+        self.assertEqual(
+            response.json()["title"], portal_state.navigation_root_title()
+        )
+        self.assertEqual(
+            response.json()["url"], portal_state.navigation_root_url()
+        )
