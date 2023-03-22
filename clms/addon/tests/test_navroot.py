@@ -30,7 +30,7 @@ class TestServicesNavroot(unittest.TestCase):
             container=self.portal,
             id="news",
             title="News",
-            type="Folder",
+            type="Document",
         )
         api.content.create(
             container=self.portal.news,
