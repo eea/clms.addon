@@ -112,7 +112,7 @@ class TestServicesNavroot(unittest.TestCase):
 class TestServicesNavrootMultilingual(unittest.TestCase):
     """tests navroot in multilingual sites"""
 
-    layer = (CLMS_ADDON_RESTAPI_TESTING,)
+    layer = CLMS_ADDON_RESTAPI_TESTING
 
     def setUp(self):
         """test setup"""
