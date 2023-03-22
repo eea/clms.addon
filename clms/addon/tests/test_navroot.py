@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing import setRoles
-from plone.app.testing import TEST_USER_ID
+"""
+test the navroot endpoint
+"""
+import unittest
+
+import transaction
+from plone import api
+from plone.app.layout.navigation.interfaces import INavigationRoot
+from plone.app.testing import TEST_USER_ID, setRoles
 from plone.restapi.testing import (
     PLONE_RESTAPI_DX_FUNCTIONAL_TESTING,
     PLONE_RESTAPI_DX_PAM_FUNCTIONAL_TESTING,
+    RelativeSession,
 )
-from plone.restapi.testing import RelativeSession
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
-from plone.app.layout.navigation.interfaces import INavigationRoot
-
-import unittest
-from plone import api
-import transaction
 
 
 class TestServicesNavroot(unittest.TestCase):
@@ -64,7 +66,6 @@ class TestServicesNavroot(unittest.TestCase):
         self.assertEqual(response.json()["@id"], self.portal_url + "/@navroot")
 
     def test_get_navroot_non_multilingual_navigation_root(self):
-        """test the navroot in a navigation root that is not the site"""
         """test that the navroot is computed correctly when a section
         implements INavigationRoot
         """
