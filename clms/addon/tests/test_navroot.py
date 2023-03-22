@@ -5,14 +5,11 @@ test the navroot endpoint
 import unittest
 
 import transaction
+from clms.addon.testing import CLMS_ADDON_RESTAPI_TESTING
 from plone import api
 from plone.app.layout.navigation.interfaces import INavigationRoot
 from plone.app.testing import TEST_USER_ID, setRoles
-from plone.restapi.testing import (
-    PLONE_RESTAPI_DX_FUNCTIONAL_TESTING,
-    PLONE_RESTAPI_DX_PAM_FUNCTIONAL_TESTING,
-    RelativeSession,
-)
+from plone.restapi.testing import RelativeSession
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 
@@ -20,7 +17,7 @@ from zope.interface import alsoProvides
 class TestServicesNavroot(unittest.TestCase):
     """navroot services test"""
 
-    layer = PLONE_RESTAPI_DX_FUNCTIONAL_TESTING
+    layer = CLMS_ADDON_RESTAPI_TESTING
 
     def setUp(self):
         """test setup"""
@@ -115,7 +112,7 @@ class TestServicesNavroot(unittest.TestCase):
 class TestServicesNavrootMultilingual(unittest.TestCase):
     """tests navroot in multilingual sites"""
 
-    layer = PLONE_RESTAPI_DX_PAM_FUNCTIONAL_TESTING
+    layer = (CLMS_ADDON_RESTAPI_TESTING,)
 
     def setUp(self):
         """test setup"""
