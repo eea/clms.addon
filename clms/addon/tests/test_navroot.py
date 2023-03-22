@@ -224,8 +224,8 @@ class TestServicesNavrootMultilingual(unittest.TestCase):
         )
 
     def test_get_navroot_non_multilingual_navigation_root_content(self):
-        """test that the navroot is computed correctly in a content inside a section
-        that implements INavigationRoot
+        """test that the navroot is computed correctly in a content inside a
+        section that implements INavigationRoot
         """
         alsoProvides(self.portal.en.news, INavigationRoot)
         transaction.commit()
