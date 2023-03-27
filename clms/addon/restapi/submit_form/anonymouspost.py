@@ -127,14 +127,12 @@ class Register(SubmitPost):
             for field in fields:
                 if (
                     # pylint: disable=line-too-long
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "email"  # noqa
+                    "field_custom_id" in field and field.get("field_custom_id") == "email"  # noqa
                 ):
                     anonymous_email = field.get("value", None)
                 elif (
                     # pylint: disable=line-too-long
-                    "field_custom_id" in field
-                    and field.get("field_custom_id") == "fullname"  # noqa
+                    "field_custom_id" in field and field.get("field_custom_id") == "fullname"  # noqa
                 ):
                     anonymous_fullname = field.get("value", None)
 
@@ -169,8 +167,7 @@ class Register(SubmitPost):
             x.get("field_id", "")
             for x in self.block.get("subblocks", [])
             # pylint: disable=line-too-long
-            if x.get("field_type", "") == "attachment"
-            or x.get("field_custom_id", "") == "gdpr"  # noqa
+            if x.get("field_type", "") == "attachment" or x.get("field_custom_id", "") == "gdpr"  # noqa
         ]
         return [
             x
@@ -186,15 +183,13 @@ class Register(SubmitPost):
         for field in fields:
             if (
                 # pylint: disable=line-too-long
-                "field_custom_id" in field
-                and field.get("field_custom_id") == "subject"  # noqa
+                "field_custom_id" in field and field.get("field_custom_id") == "subject"  # noqa
             ):
                 marked_subject = field.get("value")
 
         subject = (
-            marked_subject
-            or self.form_data.get("subject", "")
-            or self.block.get("default_subject", "")
+            # pylint: disable=line-too-long
+            marked_subject or self.form_data.get("subject", "") or self.block.get("default_subject", "")  # noqa
         )
 
         mfrom = self.form_data.get("from", "") or self.block.get(
