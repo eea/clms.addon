@@ -176,6 +176,7 @@ class Register(SubmitPost):
         ]
 
     def send_data(self):
+        """ send the form data by email """
         # Try first to find a field that is marked to be a subject
 
         marked_subject = None
