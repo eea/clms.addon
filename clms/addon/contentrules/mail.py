@@ -8,6 +8,7 @@ from smtplib import SMTPException
 import six
 from Acquisition import aq_inner
 from OFS.SimpleItem import SimpleItem
+from plone import api
 from plone.app.contentrules import PloneMessageFactory as _
 from plone.app.contentrules.actions import ActionAddForm, ActionEditForm
 from plone.app.contentrules.browser.formhelper import ContentRuleFormWrapper
@@ -177,7 +178,13 @@ class MailActionExecutor:
             msgAlternative = MIMEMultipart("alternative")
             msgRoot.attach(msgAlternative)
 
-            msgText = MIMEText("This is the alternative plain text message.")
+            portal_transforms = api.portal.get_tool(name="portal_transforms")
+            data = portal_transforms.convertTo(
+                "text/plain",
+                safe_text(message, "utf-8"),
+                mimetype="text/html",
+            )
+            msgText = MIMEText(safe_text(data.getData(), "utf-8"))
             msgAlternative.attach(msgText)
 
             msgHTML = MIMEText(safe_text(message, "utf-8"), "html")
