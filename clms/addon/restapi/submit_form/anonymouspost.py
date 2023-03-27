@@ -179,8 +179,22 @@ class Register(SubmitPost):
         ]
 
     def send_data(self):
-        subject = self.form_data.get("subject", "") or self.block.get(
-            "default_subject", ""
+        # Try first to find a field that is marked to be a subject
+
+        marked_subject = None
+        fields = self.form_data.get("data", [])
+        for field in fields:
+            if (
+                # pylint: disable=line-too-long
+                "field_custom_id" in field
+                and field.get("field_custom_id") == "subject"  # noqa
+            ):
+                marked_subject = field.get("value")
+
+        subject = (
+            marked_subject
+            or self.form_data.get("subject", "")
+            or self.block.get("default_subject", "")
         )
 
         mfrom = self.form_data.get("from", "") or self.block.get(
