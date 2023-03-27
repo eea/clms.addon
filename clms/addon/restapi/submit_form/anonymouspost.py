@@ -3,18 +3,23 @@
 import json
 import random
 import string
+from email.message import EmailMessage
 
 import plone.protect.interfaces
 from Acquisition import aq_parent
+from clms.addon import _
 from collective.volto.formsupport.restapi.services.submit_form.post import (
     SubmitPost,
 )
 from eea.meeting.browser.views import add_subscriber
 from plone import api
+from plone.registry.interfaces import IRegistry
 from plone.restapi.deserializer import json_body
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from zExceptions import BadRequest
+from zope.component import getMultiAdapter, getUtility
+from zope.i18n import translate
 from zope.interface import alsoProvides
-
-from clms.addon import _
 
 
 def user_already_registered(subscribers_folder, email):
@@ -169,3 +174,67 @@ class Register(SubmitPost):
             for x in self.form_data.get("data", [])
             if x.get("field_id", "") not in skip_fields
         ]
+
+    def send_data(self):
+        """ send the form data by email """
+        # Try first to find a field that is marked to be a subject
+
+        marked_subject = None
+        fields = self.form_data.get("data", [])
+        for field in fields:
+            if (
+                # pylint: disable=line-too-long
+                "field_custom_id" in field and field.get("field_custom_id") == "subject"  # noqa
+            ):
+                marked_subject = field.get("value")
+
+        subject = (
+            # pylint: disable=line-too-long
+            marked_subject or self.form_data.get("subject", "") or self.block.get("default_subject", "")  # noqa
+        )
+
+        mfrom = self.form_data.get("from", "") or self.block.get(
+            "default_from", ""
+        )
+        mreply_to = self.get_reply_to()
+
+        if not subject or not mfrom:
+            raise BadRequest(
+                translate(
+                    _(
+                        "send_required_field_missing",
+                        default="Missing required field: subject or from.",
+                    ),
+                    context=self.request,
+                )
+            )
+
+        portal = api.portal.get()
+        overview_controlpanel = getMultiAdapter(
+            (portal, self.request), name="overview-controlpanel"
+        )
+        if overview_controlpanel.mailhost_warning():
+            raise BadRequest("MailHost is not configured.")
+
+        registry = getUtility(IRegistry)
+        mail_settings = registry.forInterface(IMailSchema, prefix="plone")
+        mto = self.block.get("default_to", mail_settings.email_from_address)
+        encoding = registry.get("plone.email_charset", "utf-8")
+        message = self.prepare_message()
+
+        msg = EmailMessage()
+        msg.set_content(message)
+        msg["Subject"] = subject
+        msg["From"] = mfrom
+        msg["To"] = mto
+        msg["Reply-To"] = mreply_to
+
+        msg.replace_header("Content-Type", 'text/html; charset="utf-8"')
+
+        self.manage_attachments(msg=msg)
+        self.send_mail(msg=msg, encoding=encoding)
+
+        for bcc in self.get_bcc():
+            # send a copy also to the fields with bcc flag
+            msg.replace_header("To", bcc)
+            self.send_mail(msg=msg, encoding=encoding)

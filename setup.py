@@ -58,6 +58,7 @@ setup(
         "eea.meeting",
         "clms.downloadtool",
         "collective.relationhelpers",
+        "Products.mcdutils",
     ],
     extras_require={
         "test": [
