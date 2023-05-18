@@ -46,7 +46,9 @@ def own_scaleSingleFrame(
     return image, format_
 
 
-
 scale.scaleSingleFrame = own_scaleSingleFrame
 log = getLogger(__name__)
-log.info('Patched plone.scale.scale.scaleImage not to convert PNG and GIF files to a web palette')
+log.info(
+    "Patched plone.scale.scale.scaleImage not to convert PNG and GIF files to"
+    " a web palette"
+)
