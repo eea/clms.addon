@@ -66,11 +66,8 @@ def own_recurse(self, children, level, bottomLevel):
 
         nodechildren = node["children"]
 
-        if (
-            nodechildren
-            and show_children
-            and ((level < bottomLevel) or (bottomLevel == 0))
-        ):
+        # pylint: disable=line-too-long
+        if (nodechildren and show_children and ((level < bottomLevel) or (bottomLevel == 0))):  # noqa
             item["items"] = self.recurse(
                 nodechildren, level=level + 1, bottomLevel=bottomLevel
             )
