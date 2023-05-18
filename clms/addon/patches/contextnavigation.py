@@ -57,6 +57,8 @@ def own_recurse(self, children, level, bottomLevel):
             "thumb": thumb,
             "title": node["Title"],
             "type": node["normalized_portal_type"],
+            "blocks": brain.getObject().blocks,
+            "blocks_layout": brain.getObject().blocks_layout,
         }
 
         if node.get("nav_title", False):
