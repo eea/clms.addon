@@ -11,9 +11,7 @@ from plone.restapi.services.contextnavigation.get import (
 
 
 def own_recurse(self, children, level, bottomLevel):
-    # TODO: we should avoid recursion. This is just a rewrite of the TAL
-    # template, but ideally we should use a dequeue structure to avoid
-    # recursion problems.
+    """ recursion"""
 
     res = []
 
