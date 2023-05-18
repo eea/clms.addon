@@ -1,4 +1,15 @@
-def scaleSingleFrame(
+"""
+Patch the image scale generation not to convert to image to a web Palette
+"""
+# -*- coding: utf-8 -*-
+from logging import getLogger
+
+import PIL.Image
+from plone.scale import scale
+from plone.scale.scale import scalePILImage
+
+
+def own_scaleSingleFrame(
     image,
     width,
     height,
@@ -17,7 +28,10 @@ def scaleSingleFrame(
             if all(rgb[0] == rgb[1] == rgb[2] for c, rgb in colors):
                 image = image.convert("L")
         elif format_ in ("PNG", "GIF"):
-            image = image.convert("P")
+            # When left emptye, the palette parameter takes the
+            # PIL.Image.Palette.WEB value
+            # which creates quality loss with some PNG files
+            image = image.convert("P", palette=PIL.Image.Palette.ADAPTIVE)
 
     if image.mode == "RGBA" and format_ == "JPEG":
         extrema = dict(zip(image.getbands(), image.getextrema()))
@@ -30,3 +44,9 @@ def scaleSingleFrame(
             format_ = "PNG"
 
     return image, format_
+
+
+
+scale.scaleSingleFrame = own_scaleSingleFrame
+log = getLogger(__name__)
+log.info('Patched plone.scale.scale.scaleImage not to convert PNG and GIF files to a web palette')
