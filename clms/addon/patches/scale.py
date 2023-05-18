@@ -18,6 +18,7 @@ def own_scaleSingleFrame(
     quality,
     direction,
 ):
+    """scale and prepare the image"""
     image = scalePILImage(image, width, height, mode, direction=direction)
 
     # convert to simpler mode if possible
