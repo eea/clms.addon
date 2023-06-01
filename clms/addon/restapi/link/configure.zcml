@@ -5,10 +5,8 @@
     >
 
 
-  <!-- <adapter factory=".adapter.LinkJSONSummarySerializer" /> -->
-
   <utility
-      factory=".adapter.JSONSummarySerializerMetadataForLink"
+      factory=".utility.JSONSummarySerializerMetadataForLink"
       name="clms.addon.link_summary_serializer_metadata"
       />
 
