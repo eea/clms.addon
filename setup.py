@@ -59,6 +59,7 @@ setup(
         "clms.downloadtool",
         "collective.relationhelpers",
         "Products.mcdutils",
+        "z3c.jbot",
     ],
     extras_require={
         "test": [
