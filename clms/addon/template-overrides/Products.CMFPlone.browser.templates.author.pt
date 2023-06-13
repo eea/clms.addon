@@ -187,29 +187,6 @@
                       />
                     </form>
                   </div>
-
-                  <!-- feedback form -->
-
-                  <tal:owner
-                    tal:condition="python: not isOwner and not isAnon and member_info.get('email', None)"
-                  >
-                    <p
-                      class="discreet"
-                      i18n:translate="description_author_feedback"
-                    >
-                      If you want to contact this author, fill in the form
-                      below.
-                    </p>
-
-                    <tal:with-form-as-view
-                      define="form nocall:view/feedback_form;
-                                                             view nocall:form"
-                    >
-                      <metal:block
-                        use-macro="form/@@ploneform-macros/titlelessform"
-                      />
-                    </tal:with-form-as-view>
-                  </tal:owner>
                 </tal:mailsetup>
 
                 <!-- listing of content created by this user -->
