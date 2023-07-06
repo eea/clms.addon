@@ -1,9 +1,9 @@
 """ Custom setup
 """
+from logging import getLogger
 from Products.CMFPlone.interfaces import INonInstallable
 from zope.interface import implementer
 from plone.app.multilingual.browser.setup import SetupMultilingualSite
-from logging import getLogger
 from plone import api
 
 
