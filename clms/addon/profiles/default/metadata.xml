@@ -9,6 +9,5 @@
     <dependency>profile-clms.types:default</dependency>
     <dependency>profile-clms.downloadtool:default</dependency>
     <dependency>profile-clms.statstool:default</dependency>
-    <dependency>profile-eea.meeting:default</dependency>
   </dependencies>
 </metadata>

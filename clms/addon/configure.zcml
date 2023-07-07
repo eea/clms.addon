@@ -12,7 +12,6 @@
   <include package="clms.types" />
   <include package="clms.downloadtool" />
   <include package="clms.statstool" />
-  <include package="eea.meeting" />
 
   <include file="profiles.zcml" />
   <include package=".browser" />
