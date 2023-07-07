@@ -9,6 +9,9 @@
   <include package="plone.app.registry" />
   <include package="collective.taxonomy" />
   <include package="plone.volto" />
+  <include package="clms.types" />
+  <include package="clms.downloadtool" />
+  <include package="clms.statstool" />
 
   <include file="profiles.zcml" />
   <include package=".browser" />
