@@ -18,7 +18,7 @@ class DataSetSearch(Service):
 
     def reply(self):
         """handle special queries with list items in query"""
-        self.catalog = getToolByName(self.context, "portal_catalog")
+        catalog = getToolByName(self.context, "portal_catalog")
         query = self.request.form.copy()
         query = unflatten_dotted_dict(query)
 
@@ -37,7 +37,7 @@ class DataSetSearch(Service):
                 else:
                     new_query[k] = v
 
-        lazy_resultset = self.catalog.searchResults(**new_query)
+        lazy_resultset = catalog.searchResults(**new_query)
 
         batch = HypermediaBatch(self.request, lazy_resultset)
 
