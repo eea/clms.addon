@@ -75,7 +75,8 @@ class DataSetSearch(Service):
 
 
 def get_needed_values(res):
-    """return only the attribute and properties that are needed to identify the dataset"""
+    """return only the attribute and properties that are needed to identify
+    the dataset"""
     return dict(
         title=res.get("title", ""),
         UID=res.get("UID", ""),
