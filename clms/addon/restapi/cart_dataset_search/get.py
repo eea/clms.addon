@@ -1,14 +1,13 @@
 """ userschema endpoint """
 # -*- coding: utf-8 -*-
-from plone.restapi.batching import HypermediaBatch
+from logging import getLogger
 
+from plone.restapi.batching import HypermediaBatch
 from plone.restapi.interfaces import ISerializeToJson
 from plone.restapi.search.utils import unflatten_dotted_dict
 from plone.restapi.services import Service
 from Products.CMFCore.utils import getToolByName
 from zope.component import getMultiAdapter
-
-from logging import getLogger
 
 log = getLogger(__name__)
 
