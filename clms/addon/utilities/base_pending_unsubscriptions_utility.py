@@ -4,7 +4,7 @@ Pending subscription handlers
 import uuid
 from datetime import datetime, timedelta
 
-from persistent.mapping import PersistentMapping
+from BTrees.OOBTree import OOBTree
 from plone import api
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import Interface, implementer
@@ -26,20 +26,20 @@ class IPendingUnSubscriptionHandler(Interface):
         """
 
     def cleanup_unconfirmed_unsubscriptions(days):
-        """ delete unconfirmed items older than days days"""
+        """delete unconfirmed items older than days days"""
 
 
 @implementer(IPendingUnSubscriptionHandler)
 class PendingUnSubscriptionHandler:
-    """ Handler implementation """
+    """Handler implementation"""
 
     ANNOTATION_KEY = "clms.addon.dummy_pending_unsubscriptions"
 
     def create_pending_unsubscription(self, email):
-        """ create pending subscription and return a key"""
+        """create pending subscription and return a key"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         key = uuid.uuid4().hex
         while key in subscribers:
             key = uuid.uuid4().hex
@@ -53,10 +53,10 @@ class PendingUnSubscriptionHandler:
         return key
 
     def confirm_pending_unsubscription(self, key):
-        """ mark a given key as confirmed """
+        """mark a given key as confirmed"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         if key in subscribers:
             subscribers[key]["status"] = "confirmed"
             subscribers[key][
@@ -75,8 +75,8 @@ class PendingUnSubscriptionHandler:
         """
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
-        new_subscribers = PersistentMapping()
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
+        new_subscribers = OOBTree()
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
                 date_difference = datetime.utcnow() - datetime.strptime(
@@ -88,27 +88,27 @@ class PendingUnSubscriptionHandler:
         annotations[self.ANNOTATION_KEY] = new_subscribers
 
     def do_something_with_confirmed_unsubscriber(self, unsubscriber):
-        """ do something with the confirmed unsubscriber """
+        """do something with the confirmed unsubscriber"""
         raise NotImplementedError(
             "You need to implement this method in your subclass"
         )
 
     def cleanup_requests(self):
-        """ cleanup all requests """
+        """cleanup all requests"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        annotations[self.ANNOTATION_KEY] = PersistentMapping()
+        annotations[self.ANNOTATION_KEY] = OOBTree()
 
     def get_keys(self):
-        """ return all registered keys"""
+        """return all registered keys"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         return subscribers.keys()
 
     def get_values(self):
-        """ return all registered values"""
+        """return all registered values"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         return subscribers.values()

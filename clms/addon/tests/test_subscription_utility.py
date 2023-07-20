@@ -4,36 +4,33 @@
 
 import unittest
 
-from freezegun import freeze_time
-from persistent.mapping import PersistentMapping
-from zope.annotation.interfaces import IAnnotations
-from zope.component import getUtility
-
+from BTrees.OOBTree import OOBTree
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingSubscriptionsUtility,
 )
+from freezegun import freeze_time
+from zope.annotation.interfaces import IAnnotations
+from zope.component import getUtility
 
 
 class TestSubscriptionUtility(unittest.TestCase):
-    """ test the subscription utility """
+    """test the subscription utility"""
 
     layer = CLMS_ADDON_INTEGRATION_TESTING
 
     def setUp(self):
-        """ set up"""
+        """set up"""
         self.portal = self.layer["portal"]
         self.utility = getUtility(INewsLetterPendingSubscriptionsUtility)
 
     def test_create_pending_subscription(self):
-        """ create a new pending subscription """
+        """create a new pending subscription"""
         self.utility.create_pending_subscription("email@example.com")
 
         annotations = IAnnotations(self.portal)
-        subscribers = annotations.get(
-            self.utility.ANNOTATION_KEY, PersistentMapping()
-        )
+        subscribers = annotations.get(self.utility.ANNOTATION_KEY, OOBTree())
         self.assertEqual(len(subscribers), 1)
 
         self.assertIn(
@@ -42,13 +39,13 @@ class TestSubscriptionUtility(unittest.TestCase):
         )
 
     def test_confirm_pending_subscription(self):
-        """ confirm the subscription"""
+        """confirm the subscription"""
         key = self.utility.create_pending_subscription("email@example.com")
         result = self.utility.confirm_pending_subscription(key)
         self.assertTrue(result)
 
     def test_confirm_invalid_subscription_key(self):
-        """ confirm the subscription with an invalid key"""
+        """confirm the subscription with an invalid key"""
         key = self.utility.create_pending_subscription("email@example.com")
         random_key = "random_key"
         while random_key == key:
@@ -58,7 +55,7 @@ class TestSubscriptionUtility(unittest.TestCase):
 
     @freeze_time("2019-01-05")
     def test_cleanup_unconfirmed_subscriptions(self):
-        """ cleanup unconfirmed subscriptions """
+        """cleanup unconfirmed subscriptions"""
         # We will manually create some subscription with passed datetimes
         # and then delete the unconfirmed ones
         subscriber1 = {
@@ -78,9 +75,7 @@ class TestSubscriptionUtility(unittest.TestCase):
         }
 
         annotations = IAnnotations(self.portal)
-        subscribers = annotations.get(
-            self.utility.ANNOTATION_KEY, PersistentMapping()
-        )
+        subscribers = annotations.get(self.utility.ANNOTATION_KEY, OOBTree())
         subscribers["subscriber1"] = subscriber1
         subscribers["subscriber2"] = subscriber2
         subscribers["subscriber3"] = subscriber3

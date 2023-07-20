@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from persistent.mapping import PersistentMapping
+from BTrees.OOBTree import OOBTree
 from plone import api
 from zope.annotation.interfaces import IAnnotations
 from zope.interface import Interface, implementer
 
 
 class INotificationsUtility(Interface):
-    """ Utility interface """
+    """Utility interface"""
 
     def subscribe_address(email):
         """subscribe email address to notifications. Return True if
@@ -23,23 +23,23 @@ class INotificationsUtility(Interface):
         """
 
     def list_subscribers():
-        """ return list of all subscribers """
+        """return list of all subscribers"""
 
     def is_subscribed(email):
-        """ return whether the said e-mail address is subscribed"""
+        """return whether the said e-mail address is subscribed"""
 
 
 @implementer(INotificationsUtility)
 class NotificationsUtility:
-    """ Utility implementation """
+    """Utility implementation"""
 
     ANNOTATION_KEY = "clms.addon.dummykey"
 
     def subscribe_address(self, email):
-        """ subscribe email address"""
+        """subscribe email address"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         if email is not None and email.strip() and email not in subscribers:
             subscribers[email] = {"date": datetime.utcnow().isoformat()}
             annotations[self.ANNOTATION_KEY] = subscribers
@@ -48,10 +48,10 @@ class NotificationsUtility:
         return False
 
     def unsubscribe_address(self, email):
-        """ unsubscribe email address"""
+        """unsubscribe email address"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         if email is not None and email.strip() and email in subscribers:
             del subscribers[email]
             annotations[self.ANNOTATION_KEY] = subscribers
@@ -60,23 +60,23 @@ class NotificationsUtility:
         return False
 
     def list_subscribers(self):
-        """ return all subscribers """
+        """return all subscribers"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         return subscribers
 
     def cleanup_subscribers(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        annotations[self.ANNOTATION_KEY] = PersistentMapping()
+        annotations[self.ANNOTATION_KEY] = OOBTree()
 
     def is_subscribed(self, email):
-        """ return if the email is already subscribed """
+        """return if the email is already subscribed"""
         portal = api.portal.get()
         annotations = IAnnotations(portal)
-        subscribers = annotations.get(self.ANNOTATION_KEY, PersistentMapping())
+        subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         if email is not None and email.strip():
             return email in subscribers
 
