@@ -1,6 +1,11 @@
 Changelog
 =========
 
+9.1 - (2023-07-20)
+---------------------------
+* Change: Use OOBTree instead of PersistentMappings
+  [erral]
+
 9.0 - (2023-07-14)
 ---------------------------
 * Change: Develop
