@@ -82,4 +82,5 @@ def get_needed_values(res):
         dataset_download_information=res.get(
             "dataset_download_information", {}
         ),
+        downloadable_files=res.get("downloadable_files", {}),
     )
