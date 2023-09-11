@@ -1,6 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:cache="http://namespaces.zope.org/cache"
     i18n_domain="clms"
     >
 
@@ -26,5 +27,29 @@
       template="send_mail_template.pt"
       permission="zope2.View"
       />
+
+  <include package="plone.app.caching" />
+  <cache:rulesetType
+      name="plone.app.caching.noCaching"
+      title="No caching"
+      description="Never cache"
+      />
+
+  <cache:ruleset
+      for=".loginview.CallbackView"
+      ruleset="plone.app.caching.noCaching"
+      />
+
+  <cache:ruleset
+      for=".loginview.LoginView"
+      ruleset="plone.app.caching.noCaching"
+      />
+
+    <cache:ruleset
+      for=".loginview.MyCallBack"
+      ruleset="plone.app.caching.noCaching"
+      />
+
+
 
 </configure>
