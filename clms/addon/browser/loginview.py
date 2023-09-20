@@ -12,17 +12,92 @@ from pas.plugins.oidc.browser.view import Session
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
+from Products.PlonePAS.events import UserInitialLoginInEvent, UserLoggedInEvent
+from zope import event
 from zope.interface import alsoProvides
 
 
 class CallbackView(BaseCallbackView):
     """Callback view"""
 
-    def return_url(self, session):
-        """The return url will be a custom callback, this way
-        the user will be logged in and we can check the last login time
+    def __call__(self):
+        """custom __call__ method"""
+        try:
+            return super().__call__()
+        except Exception as e:
+            log = getLogger(__name__)
+            log.info("There was an error handling the login process")
+            log.exception(e)
+            self.request.response.setHeader(
+                "Cache-Control", "no-cache, must-revalidate"
+            )
+            api.portal.show_message(
+                "There was an error connecting with the EU Login service. It"
+                " may be out of service. Please try again after some minutes.",
+                request=self.request,
+                type="error",
+            )
+            return self.request.response.redirect("/")
+
+    # pylint: disable=dangerous-default-value
+    def return_url(self, session, userinfo={}):
+        """Calculate the return url and update user properties
         """
-        return "{}/my-custom-callback".format(self.context.absolute_url())
+        redirect_url = "/"
+        came_from = self.request.get("came_from")
+        if not came_from and session:
+            came_from = session.get("came_from")
+            if not came_from.startswith("http"):
+                # try to convert from base64
+                try:
+                    came_from = base64.standard_b64decode(came_from).decode(
+                        "utf-8"
+                    )
+                except Exception as e:
+                    log = getLogger(__name__)
+                    log.info(e)
+
+        portal_url = api.portal.get_tool("portal_url")
+
+        if came_from:
+            # pylint: disable=line-too-long
+            if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
+                redirect_url = came_from
+
+        new_url = self.update_user_data(userinfo)
+        return new_url or redirect_url
+
+    def update_user_data(self, userinfo):
+        """update user's properties"""
+        with api.env.adopt_roles(["Manager"]):
+            userid = userinfo.get("sub")
+            if userid is not None:
+                member = api.user.get(userid=userid)
+
+                res = False
+                default = DateTime("2000/01/01")
+                login_time = member.getProperty("login_time", default)
+                if login_time == default:
+                    res = True
+                    login_time = DateTime()
+                member.setProperties(
+                    login_time=self.context.ZopeTime(),
+                    last_login_time=login_time
+                )
+
+                if res:
+                    event.notify(UserInitialLoginInEvent(member))
+                else:
+                    event.notify(UserLoggedInEvent(member))
+
+                if res:
+                    # Allow write-on-read to update user properties
+                    # on first login
+                    alsoProvides(self.request, IDisableCSRFProtection)
+                    redirect_url = "/en/profile"
+                    return redirect_url
+
+        return None
 
 
 class LoginView(BaseLoginView):
@@ -103,6 +178,20 @@ class MyCallBack(BrowserView):
                         # pylint: disable=line-too-long
                         if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
                             redirect_url = came_from
+
+        else:
+            came_from = self.request.get("came_from")
+            if not came_from and session:
+                came_from = session.get("came_from")
+                if not came_from.startswith("http"):
+                    # try to convert from base64
+                    try:
+                        came_from = base64.standard_b64decode(
+                            came_from
+                        ).decode("utf-8")
+                    except Exception as e:
+                        log = getLogger(__name__)
+                        log.info(e)
 
         return self.request.response.redirect(redirect_url, status=302)
 
