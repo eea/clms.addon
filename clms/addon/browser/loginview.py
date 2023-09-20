@@ -18,6 +18,25 @@ from zope.interface import alsoProvides
 class CallbackView(BaseCallbackView):
     """Callback view"""
 
+    def __call__(self):
+        """custom __call__ method"""
+        try:
+            return super().__call__()
+        except Exception as e:
+            log = getLogger(__name__)
+            log.info("There was an error handling the login process")
+            log.exception(e)
+            self.request.response.setHeader(
+                "Cache-Control", "no-cache, must-revalidate"
+            )
+            api.portal.show_message(
+                "There was an error connecting with the EU Login service. It"
+                " may be out of service. Please try again after some minutes.",
+                request=self.request,
+                type="error",
+            )
+            return self.request.response.redirect("/")
+
     def return_url(self, session):
         """The return url will be a custom callback, this way
         the user will be logged in and we can check the last login time
