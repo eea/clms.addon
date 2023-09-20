@@ -39,6 +39,7 @@ class CallbackView(BaseCallbackView):
             )
             return self.request.response.redirect("/")
 
+    # pylint: disable=dangerous-default-value
     def return_url(self, session, userinfo={}):
         """Calculate the return url and update user properties
         """
