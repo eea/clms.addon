@@ -60,12 +60,7 @@ class CallbackView(BaseCallbackView):
 
         if came_from:
             # pylint: disable=line-too-long
-            if (
-                came_from.startswith("http")
-                and portal_url.isURLInPortal(came_from)
-                or same_domain(portal_url(), came_from)
-                or not came_from.startswith("http")
-            ):  # noqa: E501
+            if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
                 redirect_url = came_from
 
         new_url = self.update_user_data(userinfo)
@@ -85,7 +80,8 @@ class CallbackView(BaseCallbackView):
                     res = True
                     login_time = DateTime()
                 member.setProperties(
-                    login_time=self.context.ZopeTime(), last_login_time=login_time
+                    login_time=self.context.ZopeTime(),
+                    last_login_time=login_time
                 )
 
                 if res:
