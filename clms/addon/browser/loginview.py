@@ -5,6 +5,7 @@ import base64
 from logging import getLogger
 from urllib.parse import urlparse
 
+from clms.addon.utils import add_url_params
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
@@ -40,9 +41,8 @@ class CallbackView(BaseCallbackView):
             return self.request.response.redirect("/")
 
     # pylint: disable=dangerous-default-value
-    def return_url(self, session, userinfo={}):
-        """Calculate the return url and update user properties
-        """
+    def return_url(self, session, userinfo={}, token=None):
+        """Calculate the return url and update user properties"""
         redirect_url = "/"
         came_from = self.request.get("came_from")
         if not came_from and session:
@@ -65,7 +65,10 @@ class CallbackView(BaseCallbackView):
                 redirect_url = came_from
 
         new_url = self.update_user_data(userinfo)
-        return new_url or redirect_url
+        url = new_url or redirect_url
+        new_came_from = add_url_params(url, {"access_token": token})
+
+        return new_came_from
 
     def update_user_data(self, userinfo):
         """update user's properties"""
@@ -82,7 +85,7 @@ class CallbackView(BaseCallbackView):
                     login_time = DateTime()
                 member.setProperties(
                     login_time=self.context.ZopeTime(),
-                    last_login_time=login_time
+                    last_login_time=login_time,
                 )
 
                 if res:
