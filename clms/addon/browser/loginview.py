@@ -5,11 +5,11 @@ import base64
 from logging import getLogger
 from urllib.parse import urlparse
 
+from clms.addon.utils import add_url_params
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
 from pas.plugins.oidc.browser.view import Session
-from pas.plugins.oidc.utils import add_url_params
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
