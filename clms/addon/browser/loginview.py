@@ -9,13 +9,13 @@ from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
 from pas.plugins.oidc.browser.view import Session
+from pas.plugins.oidc.utils import add_url_params
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from Products.Five.browser import BrowserView
 from Products.PlonePAS.events import UserInitialLoginInEvent, UserLoggedInEvent
 from zope import event
 from zope.interface import alsoProvides
-from pas.plugins.oidc.utils import add_url_params
 
 
 class CallbackView(BaseCallbackView):
