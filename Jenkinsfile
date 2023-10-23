@@ -3,7 +3,7 @@ pipeline {
 
   environment {
         GIT_NAME = "clms.addon"
-        SONARQUBE_TAGS = "clmsdemo.devel6cph.eea.europa.eu"
+        SONARQUBE_TAGS = "clmsdemo.devel6cph.eea.europa.eu,land.copernicus.eu"
     }
 
   stages {
