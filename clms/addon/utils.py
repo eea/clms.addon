@@ -27,6 +27,7 @@ CLMS_DOMAINS = [
     "clmsdemo.devel6cph.eea.europa.eu",
     "clms-staging.eea.europa.eu",
     "clms-prod.eea.europa.eu",
+    "land.copernicus.eu"
 ]
 
 
