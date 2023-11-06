@@ -12,6 +12,7 @@ from plone.restapi.interfaces import ISerializeToJson
 from zope.globalrequest import getRequest
 from zope.component import getMultiAdapter
 
+
 def own_recurse(self, children, level, bottomLevel):
     """ recursion"""
 
@@ -47,11 +48,13 @@ def own_recurse(self, children, level, bottomLevel):
         serialized_blocks = {}
         if brain.getObject().blocks:
             try:
-                serialized = getMultiAdapter((brain.getObject(), getRequest()), ISerializeToJson)()
+                serialized = getMultiAdapter(
+                    (brain.getObject(), getRequest()),
+                    ISerializeToJson
+                )()
                 serialized_blocks = serialized.get('blocks', {})
             except TypeError:
                 serialized_blocks = {}
-
 
         item = {
             "@id": item_url,
