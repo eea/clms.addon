@@ -4,13 +4,11 @@ Patch @contextnavigation endpoint to expose blocks and blocks_layout
 # -*- coding: utf-8 -*-
 from logging import getLogger
 
-
-from plone.restapi.services.contextnavigation.get import (
-    NavigationPortletRenderer,
-)
 from plone.restapi.interfaces import ISerializeToJson
-from zope.globalrequest import getRequest
+from plone.restapi.services.contextnavigation.get import \
+    NavigationPortletRenderer
 from zope.component import getMultiAdapter
+from zope.globalrequest import getRequest
 
 
 def own_recurse(self, children, level, bottomLevel):
