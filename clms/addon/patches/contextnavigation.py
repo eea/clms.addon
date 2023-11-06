@@ -13,6 +13,7 @@ from plone.restapi.serializer.blocks import (
     apply_block_serialization_transforms,
 )
 
+
 def own_recurse(self, children, level, bottomLevel):
     """ recursion"""
 
