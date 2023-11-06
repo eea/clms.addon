@@ -3,12 +3,13 @@ Patch @contextnavigation endpoint to expose blocks and blocks_layout
 """
 # -*- coding: utf-8 -*-
 from logging import getLogger
+import copy
 
 
 from plone.restapi.services.contextnavigation.get import (
     NavigationPortletRenderer,
 )
-
+from plone.restapi.serializer.blocks import apply_block_serialization_transforms
 
 def own_recurse(self, children, level, bottomLevel):
     """ recursion"""
@@ -41,6 +42,15 @@ def own_recurse(self, children, level, bottomLevel):
         item_remote_url = node["getRemoteUrl"]
         use_remote_url = node["useRemoteUrl"]
         item_url = node["getURL"]
+
+        value = copy.deepcopy(brain.getObject().blocks)
+
+        for id, block_value in value.items():
+            value[id] = apply_block_serialization_transforms(
+                block_value, self.context
+            )
+
+
         item = {
             "@id": item_url,
             "description": node["Description"],
@@ -55,7 +65,7 @@ def own_recurse(self, children, level, bottomLevel):
             "thumb": thumb,
             "title": node["Title"],
             "type": node["normalized_portal_type"],
-            "blocks": brain.getObject().blocks,
+            "blocks": value,
             "blocks_layout": brain.getObject().blocks_layout,
         }
 
