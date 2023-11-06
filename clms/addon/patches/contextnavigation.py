@@ -4,10 +4,11 @@ Patch @contextnavigation endpoint to expose blocks and blocks_layout
 # -*- coding: utf-8 -*-
 from logging import getLogger
 
-
-from plone.restapi.services.contextnavigation.get import (
-    NavigationPortletRenderer,
-)
+from plone.restapi.interfaces import ISerializeToJson
+from plone.restapi.services.contextnavigation.get import \
+    NavigationPortletRenderer
+from zope.component import getMultiAdapter
+from zope.globalrequest import getRequest
 
 
 def own_recurse(self, children, level, bottomLevel):
@@ -41,6 +42,18 @@ def own_recurse(self, children, level, bottomLevel):
         item_remote_url = node["getRemoteUrl"]
         use_remote_url = node["useRemoteUrl"]
         item_url = node["getURL"]
+
+        serialized_blocks = {}
+        if brain.getObject().blocks:
+            try:
+                serialized = getMultiAdapter(
+                    (brain.getObject(), getRequest()),
+                    ISerializeToJson
+                )()
+                serialized_blocks = serialized.get('blocks', {})
+            except TypeError:
+                serialized_blocks = {}
+
         item = {
             "@id": item_url,
             "description": node["Description"],
@@ -55,7 +68,7 @@ def own_recurse(self, children, level, bottomLevel):
             "thumb": thumb,
             "title": node["Title"],
             "type": node["normalized_portal_type"],
-            "blocks": brain.getObject().blocks,
+            "blocks": serialized_blocks,
             "blocks_layout": brain.getObject().blocks_layout,
         }
 

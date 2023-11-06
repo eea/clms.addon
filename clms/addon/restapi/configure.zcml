@@ -12,7 +12,7 @@
   <include package=".notifications_controlpanel" />
   <include package=".delete_profile" />
   <include package=".block_indexers" />
-  <include package=".navroot" />
+  <!-- <include package=".navroot" /> -->
   <include package=".link" />
 
 
