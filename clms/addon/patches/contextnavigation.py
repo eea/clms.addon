@@ -3,7 +3,6 @@ Patch @contextnavigation endpoint to expose blocks and blocks_layout
 """
 # -*- coding: utf-8 -*-
 from logging import getLogger
-import copy
 
 
 from plone.restapi.services.contextnavigation.get import (
