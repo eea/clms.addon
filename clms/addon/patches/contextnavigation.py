@@ -9,10 +9,9 @@ import copy
 from plone.restapi.services.contextnavigation.get import (
     NavigationPortletRenderer,
 )
-from plone.restapi.serializer.blocks import (
-    apply_block_serialization_transforms,
-)
-
+from plone.restapi.interfaces import ISerializeToJson
+from zope.globalrequest import getRequest
+from zope.component import getMultiAdapter
 
 def own_recurse(self, children, level, bottomLevel):
     """ recursion"""
@@ -46,12 +45,14 @@ def own_recurse(self, children, level, bottomLevel):
         use_remote_url = node["useRemoteUrl"]
         item_url = node["getURL"]
 
-        value = copy.deepcopy(brain.getObject().blocks)
+        serialized_blocks = {}
+        if brain.getObject().blocks:
+            try:
+                serialized = getMultiAdapter((brain.getObject(), getRequest()), ISerializeToJson)()
+                serialized_blocks = serialized.get('blocks', {})
+            except TypeError:
+                serialized_blocks = {}
 
-        for block_id, block_value in value.items():
-            value[block_id] = apply_block_serialization_transforms(
-                block_value, self.context
-            )
 
         item = {
             "@id": item_url,
@@ -67,7 +68,7 @@ def own_recurse(self, children, level, bottomLevel):
             "thumb": thumb,
             "title": node["Title"],
             "type": node["normalized_portal_type"],
-            "blocks": value,
+            "blocks": serialized_blocks,
             "blocks_layout": brain.getObject().blocks_layout,
         }
 
