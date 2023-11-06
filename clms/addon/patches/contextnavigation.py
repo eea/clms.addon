@@ -9,7 +9,9 @@ import copy
 from plone.restapi.services.contextnavigation.get import (
     NavigationPortletRenderer,
 )
-from plone.restapi.serializer.blocks import apply_block_serialization_transforms
+from plone.restapi.serializer.blocks import (
+    apply_block_serialization_transforms,
+)
 
 def own_recurse(self, children, level, bottomLevel):
     """ recursion"""
@@ -49,7 +51,6 @@ def own_recurse(self, children, level, bottomLevel):
             value[id] = apply_block_serialization_transforms(
                 block_value, self.context
             )
-
 
         item = {
             "@id": item_url,
