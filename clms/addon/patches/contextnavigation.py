@@ -48,8 +48,8 @@ def own_recurse(self, children, level, bottomLevel):
 
         value = copy.deepcopy(brain.getObject().blocks)
 
-        for id, block_value in value.items():
-            value[id] = apply_block_serialization_transforms(
+        for block_id, block_value in value.items():
+            value[block_id] = apply_block_serialization_transforms(
                 block_value, self.context
             )
 
