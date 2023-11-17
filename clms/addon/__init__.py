@@ -24,6 +24,7 @@ class IDummy(Interface):
 try:
     from eea.api.taxonomy.interfaces import IEeaApiTaxonomyLayer  # noqa
 
+    # pylint: disable=pointless-statement
     IEeaApiTaxonomyLayer
 except ImportError:
     alias_module("eea.api.taxonomy.interfaces.IEeaApiTaxonomyLayer", IDummy)
