@@ -22,6 +22,7 @@ class IDummy(Interface):
 
 
 try:
+    # pylint: disable=unused-import
     from eea.api.taxonomy.interfaces import IEeaApiTaxonomyLayer  # noqa
 except ImportError:
     alias_module("eea.api.taxonomy.interfaces.IEeaApiTaxonomyLayer", IDummy)
