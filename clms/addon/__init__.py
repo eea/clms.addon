@@ -16,7 +16,9 @@ log.info(a)
 
 
 class IDummy(Interface):
-    """Dummy interface to alias eea.api.taxonomy.interfaces.IEeaApiTaxonomyLayer"""
+    """Dummy interface to alias
+    eea.api.taxonomy.interfaces.IEeaApiTaxonomyLayer
+    """
 
 
 try:
