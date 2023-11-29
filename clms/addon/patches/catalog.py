@@ -6,11 +6,11 @@
 
 from logging import getLogger
 
+import re
 
 from Products.CMFPlone.browser import search
 from Products.CMFPlone.browser.search import BAD_CHARS, quote_chars
 from plone.app.querystring import querybuilder
-import re
 
 
 def my_quote(term):
