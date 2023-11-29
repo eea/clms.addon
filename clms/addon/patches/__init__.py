@@ -8,6 +8,7 @@ import clms.addon.patches.contextnavigation as g
 import clms.addon.patches.meeting as a
 import clms.addon.patches.scale as f
 import clms.addon.patches.sortable_title as d
+import clms.addon.patches.catalog as h
 
 log = getLogger(__name__)
 
@@ -17,3 +18,4 @@ log.info(d)
 log.info(e)
 log.info(f)
 log.info(g)
+log.info(h)
