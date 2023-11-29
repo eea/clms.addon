@@ -4,19 +4,28 @@
 """
 # -*- coding: utf-8 -*-
 
+from logging import getLogger
+
+
+from Products.CMFPlone.browser import search
 from Products.CMFPlone.browser.search import BAD_CHARS, quote_chars
+from plone.app.querystring import querybuilder
 import re
 
 
-def quote(term):
+def my_quote(term):
+    """ quote """
     # The terms and, or and not must be wrapped in quotes to avoid
     # being parsed as logical query atoms.
     if term.lower() in ("and", "or", "not"):
         term = '"%s"' % term
-    return term
+    return quote_chars(term)
 
 
-def munge_search_term(query):
+def my_munge_search_term(query):
+    """ munge_search term"""
+    original_query = query
+
     for char in BAD_CHARS:
         query = query.replace(char, " ")
 
@@ -33,7 +42,17 @@ def munge_search_term(query):
             continue
         r.append(f'"{clean_qp}"')
 
-    r += map(quote, query.strip().split())
+    r += map(my_quote, query.strip().split())
     r = " AND ".join(r)
-    r = quote_chars(r) + ("*" if r and not r.endswith('"') else "")
+    r = r + ("*" if r and not original_query.endswith('"') else "")
     return r
+
+
+search.quote = my_quote
+search.munge_search_term = my_munge_search_term
+
+querybuilder._quote = my_quote
+querybuilder.munge_search_term = my_munge_search_term
+
+log = getLogger(__name__)
+log.info('Patched Products.CMFPlone.browser.search')
