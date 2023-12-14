@@ -24,7 +24,8 @@ from zope.interface import Interface, implementer
 from zope.schema import getFields
 
 try:
-    # plone.app.iterate is by intend not part of Products.CMFPlone dependencies
+    # plone.app.iterate is by intend not part of Products.CMFPlone
+    # dependencies
     # so we can not rely on having it
     from plone.restapi.serializer.working_copy import WorkingCopyInfo
 except ImportError:
