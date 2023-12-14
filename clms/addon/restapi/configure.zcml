@@ -45,4 +45,15 @@
       provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
       />
 
+
+
+  <adapter factory=".summary_serializer.CLMSDefaultJSONSummarySerializer" />
+  <adapter
+      factory=".summary_serializer.DataSetAccordionToJsonSerializer"
+      provides="plone.restapi.interfaces.ISerializeToJson"
+      for="clms.types.content.dataset_accordion.IDataSetAccordion
+           zope.interface.Interface"
+      />
+
+
 </configure>
