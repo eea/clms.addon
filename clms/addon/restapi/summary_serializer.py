@@ -27,6 +27,7 @@ try:
     # plone.app.iterate is by intend not part of Products.CMFPlone
     # dependencies
     # so we can not rely on having it
+    # pylint: disable=ungrouped-imports
     from plone.restapi.serializer.working_copy import WorkingCopyInfo
 except ImportError:
     WorkingCopyInfo = None
