@@ -49,7 +49,6 @@ class DataSetSearch(Service):
 
         results["items"] = []
         for brain in batch:
-
             try:
                 obj = brain.getObject()
             except KeyError:
@@ -83,4 +82,5 @@ def get_needed_values(res):
             "dataset_download_information", {}
         ),
         downloadable_files=res.get("downloadable_files", {}),
+        original_projection=res.get("characteristics_projection", ""),
     )
