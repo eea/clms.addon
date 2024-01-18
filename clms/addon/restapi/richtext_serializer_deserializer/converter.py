@@ -1,18 +1,18 @@
 """
 Converter from RichTextValue items to JSON
 """
-
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapter
-from plone.restapi.serializer.converters import json_compatible
+
+from urllib.parse import urlparse
+
+from bs4 import BeautifulSoup
 from plone.app.textfield.interfaces import IRichTextValue
 from plone.dexterity.interfaces import IDexterityContent
 from plone.restapi.interfaces import IContextawareJsonCompatible
+from plone.restapi.serializer.converters import json_compatible
 from plone.restapi.serializer.utils import uid_to_url
-
-from bs4 import BeautifulSoup
-from urllib.parse import urlparse
+from zope.component import adapter
+from zope.interface import implementer
 
 
 @adapter(IRichTextValue, IDexterityContent)

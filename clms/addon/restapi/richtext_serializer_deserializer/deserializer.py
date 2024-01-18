@@ -2,19 +2,19 @@
 RichTextField Deserializer
 """
 # -*- coding: utf-8 -*-
-from zope.interface import implementer
-from zope.component import adapter
-from plone.app.textfield.interfaces import IRichText
-from plone.dexterity.interfaces import IDexterityContent
-from plone.restapi.interfaces import IFieldDeserializer
-from plone.restapi.services.content.tus import TUSUpload
-from zope.publisher.interfaces.browser import IBrowserRequest
-from plone.restapi.deserializer.dxfields import DefaultFieldDeserializer
 import html as html_parser
-from plone.app.textfield.value import RichTextValue
 
 from bs4 import BeautifulSoup
+from plone.app.textfield.interfaces import IRichText
+from plone.app.textfield.value import RichTextValue
+from plone.dexterity.interfaces import IDexterityContent
+from plone.restapi.deserializer.dxfields import DefaultFieldDeserializer
 from plone.restapi.deserializer.utils import path2uid
+from plone.restapi.interfaces import IFieldDeserializer
+from plone.restapi.services.content.tus import TUSUpload
+from zope.component import adapter
+from zope.interface import implementer
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 @implementer(IFieldDeserializer)
