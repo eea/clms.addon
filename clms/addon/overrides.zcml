@@ -59,4 +59,9 @@
   <adapter factory=".restapi.query.ZCatalogCompatibleQueryAdapter" />
 
 
+  <include
+      package=".restapi"
+      file="overrides.zcml"
+      />
+
 </configure>
