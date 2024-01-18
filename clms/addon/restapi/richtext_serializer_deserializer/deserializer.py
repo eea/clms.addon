@@ -61,11 +61,7 @@ class RichTextFieldDeserializer(DefaultFieldDeserializer):
 
 def is_internal_link(href):
     """ check if this link is internal"""
-    if (
-        href.startswith("http")
-        or href.startswith("ftp")
-        or href.startswith("mailto")
-        or href.startswith("#")
-    ):
+    # pylint: disable=line-too-long
+    if (href.startswith("http") or href.startswith("ftp") or href.startswith("mailto") or href.startswith("#")):  # noqa
         return False
     return True

@@ -14,6 +14,7 @@ from plone.restapi.serializer.utils import uid_to_url
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
+
 @adapter(IRichTextValue, IDexterityContent)
 @implementer(IContextawareJsonCompatible)
 class RichtextDXContextConverter:
@@ -44,5 +45,6 @@ class RichtextDXContextConverter:
             new_href = uid_to_url(href)
             if href != new_href:
                 parsed_new_href = urlparse(new_href)
-                link["href"] = parsed_new_href._replace(netloc="", scheme="").geturl()
+                link["href"] = parsed_new_href._replace(
+                    netloc="", scheme="").geturl()
         return str(soup)
