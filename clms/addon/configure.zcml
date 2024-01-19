@@ -23,6 +23,7 @@
   <include package=".patches" />
   <include package=".adapters" />
   <include package=".subscribers" />
+  <include package=".caching" />
 
   <include
       package="z3c.jbot"
