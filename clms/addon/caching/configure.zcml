@@ -5,7 +5,9 @@
     xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone"
     >
-  <!-- Image scales & file download paths -->
+  <!-- Image scales & file download paths
+       See https://github.com/plone/plone.app.caching/issues/136
+    -->
   <adapter
       factory="plone.app.caching.purge.ScalesPurgePaths"
       provides="z3c.caching.interfaces.IPurgePaths"
