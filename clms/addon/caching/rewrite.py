@@ -51,14 +51,8 @@ class CLMSRewriter(Base):
         virtualRootPhysicalPath = request.get("VirtualRootPhysicalPath")
 
         # Make sure request is compliant
-        if (
-            not virtualUrlParts
-            or not virtualRootPhysicalPath
-            or not isinstance(virtualUrlParts, (list, tuple))
-            or not isinstance(virtualRootPhysicalPath, (list, tuple))
-            or len(virtualUrlParts) < 2
-            or len(virtualUrlParts) > 3
-        ):
+        # pylint: disable=line-too-long
+        if (not virtualUrlParts or not virtualRootPhysicalPath or not isinstance(virtualUrlParts, (list, tuple)) or not isinstance(virtualRootPhysicalPath, (list, tuple)) or len(virtualUrlParts) < 2 or len(virtualUrlParts) > 3):  # noqa
             return [path]
 
         domains = settings.domains
