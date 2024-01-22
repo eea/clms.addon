@@ -52,6 +52,7 @@ class CLMSRewriter(Base):
 
         # Make sure request is compliant
         # pylint: disable=line-too-long
+        # pylint: disable=too-many-boolean-expressions
         if (not virtualUrlParts or not virtualRootPhysicalPath or not isinstance(virtualUrlParts, (list, tuple)) or not isinstance(virtualRootPhysicalPath, (list, tuple)) or len(virtualUrlParts) < 2 or len(virtualUrlParts) > 3):  # noqa
             return [path]
 
@@ -65,6 +66,7 @@ class CLMSRewriter(Base):
             virtualRoot = ""
 
         # Prefix, e.g. /_vh_foo/_vh_bar. Clear if we don't have any.
+        # pylint: disable=consider-using-ternary
         pathPrefix = len(virtualUrlParts) == 3 and virtualUrlParts[1] or ""
         if pathPrefix:
             pathPrefix = "/" + "/".join(
