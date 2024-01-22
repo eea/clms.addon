@@ -16,4 +16,13 @@
       />
 
 
+  <!--
+    Custom IPurgePathRewriter for CLMS.
+    In our case we need to purge VirtualHosted URLs in the backend varnish
+    and un-virtualhosted URLs in the front-end varnish.
+    so we register this adapter that will create both kind of URLs
+  -->
+  <adapter factory=".rewrite.CLMSRewriter" />
+
+
 </configure>
