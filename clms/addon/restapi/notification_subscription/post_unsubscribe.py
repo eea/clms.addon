@@ -32,7 +32,8 @@ from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingUnSubscriptionsUtility,
 )
-from clms.addon.utilities.productionupdates_notifications_utility import (
+# pylint: disable=line-too-long
+from clms.addon.utilities.productionupdates_notifications_utility import (  # noqa
     IProductionUpdatesPendingUnSubscriptionsUtility,
     IProductionUpdatesNotificationsUtility,
 )
