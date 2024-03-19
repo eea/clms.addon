@@ -1,7 +1,7 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:plone="http://namespaces.plone.org/plone"
-  >
+    >
 
   <plone:service
       method="POST"
@@ -104,103 +104,112 @@
       />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsItemNotificationSubscriptions"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsitem-notification-subscriptions"
-    />
+      method="DELETE"
+      factory=".delete.NewsItemNotificationSubscriptions"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsitem-notification-subscriptions"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsItemPendingNotificationSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsitem-notification-subscription-requests"
-    />
+      method="DELETE"
+      factory=".delete.NewsItemPendingNotificationSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsitem-notification-subscription-requests"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsItemPendingNotificationUnSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsitem-notification-unsubscription-requests"
-    />
+      method="DELETE"
+      factory=".delete.NewsItemPendingNotificationUnSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsitem-notification-unsubscription-requests"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.EventNotificationSubscriptions"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-event-notification-subscriptions"
-    />
+      method="DELETE"
+      factory=".delete.EventNotificationSubscriptions"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-event-notification-subscriptions"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.EventPendingNotificationSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-event-notification-subscription-requests"
-    />
+      method="DELETE"
+      factory=".delete.EventPendingNotificationSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-event-notification-subscription-requests"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.EventPendingNotificationUnSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-event-notification-unsubscription-requests"
-    />
+      method="DELETE"
+      factory=".delete.EventPendingNotificationUnSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-event-notification-unsubscription-requests"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsLetterNotificationSubscriptions"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsletter-notification-subscriptions"
-    />
+      method="DELETE"
+      factory=".delete.NewsLetterNotificationSubscriptions"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsletter-notification-subscriptions"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsLetterPendingNotificationSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsletter-notification-subscription-requests"
-    />
+      method="DELETE"
+      factory=".delete.NewsLetterPendingNotificationSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsletter-notification-subscription-requests"
+      />
 
   <plone:service
-    method="DELETE"
-    factory=".delete.NewsLetterPendingNotificationUnSubscriptionRequests"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@cleanup-newsletter-notification-unsubscription-requests"
-    />
-
-
-  <plone:service
-    method="GET"
-    factory=".get.GetNewsletterSubscribers"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@newsletter-subscribers"
-    />
+      method="DELETE"
+      factory=".delete.NewsLetterPendingNotificationUnSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-newsletter-notification-unsubscription-requests"
+      />
 
 
   <plone:service
-    method="GET"
-    factory=".get.GetNewsitemNotificationSubscribers"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@newsitem-notification-subscribers"
-    />
+      method="GET"
+      factory=".get.GetNewsletterSubscribers"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@newsletter-subscribers"
+      />
 
 
   <plone:service
-    method="GET"
-    factory=".get.GetEventNotificationSubscribers"
-    for="Products.CMFCore.interfaces.ISiteRoot"
-    permission="cmf.ManagePortal"
-    name="@event-notification-subscribers"
-    />
+      method="GET"
+      factory=".get.GetNewsitemNotificationSubscribers"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@newsitem-notification-subscribers"
+      />
+
+
+  <plone:service
+      method="GET"
+      factory=".get.GetEventNotificationSubscribers"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@event-notification-subscribers"
+      />
+
+
+  <plone:service
+      method="GET"
+      factory=".get.GetProductionUpdatesNotificationSubscribers"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@productionupdates-notification-subscribers"
+      />
 
 
 

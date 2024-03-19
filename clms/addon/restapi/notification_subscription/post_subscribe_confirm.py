@@ -18,6 +18,7 @@ from clms.addon.utilities.newsitem_notifications_utility import (
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterPendingSubscriptionsUtility,
 )
+from clms.addon.utilities.productionupdates_notifications_utility import IProductionUpdatesPendingSubscriptionsUtility
 
 
 @implementer(IPublishTraverse)
@@ -94,3 +95,11 @@ class NewsLetterNotificationsSubscribeConfirm(
     """ NewsLetter implementation """
 
     utility_interface = INewsLetterPendingSubscriptionsUtility
+
+
+class ProductionUpdatesNotificationsSubscribeConfirm(
+    BaseNotificationsSubscribeConfirmHandler
+):
+    """ Production updates implementation """
+
+    utility_interfaces = IProductionUpdatesPendingSubscriptionsUtility
