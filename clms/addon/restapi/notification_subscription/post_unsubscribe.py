@@ -32,6 +32,11 @@ from clms.addon.utilities.newsletter_utility import (
     INewsLetterNotificationsUtility,
     INewsLetterPendingUnSubscriptionsUtility,
 )
+# pylint: disable=line-too-long
+from clms.addon.utilities.productionupdates_notifications_utility import (
+    IProductionUpdatesPendingUnSubscriptionsUtility,
+    IProductionUpdatesNotificationsUtility,
+)
 
 
 class BaseNotificationsUnSubscribeHandler(Service):
@@ -231,4 +236,19 @@ class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
     email_subject = _("Unsubscription from newsletter")
     unsubscribe_email_message_template = (
         "newsletter_notifications_unsubscribe_template.pt"
+    )
+
+
+# pylint: disable=line-too-long
+class ProductionUpdatesNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):  # noqa
+    """base class"""
+
+    utility_interface = IProductionUpdatesPendingUnSubscriptionsUtility
+    subscription_handler_utility = IProductionUpdatesNotificationsUtility
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.productionupdates_notification_unsubscriptions_url"  # noqa
+    subscribe_base_url = "/subscribe/productionupdates"
+    email_subject = _("Unsubscription from productionupdates")
+    unsubscribe_email_message_template = (
+        "productionupdates_notifications_unsubscribe_template.pt"
     )

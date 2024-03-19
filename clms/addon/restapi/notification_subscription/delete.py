@@ -1,6 +1,7 @@
 """
 Cleanup registrations
 """
+
 # -*- coding: utf-8 -*-
 
 from plone.protect.interfaces import IDisableCSRFProtection
@@ -24,12 +25,18 @@ from clms.addon.utilities.newsletter_utility import (
     INewsLetterPendingUnSubscriptionsUtility,
 )
 
+from clms.addon.utilities.productionupdates_notifications_utility import (
+    IProductionUpdatesPendingUnSubscriptionsUtility,
+    IProductionUpdatesNotificationsUtility,
+    IProductionUpdatesPendingSubscriptionsUtility
+)
+
 
 class NewsItemNotificationSubscriptions(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemNotificationsUtility)
         utility.cleanup_subscribers()
@@ -38,10 +45,10 @@ class NewsItemNotificationSubscriptions(Service):
 
 
 class NewsItemPendingNotificationSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemPendingSubscriptionsUtility)
         utility.cleanup_requests()
@@ -50,10 +57,10 @@ class NewsItemPendingNotificationSubscriptionRequests(Service):
 
 
 class NewsItemPendingNotificationUnSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsItemPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
@@ -62,10 +69,10 @@ class NewsItemPendingNotificationUnSubscriptionRequests(Service):
 
 
 class EventNotificationSubscriptions(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventNotificationsUtility)
         utility.cleanup_subscribers()
@@ -74,10 +81,10 @@ class EventNotificationSubscriptions(Service):
 
 
 class EventPendingNotificationSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventPendingSubscriptionsUtility)
         utility.cleanup_requests()
@@ -86,10 +93,10 @@ class EventPendingNotificationSubscriptionRequests(Service):
 
 
 class EventPendingNotificationUnSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(IEventPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
@@ -98,10 +105,10 @@ class EventPendingNotificationUnSubscriptionRequests(Service):
 
 
 class NewsLetterNotificationSubscriptions(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterNotificationsUtility)
         utility.cleanup_subscribers()
@@ -110,10 +117,10 @@ class NewsLetterNotificationSubscriptions(Service):
 
 
 class NewsLetterPendingNotificationSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterPendingSubscriptionsUtility)
         utility.cleanup_requests()
@@ -122,12 +129,48 @@ class NewsLetterPendingNotificationSubscriptionRequests(Service):
 
 
 class NewsLetterPendingNotificationUnSubscriptionRequests(Service):
-    """ Service implementation"""
+    """Service implementation"""
 
     def reply(self):
-        """ cleanup the registry """
+        """cleanup the registry"""
         alsoProvides(self.request, IDisableCSRFProtection)
         utility = getUtility(INewsLetterPendingUnSubscriptionsUtility)
+        utility.cleanup_requests()
+        self.request.response.setStatus(204)
+        return _no_content_marker
+
+
+class ProductionUpdatesNotificationSubscriptions(Service):
+    """Service implementation"""
+
+    def reply(self):
+        """cleanup the registry"""
+        alsoProvides(self.request, IDisableCSRFProtection)
+        utility = getUtility(IProductionUpdatesNotificationsUtility)
+        utility.cleanup_subscribers()
+        self.request.response.setStatus(204)
+        return _no_content_marker
+
+
+class ProductionUpdatesPendingNotificationSubscriptionRequests(Service):
+    """Service implementation"""
+
+    def reply(self):
+        """cleanup the registry"""
+        alsoProvides(self.request, IDisableCSRFProtection)
+        utility = getUtility(IProductionUpdatesPendingSubscriptionsUtility)
+        utility.cleanup_requests()
+        self.request.response.setStatus(204)
+        return _no_content_marker
+
+
+class ProductionUpdatesPendingNotificationUnSubscriptionRequests(Service):
+    """Service implementation"""
+
+    def reply(self):
+        """cleanup the registry"""
+        alsoProvides(self.request, IDisableCSRFProtection)
+        utility = getUtility(IProductionUpdatesPendingUnSubscriptionsUtility)
         utility.cleanup_requests()
         self.request.response.setStatus(204)
         return _no_content_marker

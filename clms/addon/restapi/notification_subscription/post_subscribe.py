@@ -33,6 +33,11 @@ from clms.addon.utilities.newsletter_utility import (
     INewsLetterPendingSubscriptionsUtility,
 )
 
+from clms.addon.utilities.productionupdates_notifications_utility import (
+    IProductionUpdatesNotificationsUtility,
+    IProductionUpdatesPendingSubscriptionsUtility
+)
+
 
 class BaseNotificationsSubscribeHandler(Service):
     """base class for the notification subscriptions"""
@@ -131,6 +136,7 @@ class BaseNotificationsSubscribeHandler(Service):
         """
         registry = getUtility(IRegistry)
         url = registry.get(self.registry_key_for_base_url)
+
         unsubscribe_url = self.unsubscribe_base_url
         frontend_domain = api.portal.get_registry_record(
             "volto.frontend_domain"
@@ -230,4 +236,19 @@ class NewsLetterNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     email_subject = _("Subscription to newsletter")
     subscribe_email_message_template = (
         "newsletter_notifications_subscribe_template.pt"
+    )
+
+
+class ProductionUpdatesNotificationsSubscribe(
+    BaseNotificationsSubscribeHandler
+):
+    """ base class"""
+    utility_interface = IProductionUpdatesPendingSubscriptionsUtility
+    subscription_handler_utility = IProductionUpdatesNotificationsUtility
+    # pylint: disable=line-too-long
+    registry_key_for_base_url = "clms.addon.notifications_controlpanel.productionupdates_notification_subscriptions_url"  # noqa
+    unsubscribe_base_url = "/unsubscribe/productionupdates"
+    email_subject = _("Subscription to production updates")
+    subscribe_email_message_template = (
+        "productionupdates_notifications_subscribe_template.pt"
     )

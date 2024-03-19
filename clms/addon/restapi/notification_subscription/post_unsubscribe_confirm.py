@@ -18,6 +18,10 @@ from clms.addon.utilities.newsitem_notifications_utility import (
 from clms.addon.utilities.newsletter_utility import (
     INewsLetterPendingUnSubscriptionsUtility,
 )
+# pylint: disable=line-too-long
+from clms.addon.utilities.productionupdates_notifications_utility import (  # noqa
+    IProductionUpdatesPendingUnSubscriptionsUtility,
+)
 
 
 @implementer(IPublishTraverse)
@@ -94,3 +98,10 @@ class NewsLetterNotificationsUnSubscribeConfirm(
     """ NewsLetter implementation """
 
     utility_interface = INewsLetterPendingUnSubscriptionsUtility
+
+
+class ProductionUpdatesNotificationsUnSubscribeConfirm(
+    BaseNotificationsUnSubscribeConfirmHandler
+):
+    """ Production Update implementation"""
+    utility_interface = IProductionUpdatesPendingUnSubscriptionsUtility
