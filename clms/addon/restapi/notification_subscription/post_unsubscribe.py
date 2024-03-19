@@ -238,8 +238,8 @@ class NewsLetterNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
         "newsletter_notifications_unsubscribe_template.pt"
     )
 
-
-class ProductionUpdatesNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):
+# pylint: disable=line-too-long
+class ProductionUpdatesNotificationsUnSubscribe(BaseNotificationsUnSubscribeHandler):  # noqa
     """base class"""
 
     utility_interface = IProductionUpdatesPendingUnSubscriptionsUtility
