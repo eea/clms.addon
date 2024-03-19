@@ -105,4 +105,4 @@ class ProductionUpdatesNotificationsSubscribeConfirm(
 ):
     """ Production updates implementation """
 
-    utility_interfaces = IProductionUpdatesPendingSubscriptionsUtility
+    utility_interface = IProductionUpdatesPendingSubscriptionsUtility
