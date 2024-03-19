@@ -6,8 +6,10 @@ from clms.addon.utilities.newsitem_notifications_utility import \
     INewsItemNotificationsUtility
 from clms.addon.utilities.newsletter_utility import \
     INewsLetterNotificationsUtility
-from clms.addon.utilities.productionupdates_notifications_utilityutility import \
+# pylint: disable=line-too-long
+from clms.addon.utilities.productionupdates_notifications_utilityutility import (  #  noqa
     IProductionUpdatesNotificationsUtility
+)
 from plone.restapi.services import Service
 from zope.component import getUtility
 

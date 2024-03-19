@@ -33,7 +33,10 @@ from clms.addon.utilities.newsletter_utility import (
     INewsLetterPendingSubscriptionsUtility,
 )
 
-from clms.addon.utilities.productionupdates_notifications_utility import IProductionUpdatesNotificationsUtility, IProductionUpdatesPendingSubscriptionsUtility
+from clms.addon.utilities.productionupdates_notifications_utility import (
+    IProductionUpdatesNotificationsUtility,
+    IProductionUpdatesPendingSubscriptionsUtility
+)
 
 
 class BaseNotificationsSubscribeHandler(Service):
@@ -235,7 +238,9 @@ class NewsLetterNotificationsSubscribe(BaseNotificationsSubscribeHandler):
     )
 
 
-class ProductionUpdatesNotificationsSubscribe(BaseNotificationsSubscribeHandler):
+class ProductionUpdatesNotificationsSubscribe(
+    BaseNotificationsSubscribeHandler
+):
     """ base class"""
     utility_interface = IProductionUpdatesPendingSubscriptionsUtility
     subscription_handler_utility = IProductionUpdatesNotificationsUtility
