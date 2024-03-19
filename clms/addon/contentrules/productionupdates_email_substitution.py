@@ -11,12 +11,14 @@ from clms.addon.utilities.productionupdates_notifications_utility import (
     IProductionUpdatesNotificationsUtility
 )
 
+
 @adapter(Interface)
 class ProductionUpdatesSubscriberSubstitution(BaseSubstitution):
     """ Subscriber substitution adapter"""
 
     category = _("Portal")
-    description = _("Email addresses subscribed to production updates notifications")
+    description = _("Email addresses subscribed to production "
+                    "updates notifications")
 
     def safe_call(self):
         """ call the utility to get the subscribers """
