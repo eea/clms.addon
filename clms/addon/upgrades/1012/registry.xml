@@ -6,7 +6,7 @@
 <!-- -*- extra stuff goes here -*- -->
 
     <records interface="clms.addon.controlpanels.notifications_controlpanel.controlpanel.INotificationsControlPanel"
-           prefix="clms.addon.notifications_controlpanel" />
+           prefix="clms.addon.notifications_controlpanel">
 
     <value purge="false" key="productionupdates_notification_subscriptions_url">/productionupdates-notification-subscription</value>
     <value purge="false" key="productionupdates_notification_unsubscriptions_url">/productionupdates-notification-unsubscription</value>
