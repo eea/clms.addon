@@ -136,6 +136,9 @@ class BaseNotificationsSubscribeHandler(Service):
         """
         registry = getUtility(IRegistry)
         url = registry.get(self.registry_key_for_base_url)
+        if not url:
+            import pdb; pdb.set_trace(); a=1
+
         unsubscribe_url = self.unsubscribe_base_url
         frontend_domain = api.portal.get_registry_record(
             "volto.frontend_domain"

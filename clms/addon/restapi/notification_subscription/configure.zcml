@@ -103,6 +103,41 @@
       name="@newsletter-notification-unsubscribe-confirm"
       />
 
+
+  <plone:service
+      method="POST"
+      factory=".post_subscribe.ProductionUpdatesNotificationsSubscribe"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@productionupdates-notification-subscribe"
+      />
+
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe.ProductionUpdatesNotificationsUnSubscribe"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@productionupdates-notification-unsubscribe"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".post_subscribe_confirm.ProductionUpdatesNotificationsSubscribeConfirm"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@productionupdates-notification-subscribe-confirm"
+      />
+
+  <plone:service
+      method="POST"
+      factory=".post_unsubscribe_confirm.ProductionUpdatesNotificationsUnSubscribeConfirm"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope2.View"
+      name="@productionupdates-notification-unsubscribe-confirm"
+      />
+
+
   <plone:service
       method="DELETE"
       factory=".delete.NewsItemNotificationSubscriptions"
@@ -175,6 +210,31 @@
       name="@cleanup-newsletter-notification-unsubscription-requests"
       />
 
+  <plone:service
+      method="DELETE"
+      factory=".delete.ProductionUpdatesNotificationSubscriptions"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-productionupdates-notification-subscriptions"
+      />
+
+  <plone:service
+      method="DELETE"
+      factory=".delete.ProductionUpdatesPendingNotificationSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-productionupdates-notification-subscription-requests"
+      />
+
+  <plone:service
+      method="DELETE"
+      factory=".delete.ProductionUpdatesPendingNotificationUnSubscriptionRequests"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="cmf.ManagePortal"
+      name="@cleanup-productionupdates-notification-unsubscription-requests"
+      />
+
+
 
   <plone:service
       method="GET"
@@ -210,7 +270,6 @@
       permission="cmf.ManagePortal"
       name="@productionupdates-notification-subscribers"
       />
-
 
 
 </configure>
