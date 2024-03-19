@@ -116,7 +116,8 @@ class INotificationsControlPanel(Interface):
         ),
         description=_(
             "This base URL will be used to build the actual confirmation URL"
-            " for the production updates unsubscription handled by the frontend",
+            " for the production updates unsubscription handled by the "
+            "frontend",
         ),
         default="/productionupdates-notification-unsubscription",
         required=True,

@@ -31,6 +31,7 @@ class ProductionUpdatesNotificationsUtility(NotificationsUtility):
     # pylint: disable=line-too-long
     ANNOTATION_KEY = "clms.addon.productionupdates_notification_subscribers"  # noqa
 
+
 # pylint: disable=line-too-long
 class IProductionUpdatesPendingSubscriptionsUtility(IPendingSubscriptionHandler):  # noqa
     """ utility interface"""
