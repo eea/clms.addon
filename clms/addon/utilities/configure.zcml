@@ -1,52 +1,69 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:i18n="http://namespaces.zope.org/i18n"
-  i18n_domain="eea">
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="eea"
+    >
 
   <utility
-    provides=".event_notifications_utility.IEventNotificationsUtility"
-    factory=".event_notifications_utility.EventNotificationsUtility"
-    />
+      factory=".event_notifications_utility.EventNotificationsUtility"
+      provides=".event_notifications_utility.IEventNotificationsUtility"
+      />
 
   <utility
-    provides=".event_notifications_utility.IEventPendingSubscriptionsUtility"
-    factory=".event_notifications_utility.EventPendingSubscriptionsUtility"
-    />
+      factory=".event_notifications_utility.EventPendingSubscriptionsUtility"
+      provides=".event_notifications_utility.IEventPendingSubscriptionsUtility"
+      />
 
   <utility
-    provides=".event_notifications_utility.IEventPendingUnSubscriptionsUtility"
-    factory=".event_notifications_utility.EventPendingUnSubscriptionsUtility"
-    />
+      factory=".event_notifications_utility.EventPendingUnSubscriptionsUtility"
+      provides=".event_notifications_utility.IEventPendingUnSubscriptionsUtility"
+      />
 
   <utility
-    provides=".newsitem_notifications_utility.INewsItemNotificationsUtility"
-    factory=".newsitem_notifications_utility.NewsItemNotificationsUtility"
-    />
+      factory=".newsitem_notifications_utility.NewsItemNotificationsUtility"
+      provides=".newsitem_notifications_utility.INewsItemNotificationsUtility"
+      />
 
   <utility
-    provides=".newsitem_notifications_utility.INewsItemPendingSubscriptionsUtility"
-    factory=".newsitem_notifications_utility.NewsItemPendingSubscriptionsUtility"
-    />
+      factory=".newsitem_notifications_utility.NewsItemPendingSubscriptionsUtility"
+      provides=".newsitem_notifications_utility.INewsItemPendingSubscriptionsUtility"
+      />
 
   <utility
-    provides=".newsitem_notifications_utility.INewsItemPendingUnSubscriptionsUtility"
-    factory=".newsitem_notifications_utility.NewsItemPendingUnSubscriptionsUtility"
-    />
+      factory=".newsitem_notifications_utility.NewsItemPendingUnSubscriptionsUtility"
+      provides=".newsitem_notifications_utility.INewsItemPendingUnSubscriptionsUtility"
+      />
 
 
   <utility
-    provides=".newsletter_utility.INewsLetterNotificationsUtility"
-    factory=".newsletter_utility.NewsLetterNotificationsUtility"
-    />
+      factory=".productionupdates_notifications_utility.ProductionUpdatesNotificationsUtility"
+      provides=".productionupdates_notifications_utility.IProductionUpdatesNotificationsUtility"
+      />
 
   <utility
-    provides=".newsletter_utility.INewsLetterPendingSubscriptionsUtility"
-    factory=".newsletter_utility.NewsLetterPendingSubscriptionsUtility"
-    />
+      factory=".productionupdates_notifications_utility.ProductionUpdatesPendingSubscriptionsUtility"
+      provides=".productionupdates_notifications_utility.IProductionUpdatesPendingSubscriptionsUtility"
+      />
 
   <utility
-    provides=".newsletter_utility.INewsLetterPendingUnSubscriptionsUtility"
-    factory=".newsletter_utility.NewsLetterPendingUnSubscriptionsUtility"
-    />
+      factory=".productionupdates_notifications_utility.ProductionUpdatesPendingUnSubscriptionsUtility"
+      provides=".productionupdates_notifications_utility.IProductionUpdatesPendingUnSubscriptionsUtility"
+      />
+
+
+  <utility
+      factory=".newsletter_utility.NewsLetterNotificationsUtility"
+      provides=".newsletter_utility.INewsLetterNotificationsUtility"
+      />
+
+  <utility
+      factory=".newsletter_utility.NewsLetterPendingSubscriptionsUtility"
+      provides=".newsletter_utility.INewsLetterPendingSubscriptionsUtility"
+      />
+
+  <utility
+      factory=".newsletter_utility.NewsLetterPendingUnSubscriptionsUtility"
+      provides=".newsletter_utility.INewsLetterPendingUnSubscriptionsUtility"
+      />
 
 </configure>
