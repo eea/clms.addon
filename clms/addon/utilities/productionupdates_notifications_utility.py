@@ -28,15 +28,19 @@ class IProductionUpdatesNotificationsUtility(INotificationsUtility):
 class ProductionUpdatesNotificationsUtility(NotificationsUtility):
     """ utility implementation """
 
-    ANNOTATION_KEY = "clms.addon.productionupdates_notification_subscribers"
+    # pylint: disable=line-too-long
+    ANNOTATION_KEY = "clms.addon.productionupdates_notification_subscribers"  # noqa
 
-
-class IProductionUpdatesPendingSubscriptionsUtility(IPendingSubscriptionHandler):
+# pylint: disable=line-too-long
+class IProductionUpdatesPendingSubscriptionsUtility(IPendingSubscriptionHandler):  # noqa
     """ utility interface"""
 
 
 @implementer(IProductionUpdatesPendingSubscriptionsUtility)
-class ProductionUpdatesPendingSubscriptionsUtility(PendingSubscriptionHandler):
+# pylint: disable=line-too-long
+class ProductionUpdatesPendingSubscriptionsUtility(
+    PendingSubscriptionHandler
+):  # noqa
     """ utility implementation """
 
     ANNOTATION_KEY = "clms.addon.productionupdates_pending_subscriptions"
@@ -49,12 +53,16 @@ class ProductionUpdatesPendingSubscriptionsUtility(PendingSubscriptionHandler):
         return False
 
 
-class IProductionUpdatesPendingUnSubscriptionsUtility(IPendingUnSubscriptionHandler):
+class IProductionUpdatesPendingUnSubscriptionsUtility(
+    IPendingUnSubscriptionHandler
+):  # noqa
     """ utility interface """
 
 
 @implementer(IProductionUpdatesPendingUnSubscriptionsUtility)
-class ProductionUpdatesPendingUnSubscriptionsUtility(PendingUnSubscriptionHandler):
+class ProductionUpdatesPendingUnSubscriptionsUtility(
+    PendingUnSubscriptionHandler
+):  # noqa
     """ utility implementation """
 
     ANNOTATION_KEY = "clms.addon.productionupdates_pending_unsubscriptions"
