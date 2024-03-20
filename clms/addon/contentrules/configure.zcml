@@ -24,6 +24,13 @@
       name="event_notification_subscribers"
       />
 
+  <adapter
+      factory=".productionupdates_email_substitution.ProductionUpdatesSubscriberSubstitution"
+      provides="plone.stringinterp.interfaces.IStringSubstitution"
+      for="*"
+      name="productionupdates_notification_subscribers"
+      />
+
 
   <adapter
       factory=".volto_url_substitution.VoltoURLSubstitution"
