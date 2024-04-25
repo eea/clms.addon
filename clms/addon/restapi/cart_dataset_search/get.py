@@ -83,5 +83,7 @@ def get_needed_values(res):
         ),
         downloadable_files=res.get("downloadable_files", {}),
         original_projection=res.get("characteristics_projection", ""),
-        download_show_auxiliary_calendar=res.get("download_show_auxiliary_calendar", False)
+        download_show_auxiliary_calendar=res.get(
+            "download_show_auxiliary_calendar", False
+        )
     )
