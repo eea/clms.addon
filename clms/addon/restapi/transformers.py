@@ -1,4 +1,5 @@
-""" transformers for slateTable blocks"""
+"""transformers for slateTable blocks"""
+
 # -*- coding: utf-8 -*-
 from logging import getLogger
 
@@ -17,6 +18,23 @@ from Products.CMFPlone.interfaces import IPloneSiteRoot
 from zope.component import adapter
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
+
+
+@implementer(IBlockFieldSerializationTransformer)
+@adapter(IBlocks, IBrowserRequest)
+class CCLFaqSerializer(object):
+    """Serializer for FAQ blocks"""
+
+    order = 100
+    block_type = "cclFAQ"
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self, block):
+        print("block", block, self.context)
+        return block
 
 
 class SlateTableBlockSerializerBase(SlateBlockSerializerBase):
@@ -81,9 +99,8 @@ class SlateExternalLinkBlockSerializerBase:
         for child in children:
             node_type = child.get("type")
             if node_type == "a":
-                external = (
-                    child.get("data", {}).get("link", {}).get("external", {})
-                )
+                external = child.get("data", {}).get(
+                    "link", {}).get("external", {})
                 if external:
                     # Check if it has an explicit target
                     target = external.get("target", None)
@@ -108,9 +125,7 @@ class SlateExternalLinkBlockSerializer(SlateExternalLinkBlockSerializerBase):
 
 @implementer(IBlockFieldSerializationTransformer)
 @adapter(IPloneSiteRoot, IBrowserRequest)
-class SlateExternalLinkBlockSerializerRoot(
-    SlateExternalLinkBlockSerializerBase
-):
+class SlateExternalLinkBlockSerializerRoot(SlateExternalLinkBlockSerializerBase):
     """Serializer for site root"""
 
 
@@ -118,7 +133,6 @@ class SlateTableBlockTransformer(SlateBlockTransformer):
     """Salte table block transformer base"""
 
     def __call__(self, block):
-
         rows = block.get("table", {}).get("rows", [])
         for row in rows:
             cells = row.get("cells", [])

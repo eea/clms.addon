@@ -1,7 +1,7 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:plone="http://namespaces.plone.org/plone"
-    >
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:plone="http://namespaces.plone.org/plone"
+>
 
   <include package="plone.restapi" />
 
@@ -12,48 +12,57 @@
   <include package=".notifications_controlpanel" />
   <include package=".delete_profile" />
   <include package=".block_indexers" />
-  <!-- <include package=".navroot" /> -->
   <include package=".link" />
 
+  <!-- <include package=".navroot" /> -->
 
   <subscriber
-      factory=".transformers.SlateTableBlockSerializerRoot"
-      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
-      />
+    factory=".transformers.CCLFaqSerializer"
+    provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+  />
 
   <subscriber
-      factory=".transformers.SlateTableBlockSerializer"
-      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
-      />
+    factory=".transformers.SlateTableBlockSerializerRoot"
+    provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+  />
 
   <subscriber
-      factory=".transformers.SlateExternalLinkBlockSerializer"
-      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
-      />
+    factory=".transformers.SlateTableBlockSerializer"
+    provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+  />
 
   <subscriber
-      factory=".transformers.SlateExternalLinkBlockSerializerRoot"
-      provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
-      />
+    factory=".transformers.SlateExternalLinkBlockSerializer"
+    provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+  />
 
   <subscriber
-      factory=".transformers.SlateTableBlockDeserializer"
-      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
-      />
+    factory=".transformers.SlateExternalLinkBlockSerializerRoot"
+    provides="plone.restapi.interfaces.IBlockFieldSerializationTransformer"
+  />
+
   <subscriber
-      factory=".transformers.SlateTableBlockDeserializerRoot"
-      provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
-      />
+    factory=".transformers.SlateTableBlockDeserializer"
+    provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+  />
 
-
+  <subscriber
+    factory=".transformers.SlateTableBlockDeserializerRoot"
+    provides="plone.restapi.interfaces.IBlockFieldDeserializationTransformer"
+  />
 
   <adapter factory=".summary_serializer.CLMSDefaultJSONSummarySerializer" />
-  <adapter
-      factory=".summary_serializer.DataSetAccordionToJsonSerializer"
-      provides="plone.restapi.interfaces.ISerializeToJson"
-      for="clms.types.content.dataset_accordion.IDataSetAccordion
-           zope.interface.Interface"
-      />
 
+  <adapter
+    factory=".summary_serializer.DataSetAccordionToJsonSerializer"
+    provides="plone.restapi.interfaces.ISerializeToJson"
+    for="clms.types.content.dataset_accordion.IDataSetAccordion
+           zope.interface.Interface"
+  />
+
+  <adapter
+    factory=".contextnavigation.ContextNavigation"
+    name="contextnavigation"
+  />
 
 </configure>
