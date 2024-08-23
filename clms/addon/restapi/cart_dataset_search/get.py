@@ -1,4 +1,5 @@
-""" userschema endpoint """
+"""userschema endpoint"""
+
 # -*- coding: utf-8 -*-
 from logging import getLogger
 
@@ -78,12 +79,10 @@ def get_needed_values(res):
     return dict(
         title=res.get("title", ""),
         UID=res.get("UID", ""),
-        dataset_download_information=res.get(
-            "dataset_download_information", {}
-        ),
+        dataset_download_information=res.get("dataset_download_information", {}),
         downloadable_files=res.get("downloadable_files", {}),
         original_projection=res.get("characteristics_projection", ""),
         download_show_auxiliary_calendar=res.get(
             "download_show_auxiliary_calendar", False
-        )
+        ),
     )
