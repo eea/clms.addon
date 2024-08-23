@@ -1,14 +1,18 @@
-""" override DefaultJSONSummarySerializer"""
+"""override DefaultJSONSummarySerializer"""
+
 # -*- coding: utf-8 -*-
+from zope.component import queryAdapter
 from clms.addon.interfaces import IClmsAddonLayer
 from clms.types.content.dataset_accordion import IDataSetAccordion
 from plone.app.contentlisting.interfaces import IContentListingObject
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY
 from plone.dexterity.utils import iterSchemata
-from plone.restapi.interfaces import (IFieldSerializer,
-                                      IObjectPrimaryFieldTarget,
-                                      ISerializeToJson,
-                                      ISerializeToJsonSummary)
+from plone.restapi.interfaces import (
+    IFieldSerializer,
+    IObjectPrimaryFieldTarget,
+    ISerializeToJson,
+    ISerializeToJsonSummary,
+)
 from plone.restapi.serializer.converters import json_compatible
 from plone.restapi.serializer.dxcontent import SerializeToJson
 from plone.restapi.serializer.expansion import expandable_elements
@@ -97,9 +101,7 @@ class DataSetAccordionToJsonSerializer(SerializeToJson):
             baseline, working_copy = WorkingCopyInfo(
                 self.context
             ).get_working_copy_info()
-            result.update(
-                {"working_copy": working_copy, "working_copy_of": baseline}
-            )
+            result.update({"working_copy": working_copy, "working_copy_of": baseline})
 
         # Insert locking information
         result.update({"lock": lock_info(obj)})
@@ -109,9 +111,7 @@ class DataSetAccordionToJsonSerializer(SerializeToJson):
 
         # Insert field values
         for schema in iterSchemata(self.context):
-            read_permissions = mergedTaggedValueDict(
-                schema, READ_PERMISSIONS_KEY
-            )
+            read_permissions = mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY)
 
             for name, field in getFields(schema).items():
                 if not self.check_permission(read_permissions.get(name), obj):
@@ -148,13 +148,18 @@ def get_blocks_value(brain):
 @implementer(ISerializeToJsonSummary)
 @adapter(Interface, IClmsAddonLayer)
 class CLMSDefaultJSONSummarySerializer(DefaultJSONSummarySerializer):
-    """ Change the default JSONSummarySerializer
-        to properly handle the `blocks` field, calling to the
-        relevant transformers
+    """Change the default JSONSummarySerializer
+    to properly handle the `blocks` field, calling to the
+    relevant transformers
     """
+
     def __call__(self):
         """call the serializer"""
-        obj = IContentListingObject(self.context)
+        adapter = queryAdapter(self.context, IContentListingObject)
+        if adapter is None:
+            obj = self.context
+        else:
+            obj = adapter
 
         summary = {}
         for field in self.metadata_fields():

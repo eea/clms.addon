@@ -8,7 +8,7 @@ clms.addon
   :target: https://ci.eionet.europa.eu/job/eea/job/clms.addon/job/master/display/redirect
   :alt: Master
 
-The clms.addon is a Plone add-on with some customizations for the CLMS project. 
+The clms.addon is a Plone add-on with some customizations for the CLMS project.
 
 .. contents::
 
@@ -19,7 +19,7 @@ Main features
 1. Control panel to configure the login URL
 2. Override post-login redirect
 3. Several customization and overrides
- 
+
 Install
 =======
 
@@ -99,3 +99,11 @@ EEA_ - European Environment Agency (EU)
 
 .. _EEA: https://www.eea.europa.eu/
 .. _`EEA Web Systems Training`: http://www.youtube.com/user/eeacms/videos?view=1
+
+
+How to run tests
+================
+
+In docker container, run:
+
+  bin/zope-testrunner --test-path sources/clms.addon/
