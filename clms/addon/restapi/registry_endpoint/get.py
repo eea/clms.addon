@@ -1,6 +1,7 @@
-""" Plone registry endpoint override to allow anonymous users
+"""Plone registry endpoint override to allow anonymous users
 request keys under clms.*
 """
+
 # -*- coding: utf-8 -*-
 from plone import api
 from plone.registry.interfaces import IRegistry
@@ -13,17 +14,17 @@ from zope.publisher.interfaces import IPublishTraverse
 
 @implementer(IPublishTraverse)
 class RegistryGet(Base):
-    """ base class """
+    """base class"""
 
     def reply(self):
-        """ return the real response """
+        """return the real response"""
         registry = getUtility(IRegistry)
         if self.params:
             if self._get_record_name.startswith("clms."):  # noqa
                 value = registry[self._get_record_name]
                 return value
             if api.user.has_permission(
-                user=api.user.get_current(), permission="cmf.ManagePortal"
+                user=api.user.get_current(), permission="Manage portal"
             ):
                 value = registry[self._get_record_name]
                 return value
@@ -33,11 +34,10 @@ class RegistryGet(Base):
 
         # batched listing
         if api.user.has_permission(
-            user=api.user.get_current(), permission="cmf.ManagePortal"
+            user=api.user.get_current(), permission="Manage portal"
         ):
             serializer = getMultiAdapter(
-                (registry, self.request), ISerializeToJson
-            )
+                (registry, self.request), ISerializeToJson)
             return serializer()
 
         self.request.response.setStatus(401)
