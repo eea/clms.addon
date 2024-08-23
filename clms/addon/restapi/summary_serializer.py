@@ -101,7 +101,8 @@ class DataSetAccordionToJsonSerializer(SerializeToJson):
             baseline, working_copy = WorkingCopyInfo(
                 self.context
             ).get_working_copy_info()
-            result.update({"working_copy": working_copy, "working_copy_of": baseline})
+            result.update({"working_copy": working_copy,
+                          "working_copy_of": baseline})
 
         # Insert locking information
         result.update({"lock": lock_info(obj)})
@@ -111,7 +112,8 @@ class DataSetAccordionToJsonSerializer(SerializeToJson):
 
         # Insert field values
         for schema in iterSchemata(self.context):
-            read_permissions = mergedTaggedValueDict(schema, READ_PERMISSIONS_KEY)
+            read_permissions = mergedTaggedValueDict(
+                schema, READ_PERMISSIONS_KEY)
 
             for name, field in getFields(schema).items():
                 if not self.check_permission(read_permissions.get(name), obj):

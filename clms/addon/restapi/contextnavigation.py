@@ -33,8 +33,6 @@ class ContextNavigation(BaseContextNavigation):
                 if not block:
                     continue
                 if block.get("@type") == "cclFAQ":
-                    return super(ContextNavigation, self).__call__(
-                        expand=True, prefix=prefix
-                    )
+                    return super().__call__(expand=True, prefix=prefix)
 
         return super(ContextNavigation, self).__call__(expand=expand, prefix=prefix)
