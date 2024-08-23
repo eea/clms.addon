@@ -1,11 +1,14 @@
 <configure
-    xmlns="http://namespaces.zope.org/zope"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:i18n="http://namespaces.zope.org/i18n"
-    i18n_domain="eea"
-    >
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="eea"
+>
 
   <i18n:registerTranslations directory="locales" />
+
+  <include package="Products.CMFCore" file="permissions.zcml" />
+
   <include package="plone.app.registry" />
   <include package="collective.taxonomy" />
   <include package="plone.volto" />
@@ -26,13 +29,13 @@
   <include package=".caching" />
 
   <include
-      package="z3c.jbot"
-      file="meta.zcml"
-      />
+    package="z3c.jbot"
+    file="meta.zcml"
+  />
 
   <browser:jbot
-      directory="template-overrides"
-      layer=".interfaces.IClmsAddonLayer"
-      />
+    directory="template-overrides"
+    layer=".interfaces.IClmsAddonLayer"
+  />
 
 </configure>

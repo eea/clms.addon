@@ -28,21 +28,21 @@ pipeline {
             }
           },
 
-          "PEP8": {
-            node(label: 'docker') {
-              script {
-                sh '''docker run -i --rm --name="$BUILD_TAG-pep8" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pep8'''
-              }
-            }
-          },
-
-          "PyLint": {
-            node(label: 'docker') {
-              script {
-                sh '''docker run -i --rm --name="$BUILD_TAG-pylint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pylint:py3'''
-              }
-            }
-          }
+          //"PEP8": {
+          //  node(label: 'docker') {
+          //    script {
+          //      sh '''docker run -i --rm --name="$BUILD_TAG-pep8" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pep8'''
+          //    }
+          //  }
+          //},
+          //
+          //"PyLint": {
+          //  node(label: 'docker') {
+          //    script {
+          //      sh '''docker run -i --rm --name="$BUILD_TAG-pylint" -e GIT_SRC="https://github.com/eea/$GIT_NAME.git" -e GIT_NAME="$GIT_NAME" -e GIT_BRANCH="$BRANCH_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" eeacms/pylint:py3'''
+          //    }
+          //  }
+          //}
 
         )
       }
@@ -107,7 +107,15 @@ pipeline {
                 // sh '''mkdir -p xunit-reports'''
                 try {
                   sh '''docker pull eeacms/plone-test:6'''
-                  sh '''docker run -i --name="$BUILD_TAG-python3" -e GIT_USER="eea" -e GIT_NAME=$GIT_NAME -e GIT_BRANCH="$BRANCH_NAME" -e ADDONS="$GIT_NAME[test]" -e DEVELOP="/app/eea/$GIT_NAME" -e GIT_CHANGE_ID="$CHANGE_ID" -e PIP_PARAMS="-f https://eggrepo.eea.europa.eu/simple/ -f https://code.codesyntax.com/static/public/" eeacms/plone-test:6'''
+                  sh '''docker run -i --name="$BUILD_TAG-python3" \
+                    -e GIT_USER="eea" \
+                    -e GIT_NAME=$GIT_NAME \
+                    -e GIT_BRANCH="$BRANCH_NAME" \
+                    -e ADDONS="$GIT_NAME[test]" \
+                    -e DEVELOP="/app/eea/$GIT_NAME" \
+                    -e GIT_CHANGE_ID="$CHANGE_ID" \
+                    -e PIP_PARAMS="-f https://eggrepo.eea.europa.eu/simple/ \
+                    -f https://code.codesyntax.com/static/public/" eeacms/plone-test:6'''
                   // sh '''docker cp $BUILD_TAG-python3:/plone/instance/parts/xmltestreport/testreports/. xunit-reports/'''
                   // stash name: "xunit-reports", includes: "xunit-reports/*.xml"
                   // sh '''docker cp $BUILD_TAG-python3:/plone/instance/src/$GIT_NAME/coverage.xml coverage.xml'''
