@@ -65,6 +65,7 @@ class TestDatasetSearch(unittest.TestCase):
         values at once, receiving a list of possible values as a
         parameter, something like UID=a1&UID=a2&UID=a3
         """
+
         response = self.api_session.get(
             "@datasets_by_uid?UID=%s&UID=%s" % (self.doc1.UID(), self.doc2.UID())
         )
