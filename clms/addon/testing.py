@@ -1,6 +1,7 @@
 """
 testing basics
 """
+
 # -*- coding: utf-8 -*-
 import clms.addon
 import collective.MockMailHost
@@ -33,7 +34,9 @@ class ClmsAddonLayer(PloneSandboxLayer):
         # layer.
         # pylint: disable=import-outside-toplevel
         import plone.restapi
+        import Products.CMFCore
 
+        self.loadZCML(package=Products.CMFCore)
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=clms.addon)
         self.loadZCML(package=collective.MockMailHost)
