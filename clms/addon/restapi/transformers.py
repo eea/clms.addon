@@ -22,7 +22,7 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 @implementer(IBlockFieldSerializationTransformer)
 @adapter(IBlocks, IBrowserRequest)
-class CCLFaqSerializer(object):
+class CCLFaqSerializer:
     """Serializer for FAQ blocks"""
 
     order = 100

@@ -14,6 +14,8 @@ from clms.addon.interfaces import IClmsAddonLayer
 @implementer(IExpandableElement)
 @adapter(Interface, IClmsAddonLayer)
 class ContextNavigation(BaseContextNavigation):
+    """ContextNavigation expander"""
+
     def __init__(self, context, request):
         self.context = context
         self.request = request

@@ -1,9 +1,6 @@
 """override DefaultJSONSummarySerializer"""
 
 # -*- coding: utf-8 -*-
-from zope.component import queryAdapter
-from clms.addon.interfaces import IClmsAddonLayer
-from clms.types.content.dataset_accordion import IDataSetAccordion
 from plone.app.contentlisting.interfaces import IContentListingObject
 from plone.autoform.interfaces import READ_PERMISSIONS_KEY
 from plone.dexterity.utils import iterSchemata
@@ -22,10 +19,13 @@ from plone.restapi.serializer.utils import get_portal_type_title
 from plone.restapi.services.locking import lock_info
 from plone.supermodel.utils import mergedTaggedValueDict
 from Products.CMFCore.WorkflowCore import WorkflowException
-from zope.component import adapter, getMultiAdapter, queryMultiAdapter
+from zope.component import adapter, getMultiAdapter, queryAdapter, queryMultiAdapter
 from zope.globalrequest import getRequest
 from zope.interface import Interface, implementer
 from zope.schema import getFields
+
+from clms.addon.interfaces import IClmsAddonLayer
+from clms.types.content.dataset_accordion import IDataSetAccordion
 
 try:
     # plone.app.iterate is by intend not part of Products.CMFPlone
@@ -157,11 +157,11 @@ class CLMSDefaultJSONSummarySerializer(DefaultJSONSummarySerializer):
 
     def __call__(self):
         """call the serializer"""
-        adapter = queryAdapter(self.context, IContentListingObject)
-        if adapter is None:
+        adapted = queryAdapter(self.context, IContentListingObject)
+        if adapted is None:
             obj = self.context
         else:
-            obj = adapter
+            obj = adapted
 
         summary = {}
         for field in self.metadata_fields():
