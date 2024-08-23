@@ -22,7 +22,8 @@ class ContextNavigation(BaseContextNavigation):
         context = self.context
 
         if getattr(self.request, "expand_contextnavigation", False):
-            return {} # super(ContextNavigation, self).__call__(expand=expand, prefix=prefix)
+            # super(ContextNavigation, self).__call__(expand=expand, prefix=prefix)
+            return {}
 
         self.request.expand_contextnavigation = True
 
