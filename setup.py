@@ -1,5 +1,5 @@
-""" clms.addon Installer
-"""
+"""clms.addon Installer"""
+
 from os.path import join
 from setuptools import setup, find_packages
 
@@ -63,6 +63,7 @@ setup(
         "collective.relationhelpers",
         "Products.mcdutils",
         "z3c.jbot",
+        "eea.volto.policy",
     ],
     extras_require={
         "test": [
