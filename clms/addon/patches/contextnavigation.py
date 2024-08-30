@@ -92,6 +92,7 @@ def own_recurse(self, children, level, bottomLevel):
     return res
 
 
+# We need to also patch EEANavigationPortletRenderer
 EEANavigationPortletRenderer.recurse = own_recurse
 NavigationPortletRenderer.recurse = own_recurse
 
