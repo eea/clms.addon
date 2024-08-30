@@ -104,6 +104,10 @@ EEA_ - European Environment Agency (EU)
 How to run tests
 ================
 
+You need first to install the test dependencies:
+
+  bin/pip install -e "sources/clms.addon[test]"
+
 In docker container, run:
 
   bin/zope-testrunner --test-path sources/clms.addon/
