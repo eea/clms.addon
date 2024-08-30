@@ -21,14 +21,13 @@ class ContextNavigation(BaseContextNavigation):
         self.request = request
 
     def __call__(self, expand=False, prefix="expand.contextnavigation."):
-        context = self.context
-
         if getattr(self.request, "expand_contextnavigation", False):
             # super(ContextNavigation, self).__call__(expand=expand, prefix=prefix)
             return {}
 
         self.request.expand_contextnavigation = True
 
+        # context = self.context
         # if hasattr(context.aq_inner.aq_self, "blocks"):
         #     blocks = context.blocks
         #     for block in visit_blocks(context, blocks):
