@@ -1,18 +1,21 @@
 """
 Patch @contextnavigation endpoint to expose blocks and blocks_layout
 """
+
 # -*- coding: utf-8 -*-
+from eea.volto.policy.restapi.services.contextnavigation.get import (
+    EEANavigationPortletRenderer,
+)
 from logging import getLogger
 
 from plone.restapi.interfaces import ISerializeToJson
-from plone.restapi.services.contextnavigation.get import \
-    NavigationPortletRenderer
+from plone.restapi.services.contextnavigation.get import NavigationPortletRenderer
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
 
 
 def own_recurse(self, children, level, bottomLevel):
-    """ recursion"""
+    """recursion"""
 
     res = []
 
@@ -34,9 +37,7 @@ def own_recurse(self, children, level, bottomLevel):
         thumb = ""
 
         if show_thumbs and has_thumb and thumb_scale:
-            thumb = "{}/@@images/image/{}".format(
-                node["item"].getURL(), thumb_scale
-            )
+            thumb = "{}/@@images/image/{}".format(node["item"].getURL(), thumb_scale)
 
         show_children = node["show_children"]
         item_remote_url = node["getRemoteUrl"]
@@ -47,10 +48,9 @@ def own_recurse(self, children, level, bottomLevel):
         if brain.getObject().blocks:
             try:
                 serialized = getMultiAdapter(
-                    (brain.getObject(), getRequest()),
-                    ISerializeToJson
+                    (brain.getObject(), getRequest()), ISerializeToJson
                 )()
-                serialized_blocks = serialized.get('blocks', {})
+                serialized_blocks = serialized.get("blocks", {})
             except TypeError:
                 serialized_blocks = {}
 
@@ -78,7 +78,11 @@ def own_recurse(self, children, level, bottomLevel):
         nodechildren = node["children"]
 
         # pylint: disable=line-too-long
-        if (nodechildren and show_children and ((level < bottomLevel) or (bottomLevel == 0))):  # noqa
+        if (
+            nodechildren
+            and show_children
+            and ((level < bottomLevel) or (bottomLevel == 0))
+        ):  # noqa
             item["items"] = self.recurse(
                 nodechildren, level=level + 1, bottomLevel=bottomLevel
             )
@@ -88,6 +92,7 @@ def own_recurse(self, children, level, bottomLevel):
     return res
 
 
+EEANavigationPortletRenderer.recurse = own_recurse
 NavigationPortletRenderer.recurse = own_recurse
 
 
