@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.side_nav_types"
+    interface="eea.volto.policy.restapi.services.contextnavigation.get.IEEAContextNavigationSchema"
+    field="side_nav_types">
+    <field type="plone.registry.field.Tuple">
+      <default>
+        <element>Document</element>
+      </default>
+      <description>The content types that should be shown in the side navigation</description>
+      <missing_value />
+      <required>False</required>
+      <title>Displayed content types within the side navigation</title>
+      <value_type type="plone.registry.field.Choice">
+        <vocabulary>plone.app.vocabularies.ReallyUserFriendlyTypes</vocabulary>
+      </value_type>
+    </field>
+    <value>
+      <element>Document</element>
+      <element>FAQ</element>
+    </value>
+  </record>
+</registry>
