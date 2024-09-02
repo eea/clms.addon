@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<registry>
+  <record name="plone.side_nav_types"
+    interface="Products.CMFPlone.interfaces.controlpanel.INavigationSchema"
+    field="side_nav_types">
+    <value>
+      <element>Document</element>
+      <element>FAQ</element>
+    </value>
+  </record>
+
+</registry>
