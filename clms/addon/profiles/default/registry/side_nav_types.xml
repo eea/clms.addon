@@ -1,12 +1,25 @@
 <?xml version="1.0"?>
 <registry>
   <record name="plone.side_nav_types"
-    interface="Products.CMFPlone.interfaces.controlpanel.INavigationSchema"
+    interface="eea.volto.policy.restapi.services.contextnavigation.get.IEEAContextNavigationSchema"
     field="side_nav_types">
+    <field type="plone.registry.field.Tuple">
+      <default>
+        <element>Document</element>
+      </default>
+      <description xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone"
+        ns0:translate="">The content types that should be shown in the side navigation</description>
+      <missing_value />
+      <required>False</required>
+      <title xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone" ns0:translate="">Displayed
+        content types within the side navigation</title>
+      <value_type type="plone.registry.field.Choice">
+        <vocabulary>plone.app.vocabularies.ReallyUserFriendlyTypes</vocabulary>
+      </value_type>
+    </field>
     <value>
       <element>Document</element>
       <element>FAQ</element>
     </value>
   </record>
-
 </registry>
