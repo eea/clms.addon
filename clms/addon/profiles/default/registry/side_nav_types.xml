@@ -7,12 +7,10 @@
       <default>
         <element>Document</element>
       </default>
-      <description xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone"
-        ns0:translate="">The content types that should be shown in the side navigation</description>
+      <description>The content types that should be shown in the side navigation</description>
       <missing_value />
       <required>False</required>
-      <title xmlns:ns0="http://xml.zope.org/namespaces/i18n" ns0:domain="plone" ns0:translate="">Displayed
-        content types within the side navigation</title>
+      <title>Displayed content types within the side navigation</title>
       <value_type type="plone.registry.field.Choice">
         <vocabulary>plone.app.vocabularies.ReallyUserFriendlyTypes</vocabulary>
       </value_type>
