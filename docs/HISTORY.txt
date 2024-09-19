@@ -1,6 +1,10 @@
 Changelog
 =========
 
+11.3 - (2024-09-19)
+---------------------------
+* Change: Rebuild to skip version error [GhitaB]
+
 11.3-dev0 - (unreleased)
 ---------------------------
 
