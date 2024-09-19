@@ -2,6 +2,7 @@
 
 # -*- coding: utf-8 -*-
 from logging import getLogger
+from plone import api
 
 from plone.restapi.behaviors import IBlocks
 from plone.restapi.deserializer.blocks import (
@@ -74,6 +75,9 @@ class SlateTableBlockSerializerRoot(SlateTableBlockSerializerBase):
     """Serializer for site root"""
 
 
+DOWNLOADABLE_TYPES = ["File"]
+
+
 class SlateExternalLinkBlockSerializerBase:
     """Slate block serializer to handle external links that are not
     explicitely marked to be opened in a given target.
@@ -82,7 +86,7 @@ class SlateExternalLinkBlockSerializerBase:
     """
 
     field = "value"
-    order = 200
+    order = -200
     block_type = "slate"
 
     log = getLogger(__name__)
@@ -101,6 +105,10 @@ class SlateExternalLinkBlockSerializerBase:
             if node_type == "a":
                 external = child.get("data", {}).get(
                     "link", {}).get("external", {})
+
+                internal = child.get("data", {}).get(
+                    "link", {}).get("internal", {})
+
                 if external:
                     # Check if it has an explicit target
                     target = external.get("target", None)
@@ -113,6 +121,42 @@ class SlateExternalLinkBlockSerializerBase:
                             "Link converted to target=_blank: %s",
                             child["data"]["link"]["external"]["external_link"],
                         )
+                elif internal:
+                    # {
+                    #     "children": [
+                    #         {"text": "What is the European Ground Motion Service?"}
+                    #     ],
+                    #     "data": {
+                    #         "link": {
+                    #             "internal": {
+                    #                 "internal_link": [
+                    #                     {
+                    #                         "@id": "../../../resolveuid/53b80c704a814502bd088e617ac11afc",
+                    #                         "title": "Introduction to EGMS",
+                    #                     }
+                    #                 ]
+                    #             }
+                    #         }
+                    #     },
+                    #     "type": "a",
+                    # }
+                    internal_link = internal.get("internal_link", [])
+                    for info in internal_link:
+                        oid = info.get("@id", "")
+                        if oid and "resolveuid" in oid:
+                            uid = oid.split("/resolveuid/")[1]
+                            obj = api.content.get(UID=uid)
+                            if obj is None:
+                                self.log.info(
+                                    "Could not find obj for uid %s", uid)
+                                continue
+
+                            if obj.portal_type in DOWNLOADABLE_TYPES:
+                                info["download"] = True
+
+                            # print(obj, obj.portal_type)
+                            # if hasattr(obj, "file"):
+                            #     info["download"] = True
 
         return block
 
