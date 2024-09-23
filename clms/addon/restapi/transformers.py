@@ -75,7 +75,7 @@ class SlateTableBlockSerializerRoot(SlateTableBlockSerializerBase):
     """Serializer for site root"""
 
 
-DOWNLOADABLE_TYPES = ["File"]
+DOWNLOADABLE_TYPES = ["File", "TechnicalLibrary"]
 
 
 class SlateExternalLinkBlockSerializerBase:
