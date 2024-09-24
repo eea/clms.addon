@@ -75,7 +75,9 @@ class SlateTableBlockSerializerRoot(SlateTableBlockSerializerBase):
     """Serializer for site root"""
 
 
-DOWNLOADABLE_TYPES = ["File", "TechnicalLibrary"]
+DOWNLOADABLE_TYPES = ["File", "TechnicalLibrary", "Image"]
+
+FILE_FIELDS = {"File": "file", "TechnicalLibrary": "file", "Image": "image"}
 
 
 class SlateExternalLinkBlockSerializerBase:
@@ -153,6 +155,8 @@ class SlateExternalLinkBlockSerializerBase:
 
                             if obj.portal_type in DOWNLOADABLE_TYPES:
                                 info["download"] = True
+                                info["file_field"] = FILE_FIELDS[obj.portal_type]
+                                # print("setting to download", info)
 
                             # print(obj, obj.portal_type)
                             # if hasattr(obj, "file"):
