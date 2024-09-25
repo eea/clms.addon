@@ -1,6 +1,7 @@
 """
 Filter to render some internal links as download links
 """
+
 # -*- coding: utf-8 -*-
 import re
 from logging import getLogger
@@ -15,6 +16,10 @@ from six.moves.urllib.parse import urlsplit, urlunsplit
 from zExceptions import NotFound
 from zope.interface import implementer
 
+DOWNLOADABLE_PORTAL_TYPES = ["TechnicalLibrary", "File", "Image"]
+
+FIELD_TYPES = {"TechnicalLibrary": "file", "File": "file", "Image": "image"}
+
 
 @implementer(IFilter)
 class DownloadableLinkFilter:
@@ -28,7 +33,6 @@ class DownloadableLinkFilter:
 
     # IFilter implementation
     order = 900
-    DOWNLOADABLE_PORTAL_TYPES = ["TechnicalLibrary", "File"]
     singleton_tags = set(
         [
             "area",
@@ -82,8 +86,17 @@ class DownloadableLinkFilter:
             if not href:
                 continue
             # pylint: disable=line-too-long
-            if (not href.startswith("mailto<") and not href.startswith("mailto:") and not href.startswith("tel:") and not href.startswith("#")):  # noqa
-                attributes["href"] = self._render_internal_link(href)
+            if (
+                not href.startswith("mailto<")
+                and not href.startswith("mailto:")
+                and not href.startswith("tel:")
+                and not href.startswith("#")
+            ):  # noqa
+                href = self._render_internal_link(href)
+                attributes["href"] = href
+                if "@@download" in href:
+                    attributes["target"] = "_blank"
+
         return six.text_type(soup)
 
     def resolve_link(self, href):
@@ -112,13 +125,21 @@ class DownloadableLinkFilter:
         """
         url_parts = urlsplit(href)
         # pylint: disable=line-too-long
-        if (url_parts.hostname and url_parts.hostname in CLMS_DOMAINS or not url_parts.hostname):  # noqa
+        if (
+            url_parts.hostname
+            and url_parts.hostname in CLMS_DOMAINS
+            or not url_parts.hostname
+        ):  # noqa
             path_parts = urlunsplit(["", ""] + list(url_parts[2:]))
             obj = self.resolve_link(path_parts)
             if obj is not None:
                 # pylint: disable=line-too-long
-                if (hasattr(obj, "portal_type") and obj.portal_type in self.DOWNLOADABLE_PORTAL_TYPES):  # noqa
-                    return f"{obj.absolute_url()}/@@download/file"
+                if (
+                    hasattr(obj, "portal_type")
+                    and obj.portal_type in DOWNLOADABLE_PORTAL_TYPES
+                ):  # noqa
+                    file_field = FIELD_TYPES[obj.portal_type]
+                    return f"{obj.absolute_url()}/@@download/{file_field}"
 
                 return obj.absolute_url()
 
