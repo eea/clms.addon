@@ -6,6 +6,7 @@ Converter from RichTextValue items to JSON
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
+from clms.addon.adapters.link_to_download import DownloadableLinkFilter
 from plone.app.textfield.interfaces import IRichTextValue
 from plone.dexterity.interfaces import IDexterityContent
 from plone.restapi.interfaces import IContextawareJsonCompatible
@@ -13,6 +14,7 @@ from plone.restapi.serializer.converters import json_compatible
 from plone.restapi.serializer.utils import uid_to_url
 from zope.component import adapter
 from zope.interface import implementer
+from zope.globalrequest import getRequest
 
 
 @adapter(IRichTextValue, IDexterityContent)
@@ -30,7 +32,11 @@ class RichtextDXContextConverter:
         value = self.value
         output = value.raw
 
+        request = getRequest()
+        filter = DownloadableLinkFilter(self.context, request)
         new_output = self.resolve_uids(output)
+        new_output = filter(new_output)
+        # print("new output", new_output)
 
         return {
             "data": json_compatible(new_output),
