@@ -41,7 +41,7 @@ class CCLFaqSerializer:
 class SlateTableBlockSerializerBase(SlateBlockSerializerBase):
     """SlateBlockSerializerBase."""
 
-    order = 100
+    order = -100
     block_type = "slateTable"
 
     def __call__(self, block):
@@ -56,6 +56,8 @@ class SlateTableBlockSerializerBase(SlateBlockSerializerBase):
                 for child in children:
                     node_type = child.get("type")
                     if node_type:
+                        if node_type == "a":
+                            handle_links(child)
                         handler = getattr(self, f"handle_{node_type}", None)
                         if handler:
                             handler(child)
