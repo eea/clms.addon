@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:registerProfile
+      name="1013"
+      title="Adding Privacy Policy field"
+      description="Configuration for version 1013"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      directory="1013"
+      />
+
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1012"
+      destination="1013"
+      >
+
+    <gs:upgradeStep
+        title="Production Update subscribers"
+        description="Configuration for version 1013"
+        handler=".v1013.upgrade"
+        />
+
+    <gs:upgradeDepends
+        title="Production Update subscribers (GS profile)"
+        description="Configuration for version 1013"
+        import_profile="clms.addon.upgrades:1013"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>
