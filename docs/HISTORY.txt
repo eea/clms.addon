@@ -1,6 +1,11 @@
 Changelog
 =========
 
+12.0 - (2024-11-05)
+---------------------------
+* Change: Develop
+  [ana-oprea]
+
 11.9 - (2024-09-26)
 ---------------------------
 * Change: Fix link in tables for existing content
