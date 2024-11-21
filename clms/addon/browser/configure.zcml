@@ -11,5 +11,11 @@
       layer="pas.plugins.oidc.interfaces.IPasPluginsOidcLayer"
       />
 
+  <browser:page
+      for="*"
+      name="find-unused-images"
+      class=".cleanup.FindUnusedImages"
+      permission="cmf.ModifyPortalContent"
+      />
 
 </configure>
