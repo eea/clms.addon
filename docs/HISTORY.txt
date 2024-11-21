@@ -1,8 +1,10 @@
 Changelog
 =========
 
-12.1-dev0 - (unreleased)
+12.1 - (2024-11-21)
 ---------------------------
+* Change: Refs #272346 - Find unused images script.
+  [GhitaB]
 
 12.0 - (2024-11-05)
 ---------------------------
