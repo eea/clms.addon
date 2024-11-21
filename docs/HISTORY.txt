@@ -1,6 +1,9 @@
 Changelog
 =========
 
+12.2-dev0 - (unreleased)
+---------------------------
+
 12.1 - (2024-11-21)
 ---------------------------
 * Change: Refs #272346 - Find unused images script.
