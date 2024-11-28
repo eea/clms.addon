@@ -1,6 +1,11 @@
 Changelog
 =========
 
+12.2 - (2024-11-28)
+---------------------------
+* Change: Add gopdb view
+  [GhitaB]
+
 12.1 - (2024-11-21)
 ---------------------------
 * Change: Refs #272346 - Find unused images script.

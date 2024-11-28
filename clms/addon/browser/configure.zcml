@@ -18,4 +18,12 @@
       permission="cmf.ModifyPortalContent"
       />
 
+
+  <browser:page
+      name="gopdb"
+      for="*"
+      class=".admin.GoPDB"
+      permission="cmf.ManagePortal"
+      />
+
 </configure>
