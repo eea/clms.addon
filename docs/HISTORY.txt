@@ -1,6 +1,9 @@
 Changelog
 =========
 
+12.4-dev0 - (unreleased)
+---------------------------
+
 12.3 - (2025-01-13)
 ---------------------------
 * Change: Refs #281391 - Support for Friendly Captcha.
