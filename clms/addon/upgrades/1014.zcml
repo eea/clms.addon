@@ -1,0 +1,36 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:registerProfile
+      name="1014"
+      title="Adding Friendly Captcha controlpanel."
+      description="Configuration for version 1014"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IMigratingPloneSiteRoot"
+      directory="1014"
+      />
+
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1013"
+      destination="1014"
+      >
+
+    <gs:upgradeStep
+        title="Add Friendly Captcha controlpanel."
+        description="Configuration for version 1014"
+        handler=".v1014.upgrade"
+        />
+
+    <gs:upgradeDepends
+        title="Add Friendly Captcha controlpanel (GS profile)"
+        description="Configuration for version 1014"
+        import_profile="clms.addon.upgrades:1014"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>

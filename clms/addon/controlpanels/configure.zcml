@@ -7,5 +7,6 @@
 
   <include package=".login_url_controlpanel" />
   <include package=".notifications_controlpanel" />
+  <include package=".friendly_captcha_controlpanel" />
 
 </configure>

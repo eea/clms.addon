@@ -11,7 +11,6 @@
       name="file_and_technical_library_links"
       />
 
-
   <adapter
       factory=".external_link_new_window.ExternalLinkNewWindowFilter"
       provides="plone.outputfilters.interfaces.IFilter"
@@ -20,7 +19,11 @@
       name="external_links_in_new_window"
       />
 
-
-
+  <adapter
+      factory=".friendly_captcha.FriendlyCaptchaSupport"
+      provides="collective.volto.formsupport.interfaces.ICaptchaSupport"
+      for="* zope.publisher.interfaces.browser.IBrowserRequest"
+      name="friendly_captcha"
+      />
 
 </configure>
