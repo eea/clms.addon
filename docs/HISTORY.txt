@@ -1,8 +1,10 @@
 Changelog
 =========
 
-12.3-dev0 - (unreleased)
+12.3 - (2025-01-13)
 ---------------------------
+* Change: Refs #281391 - Support for Friendly Captcha.
+  [GhitaB]
 
 12.2 - (2024-11-28)
 ---------------------------
