@@ -52,6 +52,7 @@
   />
 
   <adapter factory=".summary_serializer.CLMSDefaultJSONSummarySerializer" />
+  <adapter factory=".dxfields.DateTimeFieldSerializer" />
 
   <adapter
     factory=".summary_serializer.DataSetAccordionToJsonSerializer"
