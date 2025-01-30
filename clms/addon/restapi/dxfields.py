@@ -3,11 +3,8 @@ our Folder case (of effective date issues)
 """
 
 from plone.app.dexterity.behaviors.metadata import IPublication
-from plone.dexterity.interfaces import IDexterityContent
 from plone.restapi.interfaces import IFieldSerializer
 from plone.restapi.serializer.dxfields import DefaultFieldSerializer
-from plone.restapi.serializer.dxfields import DefaultPrimaryFieldTarget
-from plone.namedfile.interfaces import INamedFileField
 from zope.component import adapter
 from zope.interface import implementer
 from zope.schema.interfaces import IDatetime
@@ -23,7 +20,6 @@ except ImportError:
     ICoreMetadata = IPublication
 
 
-# @adapter(IDatetime, IDexterityContent, IClmsAddonLayer)
 @adapter(IDatetime, IFolder, IClmsAddonLayer)
 @implementer(IFieldSerializer)
 class DateTimeFieldSerializer(DefaultFieldSerializer):
