@@ -1,8 +1,14 @@
 Changelog
 =========
 
-12.5-dev0 - (unreleased)
+12.5 - (2025-01-30)
 ---------------------------
+* Change: Update README.rst - retry release [GhitaB]
+
+12.5 - (2025-01-30)
+---------------------------
+* Change: Update README.rst - retry release
+  [GhitaB]
 
 12.4 - (2025-01-29)
 ---------------------------
