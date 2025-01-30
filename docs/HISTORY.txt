@@ -1,8 +1,13 @@
 Changelog
 =========
 
-12.4-dev0 - (unreleased)
+12.5-dev0 - (unreleased)
 ---------------------------
+
+12.4 - (2025-01-29)
+---------------------------
+* Change: Refs #283251 - fix issues of public folder inside eea.meeting.
+  [GhitaB]
 
 12.3 - (2025-01-13)
 ---------------------------
