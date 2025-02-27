@@ -18,6 +18,12 @@
       permission="cmf.ModifyPortalContent"
       />
 
+  <browser:page
+      name="cms-content-export"
+      for="*"
+      class=".cms_export_content.CMSExportContent"
+      permission="cmf.ManagePortal"
+      />
 
   <browser:page
       name="gopdb"
