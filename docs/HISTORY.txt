@@ -1,6 +1,11 @@
 Changelog
 =========
 
+12.7 - (2025-02-27)
+---------------------------
+* Change: Develop
+  [tiberiuichim]
+
 12.6 - (2025-02-06)
 ---------------------------
 * Change: Refs #282567 - Implement server-side custom validation for image file fields (volto-form-block, collective.volto.formsupport).
