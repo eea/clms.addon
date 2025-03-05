@@ -1,4 +1,4 @@
-"""Adaptation of 26_export_all_wms_services.py from scripts folder"""
+"""~ 26_export_all_wms_services.py from scripts folder"""
 
 import csv
 import io

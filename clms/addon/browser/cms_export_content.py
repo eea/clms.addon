@@ -12,15 +12,23 @@ from Products.Five import BrowserView
 from clms.addon.browser.admin_cms_export.export_all_wms_services import (
     export_all_wms_services,
 )
+from clms.addon.browser.admin_cms_export.export_datasets import (
+    export_datasets_with_download_information,
+)
 
 
 class CMSExportContent(BrowserView):
     """Export Content"""
 
     def __call__(self):
-        """Multiple export types here"""
+        """Multiple export types:
+        /cms-content-export?q=export_all_wms_services
+        /cms-content-export?q=export_datasets_with_download_information
+        """
         query_param = self.request.get("q", None)
         if query_param == "export_all_wms_services":
             return export_all_wms_services(self.request)
+        elif query_param == "export_datasets_with_download_information":
+            return export_datasets_with_download_information(self.request)
         else:
             return "No q param set."
