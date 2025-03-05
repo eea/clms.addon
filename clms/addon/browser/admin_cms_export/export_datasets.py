@@ -15,7 +15,7 @@ VITO_GEONETWORK_BASE_URL = (
 
 
 def export_datasets_with_download_information(request):
-    """domains.csv"""
+    """datasets-export.csv"""
     datasets = get_datasets_obj()
     items = []
 

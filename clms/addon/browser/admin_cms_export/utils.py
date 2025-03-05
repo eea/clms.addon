@@ -20,3 +20,15 @@ def get_datasets_obj():
     )
 
     return [x.getObject() for x in results]
+
+
+def get_technical_library_items_obj():
+    """Get TechnicalLibrary items as objects"""
+    catalog = api.portal.get_tool(name="portal_catalog")
+    results = catalog.searchResults(
+        portal_type="TechnicalLibrary",
+        sort_on="modified",
+        sort_order="descending"
+    )
+
+    return [x.getObject() for x in results]
