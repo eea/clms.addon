@@ -30,10 +30,10 @@ def get_datasets():
 
 
 def export_all_wms_services(request):
-    """domains.csv"""
+    """services.csv"""
     request.response.setHeader("Content-Type", "text/csv")
     request.response.setHeader(
-        "Content-Disposition", "attachment; filename=domains.csv"
+        "Content-Disposition", "attachment; filename=services.csv"
     )
 
     output = io.StringIO()
