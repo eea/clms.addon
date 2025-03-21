@@ -62,7 +62,7 @@ class DownloadableLinkFilter:
         that can't modify the context
         """
         return not api.user.has_permission(
-            "cmf.ModifyPortalContent",
+            "Modify portal content",
             obj=self.context,
         )
 
