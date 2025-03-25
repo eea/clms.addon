@@ -124,7 +124,11 @@ def handle_links(child):
             oid = info.get("@id", "")
             if oid and "resolveuid" in oid:
                 uid = oid.split("/resolveuid/")[1]
-                obj = api.content.get(UID=uid)
+                try:
+                    obj = api.content.get(UID=uid)
+                except Exception:
+                    obj = None
+
                 if obj is None:
                     # self.log.info("Could not find obj for uid %s", uid)
                     continue
