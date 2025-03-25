@@ -1,8 +1,10 @@
 Changelog
 =========
 
-13.1-dev0 - (unreleased)
+13.1 - (2025-03-25)
 ---------------------------
+* Change: Refs #285525 - Fix handle_links transformer
+  [GhitaB]
 
 13.0 - (2025-03-21)
 ---------------------------
