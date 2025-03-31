@@ -46,7 +46,9 @@ def prepare_item_data(technical_library, max_relations_number):
     item = {}
     item["item_technical_library_id"] = technical_library.UID()
     item["item_technical_library_title"] = technical_library.title
-    item["item_technical_library_url"] = technical_library.absolute_url()
+    item["item_technical_library_url"] = technical_library.absolute_url(
+    ).replace(
+        "/api/", "/")
 
     try:
         products = technical_library.products
