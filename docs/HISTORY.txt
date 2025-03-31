@@ -1,6 +1,11 @@
 Changelog
 =========
 
+13.2 - (2025-03-31)
+---------------------------
+* Change: Refs #278140 - Fix technical library export
+  [GhitaB]
+
 13.1 - (2025-03-25)
 ---------------------------
 * Change: Refs #285525 - Fix handle_links transformer
