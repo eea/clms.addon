@@ -6,27 +6,46 @@ from plone import api
 from clms.addon.browser.admin_cms_export.utils import get_domain
 
 
+def metadata_wms_wmts_urls(dataset):
+    """Prepare list of links from fields metadata_wms_url, metadata_wmts_url"""
+    wms_url = getattr(dataset, "metadata_wms_url", ()),
+    wmts_url = getattr(dataset, "metadata_wmts_url", ()),
+
+    res = []
+    for url in wms_url:
+        if url != "" and url is not None:
+            res.append(url)
+
+    for url in wmts_url:
+        if url != "" and url is not None:
+            res.append(url)
+
+    return "\n".join(res)
+
+
 def get_datasets():
     """Get datasets"""
     catalog = api.portal.get_tool(name="portal_catalog")
-    results = catalog.searchResults(
+    datasets = catalog.searchResults(
         portal_type="DataSet", sort_on="modified", sort_order="descending"
     )
 
-    items = []
-    for brain in results:
-        obj = brain.getObject()
-        item_data = {
-            "@id": obj.absolute_url(),
-            "title": obj.title,
-            "mapviewer_viewservice": getattr(obj, "mapviewer_viewservice", ""),
+    results = []
+    for brain in datasets:
+        dataset = brain.getObject()
+        dataset_data = {
+            "@id": dataset.absolute_url(),
+            "title": dataset.title,
+            "mapviewer_viewservice": getattr(
+                dataset, "mapviewer_viewservice", ""),
+            "service_getcapability_path": metadata_wms_wmts_urls(dataset),
             "mapviewer_viewservice_domain": get_domain(
-                getattr(obj, "mapviewer_viewservice", "")
+                getattr(dataset, "mapviewer_viewservice", "")
             ),
         }
-        items.append(item_data)
+        results.append(dataset_data)
 
-    return items
+    return results
 
 
 def export_all_wms_services(request):
@@ -41,6 +60,7 @@ def export_all_wms_services(request):
         "@id",
         "title",
         "mapviewer_viewservice",
+        "service_getcapability_path",
         "mapviewer_viewservice_domain",
     ]
     writer = csv.DictWriter(output, fieldnames=fieldnames)
