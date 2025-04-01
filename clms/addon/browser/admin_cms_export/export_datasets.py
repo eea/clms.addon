@@ -1,6 +1,9 @@
 """~ 34_export_datasets_with_download_information from scripts folder"""
 
 from clms.addon.browser.admin_cms_export.utils import get_datasets_obj
+from clms.types.restapi.mapviewer_service.lrf_get import (
+    RootMapViewerServiceGet
+)
 import csv
 import io
 
@@ -46,11 +49,9 @@ def export_datasets_with_download_information(request):
 
         ddi_raw = dataset.dataset_download_information
 
-        component_title = ""
-        try:
-            component_title = product.component_title
-        except Exception:
-            print("ERROR component title")
+        service = RootMapViewerServiceGet()
+        component_info = service.get_component_info(product)
+        component_title = component_info[0]
 
         dataset_full_path = ""
         try:
