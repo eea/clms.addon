@@ -88,7 +88,9 @@ def export_datasets_with_download_information(request):
                         product.show_in_mapviewer_link,
                     "dataset_id": dataset.UID(),
                     "dataset_title": dataset.title,
-                    "dataset_geonetwork_id": dataset_geonetwork_id,
+                    "dataset_geonetwork_id":
+                        dataset_geonetwork_id.replace(
+                            "/formatters/xml?approved=true", ""),
                     "dataset_geonetwork_type": dataset_geonetwork_type,
                     "dataset_full_path": dataset_full_path,
                     "dataset_full_format": dataset_full_format,
