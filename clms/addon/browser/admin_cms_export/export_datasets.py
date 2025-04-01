@@ -79,6 +79,10 @@ def export_datasets_with_download_information(request):
         except Exception:
             pass
 
+        if dataset_geonetwork_id is not None:
+            dataset_geonetwork_id = dataset_geonetwork_id.replace(
+                "/formatters/xml?approved=true", ""),
+
         for ddi in ddi_raw.get("items", []):
             items.append(
                 {
@@ -89,9 +93,7 @@ def export_datasets_with_download_information(request):
                         product.show_in_mapviewer_link,
                     "dataset_id": dataset.UID(),
                     "dataset_title": dataset.title,
-                    "dataset_geonetwork_id":
-                        dataset_geonetwork_id.replace(
-                            "/formatters/xml?approved=true", ""),
+                    "dataset_geonetwork_id": dataset_geonetwork_id
                     "dataset_geonetwork_type": dataset_geonetwork_type,
                     "dataset_full_path": dataset_full_path,
                     "dataset_full_format": dataset_full_format,
