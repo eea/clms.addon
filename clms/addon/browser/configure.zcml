@@ -32,4 +32,11 @@
       permission="cmf.ManagePortal"
       />
 
+    <browser:page
+        name="tech-docs-cleanup"
+        for="*"
+        class=".tech_docs_cleanup.FindTechDocsRelatedToDeletedDatasets"
+        permission="cmf.ModifyPortalContent"
+    />
+
 </configure>

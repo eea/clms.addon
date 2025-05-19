@@ -1,6 +1,11 @@
 Changelog
 =========
 
+13.5 - (2025-05-19)
+---------------------------
+* Change: Develop
+  [GhitaB]
+
 13.4 - (2025-04-01)
 ---------------------------
 * Change: Refs #278140 - Fix error in dataset_geonetwork_id.
