@@ -59,7 +59,7 @@ setup(
         "clms.statstool",
         "clms.types",
         "plone.app.multilingual",
-        "clms.downloadtool==10.1.1",
+        # "clms.downloadtool",  - see requirements.txt (CDSE related)
         "collective.relationhelpers",
         "Products.mcdutils",
         "z3c.jbot",
