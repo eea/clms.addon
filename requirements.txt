@@ -1,0 +1,2 @@
+# clms.addon/requirements.txt
+git+https://github.com/eea/clms.downloadtool.git@10.1.1#egg=clms.downloadtool
