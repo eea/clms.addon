@@ -85,5 +85,4 @@ def get_needed_values(res):
         download_show_auxiliary_calendar=res.get(
             "download_show_auxiliary_calendar", False
         ),
-        byoc_collection_id=res.get("byoc_collection_id", ""),
     )
