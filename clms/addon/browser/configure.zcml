@@ -39,4 +39,10 @@
         permission="cmf.ModifyPortalContent"
     />
 
+  <browser:page
+      name="cdse-status-monitor"
+      for="*"
+      class=".cdse.monitor.CDSEBatchStatusMonitor"
+      permission="zope2.View"
+      />
 </configure>
