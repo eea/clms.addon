@@ -1,6 +1,7 @@
 """CDSE Batch Status Monitor.
    A view to trigger status check of downloads from CDSE.
-   It uses a token saved as ENV VAR."""
+   It uses a token saved as ENV VAR.
+"""
 
 import logging
 from Products.Five import BrowserView
@@ -21,56 +22,61 @@ def get_cdse_monitor_view_token():
 
 
 class CDSEBatchStatusMonitor(BrowserView):
-    """ Check status of CDSE downloads """
+    """Check status of CDSE downloads"""
 
     def check_cdse_status(self):
-        """ Check the status for CDSE tasks """
+        """Check the status for CDSE tasks"""
         utility = getUtility(IDownloadToolUtility)
 
-        logger.info(f"START: Get downloads list...")
+        logger.info("START: Get downloads list...")
         tasks = utility.datarequest_inspect()
-        logger.info(f"END: Get downloads list...")
+        logger.info("END: Get downloads list.")
 
-        logger.info(f"START: Filter by dataset source...")
+        logger.info("START: Filter by dataset source...")
         filtered = [
             t for t in tasks
             if any(
-                ds.get("DatasetSource") == "CDSE" for ds in t.get(
-                    "Datasets", []))
+                ds.get("DatasetSource") == "CDSE"
+                for ds in t.get("Datasets", [])
+            )
         ]
-        logger.info(f"END: Filter by dataset source...")
+        logger.info("END: Filter by dataset source.")
 
         logger.info(f"FOUND {len(filtered)} CDSE download requests.")
 
         for task in filtered:
-            user = task.get('UserID', 'Unknown user')
-            task_id = task.get('TaskId', 'Unknown TaskId')
-            fme_task_id = task.get('FMETaskId', 'Unknown FMETaskId')
-            status = task.get('Status', 'Unknown Status')
+            user = task.get("UserID", "Unknown user")
+            task_id = task.get("TaskId", "Unknown TaskId")
+            fme_task_id = task.get("FMETaskId", "Unknown FMETaskId")
+            status = task.get("Status", "Unknown Status")
 
-            datasets = task.get('Datasets', [])
+            datasets = task.get("Datasets", [])
             if datasets:
                 for dataset in datasets:
-                    dataset_title = dataset.get('DatasetTitle', 'Unknown')
-                    dataset_id = dataset.get('DatasetID', 'Unknown DatasetID')
+                    dataset_title = dataset.get("DatasetTitle", "Unknown")
+                    dataset_id = dataset.get("DatasetID", "Unknown DatasetID")
                     logger.info(
-                        f"Task {task_id} (FMEID {fme_task_id}) for user {user} "
-                        f"has status '{status}'. Dataset: '{dataset_title}' "
-                        f"(ID {dataset_id})."
+                        f"[User {user}] Task {task_id} (FMEID: {fme_task_id}) "
+                        f"Status: '{status}' | Dataset: '{dataset_title}' "
+                        f"(ID: {dataset_id})"
                     )
             else:
-                logger.info(f"Task {task_id} (FME {fme_task_id}) is empty.")
+                logger.info(
+                    f"[User: {user}] Task {task_id} (FMEID: {fme_task_id}) "
+                    "has no datasets."
+                )
 
             if status == "Cancelled":
-                logger.info("Nothing to do for this task.")
+                logger.info(
+                    f"[User {user}] {task_id} is Cancelled. Nothing to do."
+                )
             else:
-                logger.info("WIP Check CDSE status, update in download tool.")
+                logger.info(
+                    f"[User {user}] {task_id} is WIP. Checking CDSE status..."
+                )
+                # implement CDSE status check and update in download tool
 
-                # CDSE status check
-                # Updates in download tool.
-
-        logger.info("DONE.")
-
+        logger.info("DONE checking CDSE tasks.")
         return "done"
 
     def __call__(self):
