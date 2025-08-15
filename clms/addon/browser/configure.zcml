@@ -45,4 +45,11 @@
       class=".cdse.monitor.CDSEBatchStatusMonitor"
       permission="zope2.View"
       />
+
+  <browser:page
+      name="cdse-status-tasks"
+      for="*"
+      class=".cdse.tasks.CDSEDownloadsView"
+      permission="cmf.ManagePortal"
+      />
 </configure>
