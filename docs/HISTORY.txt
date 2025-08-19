@@ -1,6 +1,11 @@
 Changelog
 =========
 
+14.0 - (2025-08-19)
+---------------------------
+* Change: Develop
+  [GhitaB]
+
 13.9 - (2025-08-15)
 ---------------------------
 * Change: Refs #289902 - WIP monitor CDSE tasks.
