@@ -8,6 +8,8 @@ from Products.Five import BrowserView
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
 from clms.downloadtool.utility import IDownloadToolUtility
+from clms.downloadtool.api.services.cdse.cdse_integration import (
+    get_portal_config, get_status, get_token)
 from zope.component import getUtility
 
 logger = logging.getLogger("clms.addon")
@@ -76,7 +78,17 @@ class CDSEBatchStatusMonitor(BrowserView):
                 )
                 # implement CDSE status check and update in download tool
 
-        logger.info("DONE checking CDSE tasks.")
+        logger.info("DONE checking CDSE tasks in downloadtool.")
+
+        logger.info("Check status in CDSE:")
+        config = get_portal_config()
+        token = get_token()
+        all_batches_status = get_status(token, config['batch_url'])
+        for batch_id, info in all_batches_status.items():
+            logger.info(
+                f"{batch_id}: {info['original_status']} -> {info['status']}")
+        logger.info("DONE check status in CDSE.")
+
         return "done"
 
     def __call__(self):
