@@ -15,11 +15,16 @@ from zope.component import getUtility
 logger = logging.getLogger("clms.addon")
 
 
+STATUS_REJECTED = 'REJECTED'
+STATUS_QUEUED = 'QUEUED'
+STATUS_FINISHED = 'FINISHED_OK'
+
+
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    # return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
-    # return "test-cdse"  # DEBUG --
+    return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
@@ -30,53 +35,36 @@ class CDSEBatchStatusMonitor(BrowserView):
         """Check the status for CDSE tasks"""
         utility = getUtility(IDownloadToolUtility)
 
-        logger.info("START: Get downloads list...")
+        logger.info("Get downloads tasks list...")
         tasks = utility.datarequest_inspect()
-        logger.info("END: Get downloads list.")
 
-        logger.info("START: Filter by dataset source...")
-        filtered = [
-            t for t in tasks
-            if any(
-                ds.get("DatasetSource") == "CDSE"
-                for ds in t.get("Datasets", [])
-            )
-        ]
-        logger.info("END: Filter by dataset source.")
+        logger.info("Search for CDSE tasks...")
+        cdse_tasks = [
+            task for task in tasks if task.get(
+                'cdse_task_role', None) is not None]
 
-        logger.info(f"FOUND {len(filtered)} CDSE download requests.")
+        cdse_parent_tasks = [task for task in cdse_tasks if task.get(
+            'cdse_task_role', '') == 'parent']
 
-        for task in filtered:
+        cdse_child_tasks = [task for task in cdse_tasks if task.get(
+            'cdse_task_role', '') == 'child']
+
+        logger.info(f"FOUND {len(cdse_tasks)} CDSE download tasks.")
+        logger.info(f"--> {len(cdse_parent_tasks)} parent tasks.")
+        logger.info(f"--> {len(cdse_child_tasks)} child tasks.")
+
+        for task in cdse_tasks:
             user = task.get("UserID", "Unknown user")
             task_id = task.get("TaskId", "Unknown TaskId")
-            fme_task_id = task.get("FMETaskId", "Unknown FMETaskId")
-            status = task.get("Status", "Unknown Status")
+            task_role = task.get("cdse_task_role", 'N/A')
+            task_group = task.get("cdse_task_group_id", 'N/A')
+            fme_task_id = task.get("FMETaskId", "N/A")
+            status = task.get("Status", "N/A")
 
-            datasets = task.get("Datasets", [])
-            if datasets:
-                for dataset in datasets:
-                    dataset_title = dataset.get("DatasetTitle", "Unknown")
-                    dataset_id = dataset.get("DatasetID", "Unknown DatasetID")
-                    logger.info(
-                        f"[User {user}] Task {task_id} (FMEID: {fme_task_id}) "
-                        f"Status: '{status}' | Dataset: '{dataset_title}' "
-                        f"(ID: {dataset_id})"
-                    )
-            else:
-                logger.info(
-                    f"[User: {user}] Task {task_id} (FMEID: {fme_task_id}) "
-                    "has no datasets."
-                )
-
-            if status == "Cancelled":
-                logger.info(
-                    f"[User {user}] {task_id} is Cancelled. Nothing to do."
-                )
-            else:
-                logger.info(
-                    f"[User {user}] {task_id} is WIP. Checking CDSE status..."
-                )
-                # implement CDSE status check and update in download tool
+            logger.info(
+                f"From: {user} > role: {task_role} -> group: {task_group} "
+                f"task ID: {task_id} FME: {fme_task_id} status: {status}"
+            )
 
         logger.info("DONE checking CDSE tasks in downloadtool.")
 
@@ -89,6 +77,14 @@ class CDSEBatchStatusMonitor(BrowserView):
                 f"{batch_id}: {info['original_status']} -> {info['status']}")
         logger.info("DONE check status in CDSE.")
 
+        logger.info("START updating tasks in downloadtool...")
+        for batch_id, info in all_batches_status.items():
+            if info['status'] == STATUS_REJECTED:
+                logger.info("TODO delete rejected task.")
+            if info['status'] == STATUS_QUEUED:
+                logger.info("TODO update queued task.")
+            if info['status'] == STATUS_FINISHED:
+                logger.info("TODO update finished task. Also FME call.")
         return "done"
 
     def __call__(self):
