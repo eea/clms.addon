@@ -17,9 +17,9 @@ logger = logging.getLogger("clms.addon")
 
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    # return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
-    # return "test-cdse"  # DEBUG --
+    return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
