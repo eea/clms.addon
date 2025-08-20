@@ -52,4 +52,11 @@
       class=".cdse.tasks.CDSEDownloadsView"
       permission="cmf.ManagePortal"
       />
+
+  <browser:page
+      name="cdse-status-stats"
+      for="*"
+      class=".cdse.stats.CDSEStatsView"
+      permission="cmf.ManagePortal"
+      />
 </configure>
