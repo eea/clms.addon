@@ -201,7 +201,7 @@ class CDSEBatchStatusMonitor(BrowserView):
                 transaction.commit()  # really needed?
 
                 if new_status != old_parent_status:
-                    if new_status == FINISHED_OK:
+                    if new_status == STATUS_FINISHED:
                         logger.info("WIP FME call in case of FINISHED_OK.")
 
         # WIP clear children?
