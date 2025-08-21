@@ -24,6 +24,11 @@ STATUS_FINISHED = 'FINISHED_OK'
 STATUS_MISSING = 'MISSING'
 
 
+FME_STATUS = {
+    'REJECTED': 'Rejected'
+}
+
+
 def remove_task(task_id):
     """ Delete a task from downloadtool
     """
@@ -67,6 +72,29 @@ def get_task_id(batch_id, cdse_tasks):
         return filtered[0].get('TaskId', None)
 
     return None
+
+
+def analyze_tasks_group(child_tasks):
+    """ Analyze current status of a group of CDSE tasks, return a status for
+        parent task
+    """
+    status_list = [child.get('Status', '') for child in child_tasks]
+
+    if STATUS_REJECTED in status_list:
+        count = 0
+        for status in status_list:
+            if STATUS_REJECTED == status:
+                count += 1
+        result = {
+            'final_status': STATUS_REJECTED,
+            'message': f'{count}/{len(status_list)} tasks rejected by CDSE.'
+        }
+        return result
+
+    return {
+        'final_status': None,
+        'message': None
+    }
 
 
 class CDSEBatchStatusMonitor(BrowserView):
@@ -139,8 +167,28 @@ class CDSEBatchStatusMonitor(BrowserView):
 
                 transaction.commit()  # really needed?
 
-        # get all parents
-        # get children for each parent
+        logger.info("Check parent tasks...")
+        for task in cdse_parent_tasks:
+            group_id = task['cdse_task_group_id']
+            child_tasks = [
+                t for t in cdse_child_tasks if t['cdse_task_group_id'] == group_id]
+
+            status_result = analyze_tasks_group(child_tasks)
+
+            if status_result['final_status'] is not None:
+                old_parent_status = task.get('Status', None)
+                parent_task_id = task['TaskId']
+                new_status = FME_STATUS[status_result['final_status']]
+                utility.datarequest_status_patch(
+                    {'Status': new_status,
+                     'Message': status_result['message']}, parent_task_id
+                )
+                logger.info(f"{parent_task_id} UPDATED PARENT: {new_status}")
+                transaction.commit()  # really needed?
+
+                if new_status != parent_task_id:
+                    logger.info("TODO FME call in case of FINISHED_OK.")
+
         # check updated status for all children having the same group
         # send to FME finished CDSE tasks
         # clear children
