@@ -25,7 +25,8 @@ STATUS_MISSING = 'MISSING'
 
 
 FME_STATUS = {
-    'REJECTED': 'Rejected'
+    'REJECTED': 'Rejected',
+    'FINISHED_OK': 'Finished_ok'
 }
 
 
@@ -89,6 +90,19 @@ def analyze_tasks_group(child_tasks):
             'final_status': STATUS_REJECTED,
             'message': f'{count}/{len(status_list)} tasks rejected by CDSE.'
         }
+        return result
+
+    if STATUS_FINISHED in status_list:
+        count = 0
+        for status in status_list:
+            if STATUS_FINISHED == status:
+                count += 1
+
+        if count == len(status_list):
+            result = {
+                'final_status': STATUS_FINISHED,
+                'message': f'{count}/{len(status_list)} CDSE tasks finished.'
+            }
         return result
 
     return {
@@ -187,19 +201,10 @@ class CDSEBatchStatusMonitor(BrowserView):
                 transaction.commit()  # really needed?
 
                 if new_status != old_parent_status:
-                    logger.info("TODO FME call in case of FINISHED_OK.")
+                    if new_status == FINISHED_OK:
+                        logger.info("WIP FME call in case of FINISHED_OK.")
 
-        # check updated status for all children having the same group
-        # send to FME finished CDSE tasks
-        # clear children
-
-        for batch_id, info in all_batches_status.items():
-            if info['status'] == STATUS_REJECTED:
-                logger.info("TODO delete rejected task.")
-            if info['status'] == STATUS_QUEUED:
-                logger.info("TODO update queued task.")
-            if info['status'] == STATUS_FINISHED:
-                logger.info("TODO update finished task. Also FME call.")
+        # WIP clear children?
         return "done"
 
     def __call__(self):
