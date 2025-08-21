@@ -40,9 +40,9 @@ def remove_all_cdse_tasks(task_ids):
 
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    # return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
-    # return "test-cdse"  # DEBUG --
+    return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
@@ -87,6 +87,11 @@ class CDSEBatchStatusMonitor(BrowserView):
             cdse_task_ids.append(task_id)
 
         # remove_all_cdse_tasks(cdse_task_ids)
+
+        cdse_batch_ids = [task['CDSEBatchID'] for task in cdse_child_tasks]
+        logger.info("Tasks to be verified: ")
+        for task in cdse_batch_ids:
+            logger.info(task)
 
         logger.info("DONE checking CDSE tasks in downloadtool.")
 
