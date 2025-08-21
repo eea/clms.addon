@@ -4,6 +4,7 @@
 """
 
 import logging
+import transaction
 from Products.Five import BrowserView
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
@@ -20,11 +21,28 @@ STATUS_QUEUED = 'QUEUED'
 STATUS_FINISHED = 'FINISHED_OK'
 
 
+def remove_task(task_id):
+    """ Delete a task from downloadtool
+    """
+    utility = getUtility(IDownloadToolUtility)
+    logger.info(f"Removing task {task_id}")
+    utility.datarequest_remove_task(task_id)
+
+
+def remove_all_cdse_tasks(task_ids):
+    """ Remove all CDSE tasks from downloadtool
+    """
+    for task_id in task_ids:
+        remove_task(task_id)
+
+    transaction.commit()  # else the changes are not saved (why?)
+
+
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    # return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
-    return "test-cdse"  # DEBUG --
+    # return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
@@ -53,6 +71,7 @@ class CDSEBatchStatusMonitor(BrowserView):
         logger.info(f"--> {len(cdse_parent_tasks)} parent tasks.")
         logger.info(f"--> {len(cdse_child_tasks)} child tasks.")
 
+        cdse_task_ids = []
         for task in cdse_tasks:
             user = task.get("UserID", "Unknown user")
             task_id = task.get("TaskId", "Unknown TaskId")
@@ -65,6 +84,9 @@ class CDSEBatchStatusMonitor(BrowserView):
                 f"From: {user} > role: {task_role} -> group: {task_group} "
                 f"task ID: {task_id} FME: {fme_task_id} status: {status}"
             )
+            cdse_task_ids.append(task_id)
+
+        # remove_all_cdse_tasks(cdse_task_ids)
 
         logger.info("DONE checking CDSE tasks in downloadtool.")
 
