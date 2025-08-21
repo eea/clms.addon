@@ -15,10 +15,13 @@ from zope.component import getUtility
 
 logger = logging.getLogger("clms.addon")
 
-
+# defined by CDSE
 STATUS_REJECTED = 'REJECTED'
 STATUS_QUEUED = 'QUEUED'
 STATUS_FINISHED = 'FINISHED_OK'
+
+# defined by us
+STATUS_MISSING = 'MISSING'
 
 
 def remove_task(task_id):
@@ -44,6 +47,26 @@ def get_cdse_monitor_view_token():
 
     return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
+
+
+def get_old_status(batch_id, cdse_tasks):
+    """ Return the current status of a CDSE task having the batch_id
+    """
+    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    if len(filtered) > 0:
+        return filtered[0].get('Status', '')
+
+    return STATUS_MISSING
+
+
+def get_task_id(batch_id, cdse_tasks):
+    """ Return the current status of a CDSE task having the batch_id
+    """
+    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    if len(filtered) > 0:
+        return filtered[0].get('TaskId', None)
+
+    return None
 
 
 class CDSEBatchStatusMonitor(BrowserView):
@@ -102,9 +125,26 @@ class CDSEBatchStatusMonitor(BrowserView):
         for batch_id, info in all_batches_status.items():
             logger.info(
                 f"{batch_id}: {info['original_status']} -> {info['status']}")
-        logger.info("DONE check status in CDSE.")
 
         logger.info("START updating tasks in downloadtool...")
+        for batch_id in cdse_batch_ids:
+            new_status = all_batches_status[batch_id]['status']
+            old_status = get_old_status(batch_id, cdse_tasks)
+
+            if new_status != old_status:
+                task_id = get_task_id(batch_id, cdse_tasks)
+                utility.datarequest_status_patch(
+                    {'Status': new_status}, task_id)
+                logger.info(f"{task_id} UPDATED STATUS: {new_status}")
+
+                transaction.commit()  # really needed?
+
+        # get all parents
+        # get children for each parent
+        # check updated status for all children having the same group
+        # send to FME finished CDSE tasks
+        # clear children
+
         for batch_id, info in all_batches_status.items():
             if info['status'] == STATUS_REJECTED:
                 logger.info("TODO delete rejected task.")
