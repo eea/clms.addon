@@ -48,9 +48,9 @@ def remove_all_cdse_tasks(task_ids):
 
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    # return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
-    return "test-cdse"  # DEBUG --
+    # return "test-cdse"  # DEBUG --
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
@@ -186,7 +186,7 @@ class CDSEBatchStatusMonitor(BrowserView):
                 logger.info(f"{parent_task_id} UPDATED PARENT: {new_status}")
                 transaction.commit()  # really needed?
 
-                if new_status != parent_task_id:
+                if new_status != old_parent_status:
                     logger.info("TODO FME call in case of FINISHED_OK.")
 
         # check updated status for all children having the same group
