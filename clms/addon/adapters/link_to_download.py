@@ -4,7 +4,7 @@ Filter to render some internal links as download links
 
 # -*- coding: utf-8 -*-
 import re
-from logging import getLogger
+# from logging import getLogger
 
 import six
 from bs4 import BeautifulSoup
