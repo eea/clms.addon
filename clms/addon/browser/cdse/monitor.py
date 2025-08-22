@@ -205,7 +205,7 @@ class CDSEBatchStatusMonitor(BrowserView):
                     if new_status == STATUS_FINISHED:
                         # WIP ? how to prevent re-sending task to FME
                         logger.info("Send task to FME...")
-                        fme_result = send_task_to_fme(utility_task_id)
+                        fme_result = send_task_to_fme(parent_task_id)
                         logger.info(fme_result)
 
         # WIP clear children?
