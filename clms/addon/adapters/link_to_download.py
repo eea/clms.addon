@@ -4,7 +4,7 @@ Filter to render some internal links as download links
 
 # -*- coding: utf-8 -*-
 import re
-from logging import getLogger
+# from logging import getLogger
 
 import six
 from bs4 import BeautifulSoup
@@ -111,12 +111,16 @@ class DownloadableLinkFilter:
             item = portal.restrictedTraverse(href)
             if item:
                 return item
+        # Sorry, but I've officially reached my lifetime quota of
+        # seeing these logs.
         except KeyError:
-            log = getLogger(__name__)
-            log.info("Item does not exist in portal: %s", href)
+            pass
+            # log = getLogger(__name__)
+            # log.info("Item does not exist in portal: %s", href)
         except NotFound:
-            log = getLogger(__name__)
-            log.info("Item does not exist in portal: %s", href)
+            pass
+            # log = getLogger(__name__)
+            # log.info("Item does not exist in portal: %s", href)
         return None
 
     def _render_internal_link(self, href):
