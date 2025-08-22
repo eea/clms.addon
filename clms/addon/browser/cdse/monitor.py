@@ -11,6 +11,7 @@ from clms.addon.browser.cdse.utils import get_env_var
 from clms.downloadtool.utility import IDownloadToolUtility
 from clms.downloadtool.api.services.cdse.cdse_integration import (
     get_portal_config, get_status, get_token)
+from clms.downloadtool.api.services.cdse.fme import send_task_to_fme
 from zope.component import getUtility
 
 logger = logging.getLogger("clms.addon")
@@ -202,7 +203,10 @@ class CDSEBatchStatusMonitor(BrowserView):
 
                 if new_status != old_parent_status:
                     if new_status == STATUS_FINISHED:
-                        logger.info("WIP FME call in case of FINISHED_OK.")
+                        # WIP ? how to prevent re-sending task to FME
+                        logger.info("Send task to FME...")
+                        fme_result = send_task_to_fme(utility_task_id)
+                        logger.info(fme_result)
 
         # WIP clear children?
         return "done"
