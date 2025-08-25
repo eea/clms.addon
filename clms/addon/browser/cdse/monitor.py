@@ -175,7 +175,7 @@ class CDSEBatchStatusMonitor(BrowserView):
             message = all_batches_status[batch_id]['error']
             old_status = get_old_status(batch_id, cdse_tasks)
 
-            if new_status != old_status or True:
+            if new_status != old_status:
                 task_id = get_task_id(batch_id, cdse_tasks)
                 utility.datarequest_status_patch(
                     {'Status': new_status, 'Message': message}, task_id)
