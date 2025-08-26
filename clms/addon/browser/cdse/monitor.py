@@ -172,12 +172,13 @@ class CDSEBatchStatusMonitor(BrowserView):
         logger.info("START updating tasks in downloadtool...")
         for batch_id in cdse_batch_ids:
             new_status = all_batches_status[batch_id]['status']
+            message = all_batches_status[batch_id]['error']
             old_status = get_old_status(batch_id, cdse_tasks)
 
             if new_status != old_status:
                 task_id = get_task_id(batch_id, cdse_tasks)
                 utility.datarequest_status_patch(
-                    {'Status': new_status}, task_id)
+                    {'Status': new_status, 'Message': message}, task_id)
                 logger.info(f"{task_id} UPDATED STATUS: {new_status}")
 
                 transaction.commit()  # really needed?
