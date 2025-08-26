@@ -59,7 +59,8 @@ def get_cdse_monitor_view_token():
 def get_old_status(batch_id, cdse_tasks):
     """ Return the current status of a CDSE task having the batch_id
     """
-    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    filtered = [task for task in cdse_tasks if task.get(
+        'CDSEBatchID', None) == batch_id]
     if len(filtered) > 0:
         return filtered[0].get('Status', '')
 
@@ -69,7 +70,8 @@ def get_old_status(batch_id, cdse_tasks):
 def get_task_id(batch_id, cdse_tasks):
     """ Return the current status of a CDSE task having the batch_id
     """
-    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    filtered = [task for task in cdse_tasks if task.get(
+        'CDSEBatchID', None) == batch_id]
     if len(filtered) > 0:
         return filtered[0].get('TaskId', None)
 
