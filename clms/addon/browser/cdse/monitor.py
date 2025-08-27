@@ -32,23 +32,6 @@ FME_STATUS = {
 }
 
 
-def remove_task(task_id):
-    """ Delete a task from downloadtool
-    """
-    utility = getUtility(IDownloadToolUtility)
-    logger.info(f"Removing task {task_id}")
-    utility.datarequest_remove_task(task_id)
-
-
-def remove_all_cdse_tasks(task_ids):
-    """ Remove all CDSE tasks from downloadtool
-    """
-    for task_id in task_ids:
-        remove_task(task_id)
-
-    transaction.commit()  # else the changes are not saved (why?)
-
-
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
     return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
@@ -154,8 +137,6 @@ class CDSEBatchStatusMonitor(BrowserView):
                 f"task ID: {task_id} FME: {fme_task_id} status: {status}"
             )
             cdse_task_ids.append(task_id)
-
-        # remove_all_cdse_tasks(cdse_task_ids)
 
         cdse_batch_ids = [task['CDSEBatchID'] for task in cdse_child_tasks]
         logger.info("Tasks to be verified: ")
