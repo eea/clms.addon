@@ -3,6 +3,7 @@
    It uses a token saved as ENV VAR.
 """
 
+from plone import api
 import logging
 import transaction
 from datetime import datetime
@@ -34,9 +35,10 @@ FME_STATUS = {
 
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    if 'localhost' in api.portal.get().absolute_url():
+        return "test-cdse"  # DEBUG
 
-    # return "test-cdse"  # DEBUG --
+    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
