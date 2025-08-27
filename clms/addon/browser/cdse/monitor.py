@@ -143,7 +143,8 @@ class CDSEBatchStatusMonitor(BrowserView):
     def update_child_tasks(self, child_tasks, batch_ids, cdse_status, utility):
         """ Update status of each child task if it is changed in CDSE
         """
-        logger.info("START updating tasks in downloadtool...")
+        logger.info("Update child tasks status...")
+        number_updated = 0
         for batch_id in batch_ids:
             new_status = cdse_status[batch_id]['status']
             message = cdse_status[batch_id]['error']
@@ -151,43 +152,66 @@ class CDSEBatchStatusMonitor(BrowserView):
 
             if new_status != old_status:
                 task_id = get_task_id(batch_id, child_tasks)
+                number_updated += 1
                 utility.datarequest_status_patch(
                     {'Status': new_status, 'Message': message}, task_id)
-                logger.info(f"{task_id} UPDATED STATUS: {new_status}")
+                logger.info(f"{task_id} UPDATED CHILD: {new_status}")
 
                 transaction.commit()  # really needed?
+        logger.info(f"Done. {number_updated} child tasks updated.")
 
     def update_parent_tasks(self, parent_tasks, child_tasks, utility):
         """ Update status of parent tasks
         """
-        logger.info("Check parent tasks...")
+        logger.info("Update parent tasks status...")
+        number_updated = 0
         for task in parent_tasks:
             group_id = task['cdse_task_group_id']
             child_tasks = [
                 t for t in child_tasks if t['cdse_task_group_id'] == group_id]
 
             status_result = analyze_tasks_group(child_tasks)
+            updated_status = status_result['final_status']
+            updated_message = status_result['message']
 
-            if status_result['final_status'] is not None:
+            if updated_status is not None:
                 old_status = task.get('Status', None)
                 task_id = task['TaskId']
-                new_status = FME_STATUS[status_result['final_status']]
-                utility.datarequest_status_patch(
-                    {'Status': new_status,
-                     'Message': status_result['message'],
-                     'FinalizationDateTime': datetime.utcnow().isoformat()
-                     }, task_id
-                )
-                logger.info(f"{task_id} UPDATED PARENT: {new_status}")
-                transaction.commit()  # really needed?
+                new_status = FME_STATUS[updated_status]
+
+                need_status_change = True
+                if task.get('FinalizationDateTime', None) is not None:
+                    need_status_change = False
+
+                need_finalization_date = False
+                if updated_status == STATUS_REJECTED:
+                    need_finalization_date = True
+
+                if need_status_change:
+                    if need_finalization_date:
+                        now = datetime.utcnow().isoformat()
+                        utility.datarequest_status_patch(
+                            {'Status': new_status,
+                             'Message': updated_message,
+                             'FinalizationDateTime': now
+                             }, task_id
+                        )
+                    else:
+                        utility.datarequest_status_patch(
+                            {'Status': new_status,
+                             'Message': updated_message,
+                             }, task_id
+                        )
+                    number_updated += 1
+                    logger.info(f"{task_id} UPDATED PARENT: {new_status}")
+                    transaction.commit()  # really needed?
 
                 if new_status != old_status:
-                    if new_status == STATUS_FINISHED:
-                        # WIP ? how to prevent re-sending task to FME
+                    if updated_status == STATUS_FINISHED:
                         logger.info("Send task to FME...")
                         fme_result = send_task_to_fme(task_id)
                         logger.info(fme_result)
-        logger.info("DONE")
+        logger.info(f"Done. {number_updated} parent tasks updated.")
 
     def check_cdse_status(self):
         """Check the status for CDSE tasks"""
