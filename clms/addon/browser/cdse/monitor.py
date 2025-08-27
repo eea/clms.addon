@@ -3,8 +3,10 @@
    It uses a token saved as ENV VAR.
 """
 
+from plone import api
 import logging
 import transaction
+from datetime import datetime
 from Products.Five import BrowserView
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
@@ -31,45 +33,31 @@ FME_STATUS = {
 }
 
 
-def remove_task(task_id):
-    """ Delete a task from downloadtool
-    """
-    utility = getUtility(IDownloadToolUtility)
-    logger.info(f"Removing task {task_id}")
-    utility.datarequest_remove_task(task_id)
-
-
-def remove_all_cdse_tasks(task_ids):
-    """ Remove all CDSE tasks from downloadtool
-    """
-    for task_id in task_ids:
-        remove_task(task_id)
-
-    transaction.commit()  # else the changes are not saved (why?)
-
-
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
-    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
+    if 'localhost' in api.portal.get().absolute_url():
+        return "test-cdse"  # DEBUG
 
-    # return "test-cdse"  # DEBUG --
+    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
     # http://localhost:8080/Plone/en/cdse-status-monitor?token=test-cdse
 
 
-def get_old_status(batch_id, cdse_tasks):
+def get_old_status(batch_id, child_tasks):
     """ Return the current status of a CDSE task having the batch_id
     """
-    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    filtered = [task for task in child_tasks if task.get(
+        'CDSEBatchID', None) == batch_id]
     if len(filtered) > 0:
         return filtered[0].get('Status', '')
 
     return STATUS_MISSING
 
 
-def get_task_id(batch_id, cdse_tasks):
-    """ Return the current status of a CDSE task having the batch_id
+def get_task_id(batch_id, child_tasks):
+    """ Return the task id of a CDSE task having the batch_id
     """
-    filtered = [task for task in cdse_tasks if task['CDSEBatchID'] == batch_id]
+    filtered = [task for task in child_tasks if task.get(
+        'CDSEBatchID', None) == batch_id]
     if len(filtered) > 0:
         return filtered[0].get('TaskId', None)
 
@@ -104,7 +92,7 @@ def analyze_tasks_group(child_tasks):
                 'final_status': STATUS_FINISHED,
                 'message': f'{count}/{len(status_list)} CDSE tasks finished.'
             }
-        return result
+            return result
 
     return {
         'final_status': None,
@@ -115,99 +103,131 @@ def analyze_tasks_group(child_tasks):
 class CDSEBatchStatusMonitor(BrowserView):
     """Check status of CDSE downloads"""
 
-    def check_cdse_status(self):
-        """Check the status for CDSE tasks"""
+    def get_cdse_tasks_from_downloadtool(self, utility):
+        """Get current situation of CDSE tasks in downloadtool"""
         utility = getUtility(IDownloadToolUtility)
 
         logger.info("Get downloads tasks list...")
         tasks = utility.datarequest_inspect()
 
-        logger.info("Search for CDSE tasks...")
         cdse_tasks = [
             task for task in tasks if task.get(
                 'cdse_task_role', None) is not None]
 
-        cdse_parent_tasks = [task for task in cdse_tasks if task.get(
+        parent_tasks = [task for task in cdse_tasks if task.get(
             'cdse_task_role', '') == 'parent']
 
-        cdse_child_tasks = [task for task in cdse_tasks if task.get(
+        child_tasks = [task for task in cdse_tasks if task.get(
             'cdse_task_role', '') == 'child']
 
         logger.info(f"FOUND {len(cdse_tasks)} CDSE download tasks.")
-        logger.info(f"--> {len(cdse_parent_tasks)} parent tasks.")
-        logger.info(f"--> {len(cdse_child_tasks)} child tasks.")
+        logger.info(f"--> {len(parent_tasks)} parent tasks.")
+        logger.info(f"--> {len(child_tasks)} child tasks.")
 
         cdse_task_ids = []
         for task in cdse_tasks:
-            user = task.get("UserID", "Unknown user")
             task_id = task.get("TaskId", "Unknown TaskId")
-            task_role = task.get("cdse_task_role", 'N/A')
-            task_group = task.get("cdse_task_group_id", 'N/A')
-            fme_task_id = task.get("FMETaskId", "N/A")
-            status = task.get("Status", "N/A")
-
-            logger.info(
-                f"From: {user} > role: {task_role} -> group: {task_group} "
-                f"task ID: {task_id} FME: {fme_task_id} status: {status}"
-            )
             cdse_task_ids.append(task_id)
 
-        # remove_all_cdse_tasks(cdse_task_ids)
+        batch_ids = [task['CDSEBatchID'] for task in child_tasks]
 
-        cdse_batch_ids = [task['CDSEBatchID'] for task in cdse_child_tasks]
-        logger.info("Tasks to be verified: ")
-        for task in cdse_batch_ids:
-            logger.info(task)
+        return [
+            cdse_tasks, parent_tasks, child_tasks, batch_ids]
 
-        logger.info("DONE checking CDSE tasks in downloadtool.")
-
-        logger.info("Check status in CDSE:")
+    def get_tasks_status_from_cdse(self):
+        """Check status in CDSE"""
         config = get_portal_config()
         token = get_token()
-        all_batches_status = get_status(token, config['batch_url'])
-        for batch_id, info in all_batches_status.items():
-            logger.info(
-                f"{batch_id}: {info['original_status']} -> {info['status']}")
+        return get_status(token, config['batch_url'])
 
-        logger.info("START updating tasks in downloadtool...")
-        for batch_id in cdse_batch_ids:
-            new_status = all_batches_status[batch_id]['status']
-            message = all_batches_status[batch_id]['error']
-            old_status = get_old_status(batch_id, cdse_tasks)
+    def update_child_tasks(self, child_tasks, batch_ids, cdse_status, utility):
+        """ Update status of each child task if it is changed in CDSE
+        """
+        logger.info("Update child tasks status...")
+        number_updated = 0
+        for batch_id in batch_ids:
+            new_status = cdse_status[batch_id]['status']
+            message = cdse_status[batch_id]['error']
+            old_status = get_old_status(batch_id, child_tasks)
 
             if new_status != old_status:
-                task_id = get_task_id(batch_id, cdse_tasks)
+                task_id = get_task_id(batch_id, child_tasks)
+                number_updated += 1
                 utility.datarequest_status_patch(
                     {'Status': new_status, 'Message': message}, task_id)
-                logger.info(f"{task_id} UPDATED STATUS: {new_status}")
+                logger.info(f"{task_id} UPDATED CHILD: {new_status}")
 
                 transaction.commit()  # really needed?
+        logger.info(f"Done. {number_updated} child tasks updated.")
 
-        logger.info("Check parent tasks...")
-        for task in cdse_parent_tasks:
+    def update_parent_tasks(self, parent_tasks, child_tasks, utility):
+        """ Update status of parent tasks
+        """
+        logger.info("Update parent tasks status...")
+        number_updated = 0
+        for task in parent_tasks:
             group_id = task['cdse_task_group_id']
             child_tasks = [
-                t for t in cdse_child_tasks if t['cdse_task_group_id'] == group_id]
+                t for t in child_tasks if t['cdse_task_group_id'] == group_id]
 
             status_result = analyze_tasks_group(child_tasks)
+            updated_status = status_result['final_status']
+            updated_message = status_result['message']
 
-            if status_result['final_status'] is not None:
-                old_parent_status = task.get('Status', None)
-                parent_task_id = task['TaskId']
-                new_status = FME_STATUS[status_result['final_status']]
-                utility.datarequest_status_patch(
-                    {'Status': new_status,
-                     'Message': status_result['message']}, parent_task_id
-                )
-                logger.info(f"{parent_task_id} UPDATED PARENT: {new_status}")
-                transaction.commit()  # really needed?
+            if updated_status is not None:
+                old_status = task.get('Status', None)
+                task_id = task['TaskId']
+                new_status = FME_STATUS[updated_status]
 
-                if new_status != old_parent_status:
-                    if new_status == STATUS_FINISHED:
-                        # WIP ? how to prevent re-sending task to FME
+                need_status_change = True
+                if task.get('FinalizationDateTime', None) is not None:
+                    need_status_change = False
+
+                need_finalization_date = False
+                if updated_status == STATUS_REJECTED:
+                    need_finalization_date = True
+
+                if need_status_change:
+                    if need_finalization_date:
+                        now = datetime.utcnow().isoformat()
+                        utility.datarequest_status_patch(
+                            {'Status': new_status,
+                             'Message': updated_message,
+                             'FinalizationDateTime': now
+                             }, task_id
+                        )
+                    else:
+                        utility.datarequest_status_patch(
+                            {'Status': new_status,
+                             'Message': updated_message,
+                             }, task_id
+                        )
+                    number_updated += 1
+                    logger.info(f"{task_id} UPDATED PARENT: {new_status}")
+                    transaction.commit()  # really needed?
+
+                if new_status != old_status:
+                    if updated_status == STATUS_FINISHED:
                         logger.info("Send task to FME...")
-                        fme_result = send_task_to_fme(parent_task_id)
+                        fme_result = send_task_to_fme(task_id)
                         logger.info(fme_result)
+        logger.info(f"Done. {number_updated} parent tasks updated.")
+
+    def check_cdse_status(self):
+        """Check the status for CDSE tasks"""
+        utility = getUtility(IDownloadToolUtility)
+        (
+            cdse_tasks,
+            parent_tasks,
+            child_tasks,
+            batch_ids
+        ) = self.get_cdse_tasks_from_downloadtool(utility)
+
+        cdse_status = self.get_tasks_status_from_cdse()
+
+        self.update_child_tasks(child_tasks, batch_ids, cdse_status, utility)
+
+        self.update_parent_tasks(parent_tasks, child_tasks, utility)
 
         # WIP clear children?
         return "done"
