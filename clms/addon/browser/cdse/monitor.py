@@ -5,6 +5,7 @@
 
 import logging
 import transaction
+from datetime import datetime
 from Products.Five import BrowserView
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
@@ -199,7 +200,9 @@ class CDSEBatchStatusMonitor(BrowserView):
                 new_status = FME_STATUS[status_result['final_status']]
                 utility.datarequest_status_patch(
                     {'Status': new_status,
-                     'Message': status_result['message']}, parent_task_id
+                     'Message': status_result['message'],
+                     'FinalizationDateTime': datetime.utcnow().isoformat()
+                     }, parent_task_id
                 )
                 logger.info(f"{parent_task_id} UPDATED PARENT: {new_status}")
                 transaction.commit()  # really needed?
