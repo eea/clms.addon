@@ -167,10 +167,10 @@ class CDSEBatchStatusMonitor(BrowserView):
         number_updated = 0
         for task in parent_tasks:
             group_id = task['cdse_task_group_id']
-            child_tasks = [
+            child_tasks_group = [
                 t for t in child_tasks if t['cdse_task_group_id'] == group_id]
 
-            status_result = analyze_tasks_group(child_tasks)
+            status_result = analyze_tasks_group(child_tasks_group)
             updated_status = status_result['final_status']
             updated_message = status_result['message']
 
