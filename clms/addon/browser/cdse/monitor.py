@@ -134,11 +134,16 @@ class CDSEBatchStatusMonitor(BrowserView):
         return [
             cdse_tasks, parent_tasks, child_tasks, batch_ids]
 
-    def get_tasks_status_from_cdse(self):
+    def get_tasks_status_from_cdse(self, batch_ids):
         """Check status in CDSE"""
         config = get_portal_config()
         token = get_token()
-        return get_status(token, config['batch_url'])
+        cdse_status = {
+            batch_id: get_status(token, config['batch_url'], batch_id)[
+                batch_id]
+            for batch_id in batch_ids
+        }
+        return cdse_status
 
     def update_child_tasks(self, child_tasks, batch_ids, cdse_status, utility):
         """ Update status of each child task if it is changed in CDSE
@@ -223,7 +228,7 @@ class CDSEBatchStatusMonitor(BrowserView):
             batch_ids
         ) = self.get_cdse_tasks_from_downloadtool(utility)
 
-        cdse_status = self.get_tasks_status_from_cdse()
+        cdse_status = self.get_tasks_status_from_cdse(batch_ids)
 
         self.update_child_tasks(child_tasks, batch_ids, cdse_status, utility)
 
