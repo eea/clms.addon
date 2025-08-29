@@ -29,7 +29,14 @@ STATUS_MISSING = 'MISSING'
 
 FME_STATUS = {
     'REJECTED': 'Rejected',
-    'FINISHED_OK': 'Finished_ok'
+    'FINISHED_OK': 'Finished_ok',
+    'CREATED': 'Queued',
+    'ANALYSIS': 'Queued',
+    'ANALYSIS_DONE': 'Queued',
+    'PROCESSING': 'In progress',
+    'DONE': 'Finished_ok',
+    'FAILED': 'Rejected',
+    'STOPPED': 'Cancelled'
 }
 
 
@@ -183,9 +190,12 @@ class CDSEBatchStatusMonitor(BrowserView):
                 old_status = task.get('Status', None)
                 task_id = task['TaskId']
                 new_status = FME_STATUS[updated_status]
+                already_sent = task.get('FMETaskId', None)
 
                 need_status_change = True
                 if task.get('FinalizationDateTime', None) is not None:
+                    need_status_change = False
+                if already_sent:
                     need_status_change = False
 
                 need_finalization_date = False
@@ -211,11 +221,16 @@ class CDSEBatchStatusMonitor(BrowserView):
                     logger.info(f"{task_id} UPDATED PARENT: {new_status}")
                     transaction.commit()  # really needed?
 
-                if new_status != old_status:
-                    if updated_status == STATUS_FINISHED:
-                        logger.info("Send task to FME...")
-                        fme_result = send_task_to_fme(task_id)
-                        logger.info(fme_result)
+                if updated_status == STATUS_FINISHED and not already_sent:
+                    logger.info("Send task to FME...")
+                    fme_result = send_task_to_fme(task_id)
+                    logger.info(fme_result)
+                    utility.datarequest_status_patch(
+                        {
+                            'Status': FME_STATUS['CREATED']
+                        }, task_id
+                    )
+                    transaction.commit()  # really needed?
         logger.info(f"Done. {number_updated} parent tasks updated.")
 
     def check_cdse_status(self):
