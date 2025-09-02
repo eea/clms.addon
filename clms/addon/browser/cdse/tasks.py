@@ -20,8 +20,8 @@ def remove_task(task_id):
     utility.datarequest_remove_task(task_id)
 
 
-def remove_all_cdse_tasks(task_ids):
-    """ Remove all CDSE tasks from downloadtool
+def remove_tasks_from_downloadtool(task_ids):
+    """ Remove a list of tasks from downloadtool
     """
     for task_id in task_ids:
         remove_task(task_id)
@@ -39,6 +39,9 @@ class CDSEDownloadsView(BrowserView):
 
         Remove all CDSE tasks
         ...:8080/Plone/en/cdse-status-tasks?options=DELETE-CDSE&token=20250827
+
+        Remove all tasks (not only CDSE) before given date
+        ...?options=DELETE-ALL-TASKS-BEFORE&date_to=20240101&token=20250902
         """
 
         options = self.request.form.get("options", 'CDSE')  # or ALL
@@ -51,6 +54,20 @@ class CDSEDownloadsView(BrowserView):
             elif token == today_str:
                 self.remove_cdse_tasks()
                 return "REMOVED ALL CDSE download tasks."
+            else:
+                return "Invalid token. Use &token=YYYYMMDD"
+
+        if options == "DELETE-ALL-TASKS-BEFORE":
+            token = self.request.form.get('token', None)
+            date_to = self.request.form.get('date_to', None)
+            today_str = datetime.today().strftime("%Y%m%d")
+            if date_to is None:
+                return "Missing date_to parameter. Add &date_to=YYYYMMDD"
+            if token is None:
+                return "Missing token. Add &token=YYYYMMDD"
+            elif token == today_str:
+                self.remove_tasks_before(date_to)
+                return "REMOVED ALL download tasks before given date."
             else:
                 return "Invalid token. Use &token=YYYYMMDD"
 
@@ -88,5 +105,34 @@ class CDSEDownloadsView(BrowserView):
             task_id = task.get("TaskId", "Unknown TaskId")
             cdse_task_ids.append(task_id)
 
-        remove_all_cdse_tasks(cdse_task_ids)
+        remove_tasks_from_downloadtool(cdse_task_ids)
         logger.info("REMOVED ALL CDSE download tasks.")
+
+    def remove_tasks_before(self, date_to):
+        """Remove all download tasks before given date"""
+        utility = getUtility(IDownloadToolUtility)
+
+        logger.info("Get downloads tasks list...")
+        tasks = utility.datarequest_inspect()
+
+        logger.info("Search for old tasks...")
+
+        date_to_dt = datetime.strptime(date_to, "%Y%m%d")
+
+        found = []
+        for task in tasks:
+            reg_time = task.get('RegistrationDateTime', None)
+            if reg_time:
+                registration_dt = datetime.fromisoformat(reg_time)
+                if registration_dt.date() < date_to_dt.date():
+                    found.append(task)
+
+        logger.info(f"FOUND {len(found)} old download tasks.")
+
+        task_ids = []
+        for task in found:
+            task_id = task.get("TaskId", "Unknown TaskId")
+            task_ids.append(task_id)
+
+        remove_tasks_from_downloadtool(task_ids)
+        logger.info("REMOVED ALL old download tasks.")
