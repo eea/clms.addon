@@ -187,7 +187,6 @@ class CDSEBatchStatusMonitor(BrowserView):
             updated_message = status_result['message']
 
             if updated_status is not None:
-                old_status = task.get('Status', None)
                 task_id = task['TaskId']
                 new_status = FME_STATUS[updated_status]
                 already_sent = task.get('FMETaskId', None)
