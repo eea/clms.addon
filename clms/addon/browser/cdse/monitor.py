@@ -72,32 +72,36 @@ def get_task_id(batch_id, child_tasks):
 
 
 def analyze_tasks_group(child_tasks):
-    """ Analyze current status of a group of CDSE tasks, return a status for
-        parent task
+    """Analyze current status of a group of CDSE tasks, return a status for
+    parent task. If tasks are REJECTED, also include the list of unique
+    error messages.
     """
     status_list = [child.get('Status', '') for child in child_tasks]
 
     if STATUS_REJECTED in status_list:
-        count = 0
-        for status in status_list:
-            if STATUS_REJECTED == status:
-                count += 1
+        rejected_tasks = [child for child in child_tasks if child.get(
+            'Status') == STATUS_REJECTED]
+        count = len(rejected_tasks)
+
+        error_messages = list(
+            {child.get('Message', '') for child in rejected_tasks if child.get(
+                'Message')}
+        )
+
         result = {
             'final_status': STATUS_REJECTED,
-            'message': f'{count}/{len(status_list)} tasks rejected by CDSE.'
+            'message': f'{count}/{len(status_list)} tasks rejected by CDSE.',
+            'cdse_errors': error_messages
         }
         return result
 
     if STATUS_FINISHED in status_list:
-        count = 0
-        for status in status_list:
-            if STATUS_FINISHED == status:
-                count += 1
-
-        if count == len(status_list):
+        finished_count = sum(
+            1 for status in status_list if status == STATUS_FINISHED)
+        if finished_count == len(status_list):
             result = {
                 'final_status': STATUS_FINISHED,
-                'message': f'{count}/{len(status_list)} CDSE tasks finished.'
+                'message': f'{finished_count}/{len(status_list)} CDSE tasks finished.'
             }
             return result
 
@@ -180,11 +184,13 @@ class CDSEBatchStatusMonitor(BrowserView):
         for task in parent_tasks:
             group_id = task['cdse_task_group_id']
             child_tasks_group = [
-                t for t in child_tasks if t['cdse_task_group_id'] == group_id]
+                t for t in child_tasks if t['cdse_task_group_id'] == group_id
+            ]
 
             status_result = analyze_tasks_group(child_tasks_group)
             updated_status = status_result['final_status']
             updated_message = status_result['message']
+            error_messages = status_result.get('cdse_errors')
 
             if updated_status is not None:
                 task_id = task['TaskId']
@@ -202,20 +208,20 @@ class CDSEBatchStatusMonitor(BrowserView):
                     need_finalization_date = True
 
                 if need_status_change:
+                    patch_payload = {
+                        'Status': new_status,
+                        'Message': updated_message
+                    }
+
+                    if error_messages is not None:
+                        patch_payload['cdse_errors'] = error_messages
+
                     if need_finalization_date:
                         now = datetime.utcnow().isoformat()
-                        utility.datarequest_status_patch(
-                            {'Status': new_status,
-                             'Message': updated_message,
-                             'FinalizationDateTime': now
-                             }, task_id
-                        )
-                    else:
-                        utility.datarequest_status_patch(
-                            {'Status': new_status,
-                             'Message': updated_message,
-                             }, task_id
-                        )
+                        patch_payload['FinalizationDateTime'] = now
+
+                    utility.datarequest_status_patch(patch_payload, task_id)
+
                     number_updated += 1
                     logger.info(f"{task_id} UPDATED PARENT: {new_status}")
                     transaction.commit()  # really needed?
