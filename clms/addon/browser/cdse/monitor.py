@@ -13,6 +13,9 @@ from clms.addon.browser.cdse.utils import get_env_var
 from clms.downloadtool.utility import IDownloadToolUtility
 from clms.downloadtool.api.services.cdse.cdse_integration import (
     get_portal_config, get_status, get_token)
+from clms.downloadtool.api.services.datarequest_post.utils import (
+    save_stats_for_download_task
+)
 from clms.downloadtool.api.services.cdse.fme import send_task_to_fme
 from zope.component import getUtility
 
@@ -228,6 +231,7 @@ class CDSEBatchStatusMonitor(BrowserView):
 
                 if updated_status == STATUS_FINISHED and not already_sent:
                     logger.info("Send task to FME...")
+                    save_stats_for_download_task(task_id)
                     fme_result = send_task_to_fme(task_id)
                     logger.info(fme_result)
                     utility.datarequest_status_patch(
