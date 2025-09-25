@@ -122,8 +122,6 @@ class CDSEStatsView(BrowserView):
 
         logger.info(f"FOUND {len(found)} old download tasks.")
 
-        import pdb
-        pdb.set_trace()
         task_ids = []
         for task in found:
             task_id = task.get("TaskId", None)
