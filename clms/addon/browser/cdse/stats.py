@@ -74,6 +74,17 @@ class CDSEStatsView(BrowserView):
         utility = getUtility(IDownloadStatsUtility)
 
         options = self.request.form.get("options", '')
+        if options == "DELETE-ALL-TASKS-AAAALLLL":
+            token = self.request.form.get('token', None)
+            today_str = datetime.today().strftime("%Y%m%d")
+            if token is None:
+                return "Missing token. Add &token=YYYYMMDD"
+            elif token == today_str:
+                self.remove_all_tasks()
+                return "Deleted all"
+            else:
+                return "Invalid token. Use &token=YYYYMMDD"
+
         if options == "DELETE-ALL-TASKS-BEFORE":
             token = self.request.form.get('token', None)
             date_to = self.request.form.get('date_to', None)
@@ -99,6 +110,15 @@ class CDSEStatsView(BrowserView):
         html.append("</pre>")
 
         return "\n".join(html)
+
+    def remove_all_tasks(self):
+        """Remove all download tasks before given date"""
+        utility = getUtility(IDownloadStatsUtility)
+
+        logger.info("Prepare for deteting all tasks in StatsTool.")
+        utility.delete_data()
+        transaction.commit()  # else the changes are not saved (why?)
+        logger.info("Done. Removed all tasks in StatsTool.")
 
     def remove_tasks_before(self, date_to):
         """Remove all download tasks before given date"""
