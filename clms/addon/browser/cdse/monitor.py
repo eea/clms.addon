@@ -6,7 +6,7 @@
 from plone import api
 import logging
 import transaction
-from datetime import datetime
+from datetime import datetime, timezone
 from Products.Five import BrowserView
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
@@ -220,7 +220,7 @@ class CDSEBatchStatusMonitor(BrowserView):
                         patch_payload['cdse_errors'] = error_messages
 
                     if need_finalization_date:
-                        now = datetime.utcnow().isoformat()
+                        now = datetime.now(timezone.utc).isoformat()
                         patch_payload['FinalizationDateTime'] = now
 
                     utility.datarequest_status_patch(patch_payload, task_id)
