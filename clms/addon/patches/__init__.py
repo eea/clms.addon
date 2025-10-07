@@ -10,6 +10,7 @@ import clms.addon.patches.scale as f
 import clms.addon.patches.sortable_title as d
 import clms.addon.patches.catalog as h
 import clms.addon.patches.validate_form_file as i
+import clms.addon.patches.jwkest_accept_secp256k1 as j
 
 log = getLogger(__name__)
 
@@ -21,3 +22,4 @@ log.info(f)
 log.info(g)
 log.info(h)
 log.info(i)
+log.info(j)
