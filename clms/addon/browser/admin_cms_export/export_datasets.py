@@ -120,6 +120,38 @@ def export_datasets_with_download_information(request):
                 }
             )
 
+        # Refs #288680 - include all datasets in this export
+        if len(ddi_raw.get("items", [])) == 0:
+            items.append(
+                {
+                    "component_title": component_title,
+                    "product_id": product.UID(),
+                    "product_title": product.title,
+                    "product_show_in_mapviewer_link":
+                        product.show_in_mapviewer_link,
+                    "dataset_id": dataset.UID(),
+                    "dataset_title": dataset.title,
+                    "dataset_geonetwork_id": dataset_geonetwork_id,
+                    "dataset_geonetwork_type": dataset_geonetwork_type,
+                    "dataset_full_path": dataset_full_path,
+                    "dataset_full_format": dataset_full_format,
+                    "dataset_full_source": dataset_full_source,
+                    "downloadable_dataset": dataset.downloadable_dataset,
+                    "downloadable_full_dataset":
+                        dataset.downloadable_full_dataset,
+                    "mapviewer_viewservice": dataset.mapviewer_viewservice,
+                    "mapviewer_default_active":
+                        dataset.mapviewer_default_active,
+                    "mapviewer_istimeseries": dataset.mapviewer_istimeseries,
+                    "mapviewer_timeseriesservice": mapviewer_timeseriesservice,
+                    "dataset_download_information_id": "",
+                    "dataset_download_information_full_format": "",
+                    "dataset_download_information_full_path": "",
+                    "dataset_download_information_full_source": "",
+                    "dataset_download_information_name": "",
+                }
+            )
+
     items.sort(
         key=lambda x: (
             x.get("component_title", ""),
