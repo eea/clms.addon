@@ -78,11 +78,16 @@ class PendingUnSubscriptionHandler:
         subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         new_subscribers = OOBTree()
         now_datetime = datetime.now(timezone.utc)
+
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
-                date_difference = now_datetime - datetime.strptime(
-                    subscribers[key]["date"], "%Y-%m-%dT%H:%M:%S.%f"
-                )
+                date_str = subscribers[key]["date"]
+                parsed_date = datetime.fromisoformat(date_str)
+                if parsed_date.tzinfo is None:
+                    parsed_date = parsed_date.replace(tzinfo=timezone.utc)
+
+                date_difference = now_datetime - parsed_date
+
                 if date_difference <= timedelta(days=days):
                     new_subscribers[key] = subscribers[key]
 
