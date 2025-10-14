@@ -2,7 +2,7 @@
 Pending subscription handlers
 """
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from BTrees.OOBTree import OOBTree
 from plone import api
@@ -44,9 +44,10 @@ class PendingSubscriptionHandler:
         while key in subscribers:
             key = uuid.uuid4().hex
 
+        now_datetime = datetime.now(timezone.utc).isoformat()
         subscribers[key] = {
             "email": email,
-            "date": datetime.utcnow().isoformat(),
+            "date": now_datetime,
             "status": "pending",
         }
         annotations[self.ANNOTATION_KEY] = subscribers
@@ -57,11 +58,10 @@ class PendingSubscriptionHandler:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
+        now_datetime = datetime.now(timezone.utc).isoformat()
         if key in subscribers:
             subscribers[key]["status"] = "confirmed"
-            subscribers[key][
-                "confirmation_date"
-            ] = datetime.utcnow().isoformat()
+            subscribers[key]["confirmation_date"] = now_datetime
             annotations[self.ANNOTATION_KEY] = subscribers
             return self.do_something_with_confirmed_subscriber(
                 subscribers[key]
@@ -80,7 +80,8 @@ class PendingSubscriptionHandler:
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
                 date = subscribers[key]["date"]
-                date_difference = datetime.utcnow() - datetime.strptime(
+                now_datetime = datetime.now(timezone.utc)
+                date_difference = now_datetime - datetime.strptime(
                     date, "%Y-%m-%dT%H:%M:%S.%f"
                 )
                 if date_difference <= timedelta(days=days):
