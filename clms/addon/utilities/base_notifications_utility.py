@@ -1,6 +1,6 @@
 """ base implementation"""
 # -*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, timezone
 
 from BTrees.OOBTree import OOBTree
 from plone import api
@@ -41,7 +41,8 @@ class NotificationsUtility:
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         if email is not None and email.strip() and email not in subscribers:
-            subscribers[email] = {"date": datetime.utcnow().isoformat()}
+            now_datetime = datetime.now(timezone.utc).isoformat()
+            subscribers[email] = {"date": now_datetime}
             annotations[self.ANNOTATION_KEY] = subscribers
             return True
 

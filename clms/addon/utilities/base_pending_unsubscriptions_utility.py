@@ -2,7 +2,7 @@
 Pending subscription handlers
 """
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from BTrees.OOBTree import OOBTree
 from plone import api
@@ -44,9 +44,10 @@ class PendingUnSubscriptionHandler:
         while key in subscribers:
             key = uuid.uuid4().hex
 
+        now_datetime = datetime.now(timezone.utc).isoformat()
         subscribers[key] = {
             "email": email,
-            "date": datetime.utcnow().isoformat(),
+            "date": now_datetime,
             "status": "pending",
         }
         annotations[self.ANNOTATION_KEY] = subscribers
@@ -57,11 +58,10 @@ class PendingUnSubscriptionHandler:
         portal = api.portal.get()
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
+        now_datetime = datetime.now(timezone.utc).isoformat()
         if key in subscribers:
             subscribers[key]["status"] = "confirmed"
-            subscribers[key][
-                "confirmation_date"
-            ] = datetime.utcnow().isoformat()
+            subscribers[key]["confirmation_date"] = now_datetime
             annotations[self.ANNOTATION_KEY] = subscribers
             return self.do_something_with_confirmed_unsubscriber(
                 subscribers[key]
@@ -77,11 +77,17 @@ class PendingUnSubscriptionHandler:
         annotations = IAnnotations(portal)
         subscribers = annotations.get(self.ANNOTATION_KEY, OOBTree())
         new_subscribers = OOBTree()
+        now_datetime = datetime.now(timezone.utc)
+
         for key in subscribers.keys():
             if subscribers[key]["status"] == "pending":
-                date_difference = datetime.utcnow() - datetime.strptime(
-                    subscribers[key]["date"], "%Y-%m-%dT%H:%M:%S.%f"
-                )
+                date_str = subscribers[key]["date"]
+                parsed_date = datetime.fromisoformat(date_str)
+                if parsed_date.tzinfo is None:
+                    parsed_date = parsed_date.replace(tzinfo=timezone.utc)
+
+                date_difference = now_datetime - parsed_date
+
                 if date_difference <= timedelta(days=days):
                     new_subscribers[key] = subscribers[key]
 
