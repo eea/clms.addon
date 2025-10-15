@@ -9,7 +9,7 @@ import plone.protect.interfaces
 from Acquisition import aq_parent
 from clms.addon import _
 from collective.volto.formsupport.restapi.services.submit_form.post import (
-    SubmitPost,
+    SubmitPost, PostEventService
 )
 from eea.meeting.browser.views import add_subscriber
 from plone import api
@@ -20,6 +20,10 @@ from zExceptions import BadRequest
 from zope.component import getMultiAdapter, getUtility
 from zope.i18n import translate
 from zope.interface import alsoProvides
+from zope.event import notify
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def user_already_registered(subscribers_folder, email):
@@ -35,10 +39,50 @@ def user_already_registered(subscribers_folder, email):
 class Register(SubmitPost):
     """register the form submit"""
 
+    def super_reply_with_csrf(self):
+        """Version of SubmitPost.reply() without disabling CSRF"""
+        self.validate_form()
+
+        store_action = self.block.get("store", False)
+        send_action = self.block.get("send", False)
+
+        # We intentionally do NOT disable CSRF here
+        # alsoProvides(self.request, IDisableCSRFProtection)
+
+        notify(PostEventService(self.context, self.form_data))
+
+        if send_action:
+            try:
+                self.send_data()
+            except BadRequest as e:
+                raise e
+            except Exception as e:
+                logger.exception(e)
+                message = translate(
+                    _(
+                        "mail_send_exception",
+                        default="Unable to send confirm email. Please retry later or contact site administrator.",
+                    ),
+                    context=self.request,
+                )
+                self.request.response.setStatus(500)
+                return dict(type="InternalServerError", message=message)
+
+        if store_action:
+            self.store_data()
+
+        return self.reply_no_content()
+
     def reply(self):
         """submit reply"""
+
+        # if self.context.portal_type != "AnonymousForm":
+        #     return super().reply()  - not ok, disables CSRF
+
+        # If it's not an AnonymousForm, use our safe super method
         if self.context.portal_type != "AnonymousForm":
-            return super().reply()
+            return self.super_reply_with_csrf()
+
         if "IDisableCSRFProtection" in dir(plone.protect.interfaces):
             alsoProvides(
                 self.request, plone.protect.interfaces.IDisableCSRFProtection
