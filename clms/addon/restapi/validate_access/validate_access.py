@@ -20,13 +20,13 @@ class ValidateTokenAccess(Service):
         try:
             current = api.user.get_current()
         except Exception:
-            return self.rsp("Unknown error", code=502, status="error")
+            return self.rsp("Unknown error", code=503, status="error")
 
         print(current)
         try:
             name = current.name
         except Exception:
-            return self.rsp("Unknown error", code=502, status="error")
+            return self.rsp("Unknown error", code=503, status="error")
 
         if name == "Anonymous User" or isinstance(current, SpecialUser):
             return self.rsp("Invalid token", code=401, status="error")
