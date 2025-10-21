@@ -13,6 +13,7 @@
   <include package=".delete_profile" />
   <include package=".block_indexers" />
   <include package=".link" />
+  <include package=".validate_access" />
 
   <!-- <include package=".navroot" /> -->
 
