@@ -32,10 +32,10 @@ class ValidateTokenAccess(Service):
             return self.rsp("Unknown error", code=503, status="error")
 
         try:
-            name = current.name
-            logger.info(f"User name: {name}")
+            name = current.getId()
+            logger.info(f"Resolved username: {name}")
         except Exception as e:
-            logger.info(f"name access failed: {e}")
+            logger.info(f"getId failed: {e}")
             return self.rsp("Unknown error", code=503, status="error")
 
         if name == "Anonymous User" or isinstance(current, SpecialUser):
