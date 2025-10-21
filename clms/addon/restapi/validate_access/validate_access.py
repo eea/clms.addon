@@ -1,6 +1,9 @@
+import logging
 from plone.restapi.services import Service
 from plone import api
 from AccessControl.users import SpecialUser
+
+logger = logging.getLogger(__name__)
 
 
 class ValidateTokenAccess(Service):
@@ -10,25 +13,34 @@ class ValidateTokenAccess(Service):
         """Prepare an (usually error) response"""
         if code != 0:
             self.request.response.setStatus(code)
+        logger.info(f"RSP: {status} ({code}) - {msg}")
         return {"status": status, "msg": msg}
 
     def reply(self):
         """reply"""
+        logger.info("ValidateTokenAccess called")
+
         if api.user.is_anonymous():
+            logger.info("Anon user detected")
             return self.rsp("Invalid token", code=401, status="error")
 
         try:
             current = api.user.get_current()
-        except Exception:
-            return self.rsp("Unknown error", code=502, status="error")
+            logger.info(f"Current user: {current}")
+        except Exception as e:
+            logger.info(f"get_current failed: {e}")
+            return self.rsp("Unknown error", code=503, status="error")
 
-        print(current)
         try:
-            name = current.name
-        except Exception:
-            return self.rsp("Unknown error", code=502, status="error")
+            name = current.getId()
+            logger.info(f"Resolved username: {name}")
+        except Exception as e:
+            logger.info(f"getId failed: {e}")
+            return self.rsp("Unknown error", code=503, status="error")
 
         if name == "Anonymous User" or isinstance(current, SpecialUser):
+            logger.info(f"Invalid token for {name}")
             return self.rsp("Invalid token", code=401, status="error")
-        else:
-            return self.rsp("Token is valid", code=200, status="success")
+
+        logger.info(f"Token valid for {name}")
+        return self.rsp("Token is valid", code=200, status="success")
