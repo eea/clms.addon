@@ -75,14 +75,32 @@ class CDSEDownloadsView(BrowserView):
         data = utility.datarequest_inspect()
         cdse_tasks = [task for task in data if task.get(
             'cdse_task_role', None) is not None]
+
+        if options == "ALL":
+            results = data
+        else:
+            results = cdse_tasks
+
+        if options == "FILTER":
+            date_filter = self.request.form.get('date', None)
+            filter_date = datetime.strptime(date_filter, "%Y%m%d").date()
+            if date_filter is None:
+                return "Missing date. Add &date=YYYYMMDD"
+            filtered_tasks = []
+            for task in cdse_tasks:
+                reg_time = task.get("RegistrationDateTime")
+                if reg_time:
+                    reg_dt = datetime.fromisoformat(
+                        reg_time.replace("Z", "+00:00")).date()
+                    if reg_dt == filter_date:
+                        filtered_tasks.append(task)
+            results = filtered_tasks
+
         self.request.response.setHeader(
             'Content-Type', 'text/html; charset=utf-8')
 
         html = ["<h1>Download Requests</h1>", "<pre>"]
-        if options == "ALL":
-            html.append(json.dumps(data, indent=2, ensure_ascii=False))
-        else:
-            html.append(json.dumps(cdse_tasks, indent=2, ensure_ascii=False))
+        html.append(json.dumps(results, indent=2, ensure_ascii=False))
         html.append("</pre>")
 
         return "\n".join(html)
