@@ -1,0 +1,14 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    >
+
+  <plone:service
+      method="GET"
+      factory=".csrf_token.GetCSRFToken"
+      for="Products.CMFCore.interfaces.ISiteRoot"
+      permission="zope.Public"
+      name="@clms-get-csrf-token"
+      />
+
+</configure>
