@@ -14,6 +14,7 @@
   <include package=".block_indexers" />
   <include package=".link" />
   <include package=".validate_access" />
+  <include package=".csrf_token" />
 
   <!-- <include package=".navroot" /> -->
 

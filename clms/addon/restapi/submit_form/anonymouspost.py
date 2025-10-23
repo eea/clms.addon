@@ -13,6 +13,7 @@ from collective.volto.formsupport.restapi.services.submit_form.post import (
 )
 from eea.meeting.browser.views import add_subscriber
 from plone import api
+from plone.protect import CheckAuthenticator
 from plone.registry.interfaces import IRegistry
 from plone.restapi.deserializer import json_body
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
@@ -39,6 +40,17 @@ def user_already_registered(subscribers_folder, email):
 class Register(SubmitPost):
     """register the form submit"""
 
+    def provide_csrf_protection_for_custom_forms(self):
+        """Provides CSRF protection for custom forms"""
+        CSRF_PROTECTED_FORMS = [
+            "/en/use-cases/submit-use-case",
+            "/en/contact-service-helpdesk"
+        ]
+
+        for form_path in CSRF_PROTECTED_FORMS:
+            if form_path in self.request.getURL():
+                CheckAuthenticator(self.request)
+
     def super_reply_with_csrf(self):
         """Version of SubmitPost.reply() without disabling CSRF"""
         self.validate_form()
@@ -48,6 +60,8 @@ class Register(SubmitPost):
 
         # We intentionally do NOT disable CSRF here
         # alsoProvides(self.request, IDisableCSRFProtection)
+        # also include custom protection:
+        self.provide_csrf_protection_for_custom_forms()
 
         notify(PostEventService(self.context, self.form_data))
 
