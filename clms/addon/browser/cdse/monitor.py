@@ -42,6 +42,11 @@ FME_STATUS = {
     'STOPPED': 'Cancelled'
 }
 
+# The list of statuses for tasks in DownloadTool that have not an active
+# CDSE task. Our goal is to request the status only for active CDSE tasks.
+STATUS_NOT_ACTIVE_IN_CDSE = [
+    'FINISHED_OK', "Finished_ok", 'REJECTED', 'Cancelled', 'Rejected']
+
 
 def get_cdse_monitor_view_token():
     """The token that protects the view"""
@@ -144,27 +149,34 @@ class CDSEBatchStatusMonitor(BrowserView):
             cdse_task_ids.append(task_id)
 
         batch_ids = [task['CDSEBatchID'] for task in child_tasks]
+        logger.info(f"FOUND {len(batch_ids)} batch ids.")
+        active_batch_ids = [task[
+            'CDSEBatchID'] for task in child_tasks if task.get(
+            'Status') not in STATUS_NOT_ACTIVE_IN_CDSE
+        ]
+        logger.info(f"FOUND {len(active_batch_ids)} ACTIVE batch ids.")
 
         return [
-            cdse_tasks, parent_tasks, child_tasks, batch_ids]
+            cdse_tasks, parent_tasks, child_tasks, active_batch_ids]
 
-    def get_tasks_status_from_cdse(self, batch_ids):
+    def get_tasks_status_from_cdse(self, active_batch_ids):
         """Check status in CDSE"""
         config = get_portal_config()
         token = get_token()
         cdse_status = {
             batch_id: get_status(token, config['batch_url'], batch_id)[
                 batch_id]
-            for batch_id in batch_ids
+            for batch_id in active_batch_ids
         }
         return cdse_status
 
-    def update_child_tasks(self, child_tasks, batch_ids, cdse_status, utility):
+    def update_child_tasks(
+            self, child_tasks, active_batch_ids, cdse_status, utility):
         """ Update status of each child task if it is changed in CDSE
         """
         logger.info("Update child tasks status...")
         number_updated = 0
-        for batch_id in batch_ids:
+        for batch_id in active_batch_ids:
             new_status = cdse_status[batch_id]['status']
             message = cdse_status[batch_id]['error']
             old_status = get_old_status(batch_id, child_tasks)
@@ -249,12 +261,13 @@ class CDSEBatchStatusMonitor(BrowserView):
             cdse_tasks,
             parent_tasks,
             child_tasks,
-            batch_ids
+            active_batch_ids
         ) = self.get_cdse_tasks_from_downloadtool(utility)
 
-        cdse_status = self.get_tasks_status_from_cdse(batch_ids)
+        cdse_status = self.get_tasks_status_from_cdse(active_batch_ids)
 
-        self.update_child_tasks(child_tasks, batch_ids, cdse_status, utility)
+        self.update_child_tasks(
+            child_tasks, active_batch_ids, cdse_status, utility)
 
         self.update_parent_tasks(parent_tasks, child_tasks, utility)
 
