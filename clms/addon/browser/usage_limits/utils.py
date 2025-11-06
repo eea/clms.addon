@@ -1,5 +1,4 @@
 """Utility functions for Usage Limits Monitor"""
-from plone import api
 import requests
 
 from clms.downloadtool.api.services.cdse.cdse_integration import (
