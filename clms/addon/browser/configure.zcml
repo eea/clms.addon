@@ -59,4 +59,11 @@
       class=".cdse.stats.CDSEStatsView"
       permission="cmf.ManagePortal"
       />
+
+  <browser:page
+      name="cdse-usage-limits-monitor"
+      for="*"
+      class=".usage_limits.monitor.UsageLimitsMonitor"
+      permission="cmf.ManagePortal"
+      />
 </configure>
