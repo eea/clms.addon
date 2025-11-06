@@ -329,7 +329,7 @@ class UsageLimitsMonitor(BrowserView):
 
         if not email_to:
             print(f"\n{'='*60}")
-            print(f"EMAIL NOT SENT - No recipient configured")
+            print("EMAIL NOT SENT - No recipient configured")
             print(f"Set {USAGE_LIMITS_EMAIL_TO_ENV_VAR} environment variable")
             print(f"Subject: {subject}")
             print(f"Body length: {len(html_body)} chars")
