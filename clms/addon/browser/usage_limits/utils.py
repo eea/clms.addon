@@ -2,40 +2,8 @@
 from plone import api
 import requests
 
-
-def get_portal_config():
-    """Get CDSE and S3 bucket configuration from the portal catalog"""
-    return {
-        'token_url': api.portal.get_registry_record(
-            "clms.downloadtool.cdse_config_controlpanel.token_url"
-        ),
-        'client_id': api.portal.get_registry_record(
-            "clms.downloadtool.cdse_config_controlpanel.client_id"
-        ),
-        'client_secret': api.portal.get_registry_record(
-            "clms.downloadtool.cdse_config_controlpanel.client_secret"
-        ),
-        'account_id': api.portal.get_registry_record(
-            "clms.downloadtool.cdse_config_controlpanel.account_id"
-        ),
-    }
-
-
-def get_token():
-    """Get token for CDSE"""
-    config = get_portal_config()
-    token_response = requests.post(config['token_url'], data={
-        "grant_type": "client_credentials",
-        "client_id": config['client_id'],
-        "client_secret": config['client_secret']
-    })
-
-    token = token_response.json().get("access_token")
-    if not token:
-        raise RuntimeError("Failed to obtain token.")
-    print("Token acquired successfully.")
-
-    return token
+from clms.downloadtool.api.services.cdse.cdse_integration import (
+    get_token, get_portal_config)
 
 
 def get_customer_account_id():

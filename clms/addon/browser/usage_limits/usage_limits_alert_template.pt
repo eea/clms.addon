@@ -1,10 +1,10 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://namespaces.zope.org/i18n">
   <body>
-    <p><strong>${severity}</strong> usage alert - ${date}</p>
+    <p i18n:translate="usage_alert_date"><strong>${severity}</strong> usage alert - ${date}</p>
 
     <tal:critical condition="critical_alerts">
-      <h3 style="color: #d9534f;">High Importance</h3>
+      <h3 style="color: #d9534f;" i18n:translate="high_importance">High Importance</h3>
       <tal:alert repeat="alert critical_alerts">
         <div style="border-left: 3px solid #d9534f; padding-left: 10px; margin: 10px 0;"
              tal:define="monthly_pct python: (alert['data']['monthly']['remaining'] / alert['data']['monthly']['config'] * 100) if alert['data']['monthly']['config'] > 0 else 0;
@@ -13,21 +13,21 @@
           <p><strong tal:content="alert['metric']">metric</strong></p>
           <p tal:content="alert['message']">message</p>
           <ul>
-            <li>Monthly: <span tal:content="python: '{:.1f}%'.format(monthly_pct)">0%</span> remaining
+            <li i18n:translate="monthly_usage">Monthly: <span tal:content="python: '{:.1f}%'.format(monthly_pct)">0%</span> remaining
                 (<span tal:content="python: '{:,}'.format(alert['data']['monthly']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['monthly']['config'])">0</span>)</li>
-            <li>Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
+            <li i18n:translate="overage_buffer">Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
                 (<span tal:content="python: '{:,}'.format(alert['data']['overage']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['overage']['config'])">0</span>)</li>
-            <li><strong>Total: <span tal:content="python: '{:.1f}%'.format(total_pct)">0%</span> remaining
+            <li i18n:translate="total_usage"><strong>Total: <span tal:content="python: '{:.1f}%'.format(total_pct)">0%</span> remaining
                 (<span tal:content="python: '{:,}'.format(alert['data']['total']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['total']['config'])">0</span>)</strong></li>
           </ul>
           <tal:projection condition="python: alert.get('projection')">
-            <p style="background-color: #fff3cd; padding: 10px;">
+            <p i18n:translate="monthly_projection" style="background-color: #fff3cd; padding: 10px;">
               <strong>Monthly Projection:</strong><br/>
               Day <span tal:replace="alert['projection']['current_day']">0</span> of <span tal:replace="alert['projection']['days_in_month']">0</span>
               (<span tal:replace="alert['projection']['days_remaining']">0</span> days remaining)<br/>
               Daily average: <span tal:replace="python: '{:,.0f}'.format(alert['projection']['daily_average'])">0</span> units/day<br/>
               <tal:runout condition="python: alert['projection'].get('will_run_out')">
-                <span style="color: #d9534f;">
+                <span i18n:translate="will_run_out" style="color: #d9534f;">
                   Will run out on day <span tal:replace="alert['projection']['runout_date']">0</span>
                 </span>
               </tal:runout>
@@ -43,9 +43,9 @@
     </tal:critical>
 
     <tal:warning condition="warning_alerts">
-      <h3 style="color: #f0ad4e;">Warning</h3>
+      <h3 i18n:translate="warning" style="color: #f0ad4e;">Warning</h3>
       <tal:alert repeat="alert warning_alerts">
-        <div style="border-left: 3px solid #f0ad4e; padding-left: 10px; margin: 10px 0;"
+        <div i18n:translate="warning_alert" style="border-left: 3px solid #f0ad4e; padding-left: 10px; margin: 10px 0;"
              tal:define="monthly_pct python: (alert['data']['monthly']['remaining'] / alert['data']['monthly']['config'] * 100) if alert['data']['monthly']['config'] > 0 else 0">
           <p><strong tal:content="alert['metric']">metric</strong></p>
           <p tal:content="alert['message']">message</p>
