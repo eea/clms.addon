@@ -60,6 +60,10 @@
     <hr/>
 
     <p i18n:translate="">
+    Detailed resource utilization here: https://shapps.dataspace.copernicus.eu/dashboard/#/
+    </p>
+
+    <p i18n:translate="">
       If you have any questions please contact us at copernicus@eea.europa.eu.
     </p>
     <p i18n:translate="">
