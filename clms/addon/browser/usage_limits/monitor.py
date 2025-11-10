@@ -319,7 +319,7 @@ class UsageLimitsMonitor(BrowserView):
             parts.append(f"{warning_count} warning")
 
         severity = 'High Importance' if critical_count > 0 else 'Warning'
-        subject = f"[{severity}] Usage Limit Alerts: {', '.join(parts)}"
+        subject = f"[{severity}] CDSE Usage Limit Alerts: {', '.join(parts)}"
 
         # Format email body
         html_body = self._format_consolidated_email(all_alerts)
