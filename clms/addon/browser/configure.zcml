@@ -64,6 +64,6 @@
       name="cdse-usage-limits-monitor"
       for="*"
       class=".usage_limits.monitor.UsageLimitsMonitor"
-      permission="cmf.ManagePortal"
+      permission="zope2.View"
       />
 </configure>
