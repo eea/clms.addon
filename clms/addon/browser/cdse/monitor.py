@@ -197,10 +197,13 @@ class CDSEBatchStatusMonitor(BrowserView):
         logger.info("Update parent tasks status...")
         number_updated = 0
         for task in parent_tasks:
-            group_id = task['cdse_task_group_id']
+            group_id = task.get('cdse_task_group_id', 'unknown-parent')
             child_tasks_group = [
-                t for t in child_tasks if t['cdse_task_group_id'] == group_id
+                t for t in child_tasks if t.get(
+                'cdse_task_group_id', 'unknown-child') == group_id
             ]
+            if(group_id == 'unknown-parent'):
+                logger.info("UNKNOWN PARENT FOUND. Skip.")
 
             status_result = analyze_tasks_group(child_tasks_group)
             updated_status = status_result['final_status']
