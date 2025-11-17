@@ -5,9 +5,9 @@
 
 from plone import api
 import logging
-import transaction
 from datetime import datetime, timezone
 from Products.Five import BrowserView
+from plone.protect.interfaces import IDisableCSRFProtection
 from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
 from clms.downloadtool.utility import IDownloadToolUtility
@@ -18,6 +18,7 @@ from clms.downloadtool.api.services.datarequest_post.utils import (
 )
 from clms.downloadtool.api.services.cdse.fme import send_task_to_fme
 from zope.component import getUtility
+from zope.interface import alsoProvides
 
 logger = logging.getLogger("clms.addon")
 
@@ -174,6 +175,7 @@ class CDSEBatchStatusMonitor(BrowserView):
             self, child_tasks, active_batch_ids, cdse_status, utility):
         """ Update status of each child task if it is changed in CDSE
         """
+        to_be_updated = {}
         logger.info("Update child tasks status...")
         number_updated = 0
         for batch_id in active_batch_ids:
@@ -184,25 +186,39 @@ class CDSEBatchStatusMonitor(BrowserView):
             if new_status != old_status:
                 task_id = get_task_id(batch_id, child_tasks)
                 number_updated += 1
-                utility.datarequest_status_patch(
-                    {'Status': new_status, 'Message': message}, task_id)
-                logger.info(f"{task_id} UPDATED CHILD: {new_status}")
+                updates = {'Status': new_status, 'Message': message}
+                to_be_updated[task_id] = updates
+                logger.info(f"{task_id} CHILD update: {new_status}")
 
-                transaction.commit()  # really needed?
-        logger.info(f"Done. {number_updated} child tasks updated.")
+        if not to_be_updated:
+            logger.info("Nothing to update.")
+            return
+
+        res = utility.datarequest_status_patch_multiple(to_be_updated)
+        if isinstance(res, dict) and "errors" in res:
+            updated = res.get("updated", {})
+            errors = res.get("errors", {})
+            logger.info(
+                f"Done, with ERRORS. OK: {len(updated)}, Err: {len(errors)}."
+            )
+            return
+
+        updated_count = len(res)
+        logger.info(f"Done. {updated_count} child tasks updated.")
 
     def update_parent_tasks(self, parent_tasks, child_tasks, utility):
         """ Update status of parent tasks
         """
+        to_be_updated = {}
         logger.info("Update parent tasks status...")
         number_updated = 0
         for task in parent_tasks:
             group_id = task.get('cdse_task_group_id', 'unknown-parent')
             child_tasks_group = [
                 t for t in child_tasks if t.get(
-                'cdse_task_group_id', 'unknown-child') == group_id
+                    'cdse_task_group_id', 'unknown-child') == group_id
             ]
-            if(group_id == 'unknown-parent'):
+            if (group_id == 'unknown-parent'):
                 logger.info("UNKNOWN PARENT FOUND. Skip.")
 
             status_result = analyze_tasks_group(child_tasks_group)
@@ -238,24 +254,32 @@ class CDSEBatchStatusMonitor(BrowserView):
                         now = datetime.now(timezone.utc).isoformat()
                         patch_payload['FinalizationDateTime'] = now
 
-                    utility.datarequest_status_patch(patch_payload, task_id)
-
+                    to_be_updated[task_id] = patch_payload
                     number_updated += 1
-                    logger.info(f"{task_id} UPDATED PARENT: {new_status}")
-                    transaction.commit()  # really needed?
+                    logger.info(f"{task_id} PARENT update: {new_status}")
 
                 if updated_status == STATUS_FINISHED and not already_sent:
                     logger.info("Send task to FME...")
                     save_stats_for_download_task(task_id)
                     fme_result = send_task_to_fme(task_id)
                     logger.info(fme_result)
-                    utility.datarequest_status_patch(
-                        {
-                            'Status': FME_STATUS['CREATED']
-                        }, task_id
-                    )
-                    transaction.commit()  # really needed?
-        logger.info(f"Done. {number_updated} parent tasks updated.")
+                    to_be_updated[task_id] = {'Status': FME_STATUS['CREATED']}
+
+        if not to_be_updated:
+            logger.info("Nothing to update.")
+            return
+
+        res = utility.datarequest_status_patch_multiple(to_be_updated)
+        if isinstance(res, dict) and "errors" in res:
+            updated = res.get("updated", {})
+            errors = res.get("errors", {})
+            logger.info(
+                f"Done, with ERRORS. OK: {len(updated)}, Err: {len(errors)}."
+            )
+            return
+
+        updated_count = len(res)
+        logger.info(f"Done. {updated_count} parent tasks updated.")
 
     def check_cdse_status(self):
         """Check the status for CDSE tasks"""
@@ -278,6 +302,7 @@ class CDSEBatchStatusMonitor(BrowserView):
         return "done"
 
     def __call__(self):
+        alsoProvides(self.request, IDisableCSRFProtection)
         cdse_view_token = get_cdse_monitor_view_token()
 
         if cdse_view_token is None:
