@@ -23,7 +23,7 @@ from clms.addon.browser.usage_limits.config import (
 )
 
 logger = logging.getLogger("clms.addon")
-DEFAULT_THRESHOLD = 0.70  # 70% CHANGE to 20% remaining before production upgrade
+DEFAULT_THRESHOLD = 0.20
 
 
 def get_usage_limits_monitor_token():
