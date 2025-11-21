@@ -47,6 +47,11 @@
             Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
             (<span tal:content="python: '{:,}'.format(alert['data']['overage']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['overage']['config'])">0</span>)
           </p>
+          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0">
+            <p i18n:translate="already_exhausted" style="background-color: #f8d7da; padding: 10px; color: #721c24; margin-top: 10px;">
+              <strong>Monthly allocation already exhausted</strong> - Now using overage buffer
+            </p>
+          </tal:exhausted>
           <tal:projection condition="python: alert.get('projection') and alert['data']['monthly']['remaining'] > 0">
             <p i18n:translate="monthly_projection" style="background-color: #fff3cd; padding: 10px; margin-top: 10px;">
               <strong>Monthly Projection:</strong><br/>
