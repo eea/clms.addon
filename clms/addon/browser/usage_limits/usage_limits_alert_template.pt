@@ -20,24 +20,11 @@
             <li i18n:translate="total_usage"><strong>Total: <span tal:content="python: '{:.1f}%'.format(total_pct)">0%</span> remaining
                 (<span tal:content="python: '{:,}'.format(alert['data']['total']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['total']['config'])">0</span>)</strong></li>
           </ul>
-          <tal:projection condition="python: alert.get('projection')">
-            <p i18n:translate="monthly_projection" style="background-color: #fff3cd; padding: 10px;">
-              <strong>Monthly Projection:</strong><br/>
-              Day <span tal:replace="alert['projection']['current_day']">0</span> of <span tal:replace="alert['projection']['days_in_month']">0</span>
-              (<span tal:replace="alert['projection']['days_remaining']">0</span> days remaining)<br/>
-              Daily average: <span tal:replace="python: '{:,.0f}'.format(alert['projection']['daily_average'])">0</span> units/day<br/>
-              <tal:runout condition="python: alert['projection'].get('will_run_out')">
-                <span i18n:translate="will_run_out" style="color: #d9534f;">
-                  Will run out on day <span tal:replace="alert['projection']['runout_date']">0</span>
-                </span>
-              </tal:runout>
-              <tal:norunout condition="python: not alert['projection'].get('will_run_out')">
-                <span style="color: #5cb85c;">
-                  Will not run out this month
-                </span>
-              </tal:norunout>
+          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0">
+            <p i18n:translate="already_exhausted" style="background-color: #f8d7da; padding: 10px; color: #721c24; margin-top: 10px;">
+              <strong>Monthly allocation already exhausted</strong> - Now using overage buffer
             </p>
-          </tal:projection>
+          </tal:exhausted>
         </div>
       </tal:alert>
     </tal:critical>
@@ -60,6 +47,29 @@
             Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
             (<span tal:content="python: '{:,}'.format(alert['data']['overage']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['overage']['config'])">0</span>)
           </p>
+          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0">
+            <p i18n:translate="already_exhausted" style="background-color: #f8d7da; padding: 10px; color: #721c24; margin-top: 10px;">
+              <strong>Monthly allocation already exhausted</strong> - Now using overage buffer
+            </p>
+          </tal:exhausted>
+          <tal:projection condition="python: alert.get('projection') and alert['data']['monthly']['remaining'] > 0">
+            <p i18n:translate="monthly_projection" style="background-color: #fff3cd; padding: 10px; margin-top: 10px;">
+              <strong>Monthly Projection:</strong><br/>
+              Day <span tal:replace="alert['projection']['current_day']">0</span> of <span tal:replace="alert['projection']['days_in_month']">0</span>
+              (<span tal:replace="alert['projection']['days_remaining']">0</span> days remaining)<br/>
+              Daily average: <span tal:replace="python: '{:,.0f}'.format(alert['projection']['daily_average'])">0</span> units/day<br/>
+              <tal:runout condition="python: alert['projection'].get('will_run_out')">
+                <span i18n:translate="will_run_out" style="color: #d9534f;">
+                  Will run out on day <span tal:replace="alert['projection']['runout_date']">0</span>
+                </span>
+              </tal:runout>
+              <tal:norunout condition="python: not alert['projection'].get('will_run_out')">
+                <span style="color: #5cb85c;">
+                  Will not run out this month
+                </span>
+              </tal:norunout>
+            </p>
+          </tal:projection>
         </div>
       </tal:alert>
     </tal:warning>
@@ -67,12 +77,9 @@
     <hr/>
 
     <p i18n:translate="">
-    Detailed resource utilization here: https://shapps.dataspace.copernicus.eu/dashboard/#/
+    Detailed resource utilization here: https://shapps.dataspace.copernicus.eu/dashboard/#
     </p>
 
-    <p i18n:translate="">
-      If you have any questions please contact us at copernicus@eea.europa.eu.
-    </p>
     <p i18n:translate="">
       Best regards, <br />Copernicus Land Monitoring Service
     </p>
