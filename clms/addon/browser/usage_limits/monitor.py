@@ -152,6 +152,7 @@ class UsageLimitsMonitor(BrowserView):
             )
 
         # High Importance: Total (monthly + overage) < 20%
+        has_critical_alert = False
         if metric_data['total']['remaining'] < total_threshold:
             pct = (metric_data['total']['remaining'] / metric_data['total']
                    ['config'] * 100) if metric_data['total']['config'] > 0 else 0
@@ -163,9 +164,10 @@ class UsageLimitsMonitor(BrowserView):
                 'data': metric_data,
                 'projection': projection
             })
+            has_critical_alert = True
 
-        # Warning: Monthly only < 20%
-        if metric_data['monthly']['remaining'] < monthly_threshold:
+        # Warning: Monthly only < 20% (but only if no critical alert for this metric)
+        if metric_data['monthly']['remaining'] < monthly_threshold and not has_critical_alert:
             pct = (metric_data['monthly']['remaining'] / metric_data['monthly']
                    ['config'] * 100) if metric_data['monthly']['config'] > 0 else 0
 
