@@ -46,12 +46,19 @@
       <h3 i18n:translate="warning" style="color: #f0ad4e;">Warning</h3>
       <tal:alert repeat="alert warning_alerts">
         <div i18n:translate="warning_alert" style="border-left: 3px solid #f0ad4e; padding-left: 10px; margin: 10px 0;"
-             tal:define="monthly_pct python: (alert['data']['monthly']['remaining'] / alert['data']['monthly']['config'] * 100) if alert['data']['monthly']['config'] > 0 else 0">
+             tal:define="monthly_remaining python: alert['data']['monthly']['remaining'];
+                         monthly_pct python: (alert['data']['monthly']['remaining'] / alert['data']['monthly']['config'] * 100) if alert['data']['monthly']['config'] > 0 else 0;
+                         overage_pct python: (alert['data']['overage']['remaining'] / alert['data']['overage']['config'] * 100) if alert['data']['overage']['config'] > 0 else 0;
+                         show_overage python: monthly_remaining == 0 and alert['data']['overage']['config'] > 0">
           <p><strong tal:content="alert['metric']">metric</strong></p>
           <p tal:content="alert['message']">message</p>
           <p>
             Monthly: <span tal:content="python: '{:.1f}%'.format(monthly_pct)">0%</span> remaining
             (<span tal:content="python: '{:,}'.format(alert['data']['monthly']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['monthly']['config'])">0</span>)
+          </p>
+          <p tal:condition="show_overage">
+            Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
+            (<span tal:content="python: '{:,}'.format(alert['data']['overage']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['overage']['config'])">0</span>)
           </p>
         </div>
       </tal:alert>
