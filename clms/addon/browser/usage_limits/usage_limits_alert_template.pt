@@ -20,11 +20,16 @@
             <li i18n:translate="total_usage"><strong>Total: <span tal:content="python: '{:.1f}%'.format(total_pct)">0%</span> remaining
                 (<span tal:content="python: '{:,}'.format(alert['data']['total']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['total']['config'])">0</span>)</strong></li>
           </ul>
-          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0">
+          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0 and alert['data']['overage']['remaining'] > 0">
             <p i18n:translate="already_exhausted" style="background-color: #f8d7da; padding: 10px; color: #721c24; margin-top: 10px;">
               <strong>Monthly allocation already exhausted</strong> - Now using overage buffer
             </p>
           </tal:exhausted>
+          <tal:both_exhausted condition="python: alert['data']['monthly']['remaining'] == 0 and alert['data']['overage']['remaining'] == 0">
+            <p i18n:translate="both_exhausted" style="background-color: #f2dede; padding: 10px; color: #a94442; margin-top: 10px; border: 2px solid #a94442;">
+              <strong>CRITICAL: Both monthly allocation and overage buffer are completely exhausted</strong>
+            </p>
+          </tal:both_exhausted>
         </div>
       </tal:alert>
     </tal:critical>
@@ -47,7 +52,7 @@
             Overage buffer: <span tal:content="python: '{:.1f}%'.format(overage_pct)">0%</span> remaining
             (<span tal:content="python: '{:,}'.format(alert['data']['overage']['remaining'])">0</span> / <span tal:content="python: '{:,}'.format(alert['data']['overage']['config'])">0</span>)
           </p>
-          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0">
+          <tal:exhausted condition="python: alert['data']['monthly']['remaining'] == 0 and alert['data']['overage']['remaining'] > 0">
             <p i18n:translate="already_exhausted" style="background-color: #f8d7da; padding: 10px; color: #721c24; margin-top: 10px;">
               <strong>Monthly allocation already exhausted</strong> - Now using overage buffer
             </p>
