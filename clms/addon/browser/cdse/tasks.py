@@ -7,7 +7,6 @@ from clms.downloadtool.asyncjobs.queues import queue_job
 from datetime import datetime
 import json
 import logging
-import transaction
 
 
 logger = logging.getLogger("clms.addon")
