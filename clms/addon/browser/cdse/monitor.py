@@ -17,6 +17,7 @@ from clms.downloadtool.api.services.datarequest_post.utils import (
     save_stats_for_download_task
 )
 from clms.downloadtool.api.services.cdse.fme import send_task_to_fme
+from clms.downloadtool.asyncjobs.queues import queue_job
 from zope.component import getUtility
 from zope.interface import alsoProvides
 
@@ -172,7 +173,7 @@ class CDSEBatchStatusMonitor(BrowserView):
         return cdse_status
 
     def update_child_tasks(
-            self, child_tasks, active_batch_ids, cdse_status, utility):
+            self, child_tasks, active_batch_ids, cdse_status):
         """ Update status of each child task if it is changed in CDSE
         """
         to_be_updated = {}
@@ -194,19 +195,15 @@ class CDSEBatchStatusMonitor(BrowserView):
             logger.info("Nothing to update.")
             return
 
-        res = utility.datarequest_status_patch_multiple(to_be_updated)
-        if isinstance(res, dict) and "errors" in res:
-            updated = res.get("updated", {})
-            errors = res.get("errors", {})
-            logger.info(
-                f"Done, with ERRORS. OK: {len(updated)}, Err: {len(errors)}."
-            )
-            return
+        queue_job("downloadtool_jobs", "downloadtool_updates", {
+            'operation': 'datarequest_status_patch_multiple',
+            'updates': to_be_updated
+        })
 
-        updated_count = len(res)
-        logger.info(f"Done. {updated_count} child tasks updated.")
+        updated_count = len(to_be_updated)
+        logger.info(f"Done. {updated_count} child tasks will be updated.")
 
-    def update_parent_tasks(self, parent_tasks, child_tasks, utility):
+    def update_parent_tasks(self, parent_tasks, child_tasks):
         """ Update status of parent tasks
         """
         to_be_updated = {}
@@ -269,17 +266,13 @@ class CDSEBatchStatusMonitor(BrowserView):
             logger.info("Nothing to update.")
             return
 
-        res = utility.datarequest_status_patch_multiple(to_be_updated)
-        if isinstance(res, dict) and "errors" in res:
-            updated = res.get("updated", {})
-            errors = res.get("errors", {})
-            logger.info(
-                f"Done, with ERRORS. OK: {len(updated)}, Err: {len(errors)}."
-            )
-            return
+        queue_job("downloadtool_jobs", "downloadtool_updates", {
+            'operation': 'datarequest_status_patch_multiple',
+            'updates': to_be_updated
+        })
 
-        updated_count = len(res)
-        logger.info(f"Done. {updated_count} parent tasks updated.")
+        updated_count = len(to_be_updated)
+        logger.info(f"Done. {updated_count} parent tasks will be updated.")
 
     def check_cdse_status(self):
         """Check the status for CDSE tasks"""
@@ -293,10 +286,8 @@ class CDSEBatchStatusMonitor(BrowserView):
 
         cdse_status = self.get_tasks_status_from_cdse(active_batch_ids)
 
-        self.update_child_tasks(
-            child_tasks, active_batch_ids, cdse_status, utility)
-
-        self.update_parent_tasks(parent_tasks, child_tasks, utility)
+        self.update_child_tasks(child_tasks, active_batch_ids, cdse_status)
+        self.update_parent_tasks(parent_tasks, child_tasks)
 
         # WIP clear children?
         return "done"

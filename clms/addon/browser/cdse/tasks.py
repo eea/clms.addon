@@ -3,10 +3,10 @@
 from Products.Five import BrowserView
 from zope.component import getUtility
 from clms.downloadtool.utility import IDownloadToolUtility
+from clms.downloadtool.asyncjobs.queues import queue_job
 from datetime import datetime
 import json
 import logging
-import transaction
 
 
 logger = logging.getLogger("clms.addon")
@@ -15,9 +15,11 @@ logger = logging.getLogger("clms.addon")
 def remove_task(task_id):
     """ Delete a task from downloadtool
     """
-    utility = getUtility(IDownloadToolUtility)
-    logger.info(f"Removing task {task_id}")
-    utility.datarequest_remove_task(task_id)
+    queue_job("downloadtool_jobs", "downloadtool_updates", {
+        'operation': 'datarequest_remove_task',
+        'updates': task_id
+    })
+    logger.info(f"Task will be removed: {task_id}")
 
 
 def remove_tasks_from_downloadtool(task_ids):
@@ -25,8 +27,6 @@ def remove_tasks_from_downloadtool(task_ids):
     """
     for task_id in task_ids:
         remove_task(task_id)
-
-    transaction.commit()  # else the changes are not saved (why?)
 
 
 class CDSEDownloadsView(BrowserView):
