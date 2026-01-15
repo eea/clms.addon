@@ -32,6 +32,34 @@
       permission="cmf.ManagePortal"
       />
 
+  <browser:page
+      name="downloadtool-db-create"
+      for="*"
+      class=".admin_downloadtool.admin.CreateDownloadtoolDatabase"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="downloadtool-db-details"
+      for="*"
+      class=".admin_downloadtool.admin.DownloadtoolDatabaseDetails"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="downloadtool-db-migrate"
+      for="*"
+      class=".admin_downloadtool.admin.MigrateDownloadtoolAnnotations"
+      permission="cmf.ManagePortal"
+      />
+
+  <browser:page
+      name="downloadtool-db-clear"
+      for="*"
+      class=".admin_downloadtool.admin.ClearDownloadtoolDatabase"
+      permission="cmf.ManagePortal"
+      />
+
     <browser:page
         name="tech-docs-cleanup"
         for="*"
