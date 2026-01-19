@@ -11,6 +11,7 @@ import clms.addon.patches.sortable_title as d
 import clms.addon.patches.catalog as h
 import clms.addon.patches.validate_form_file as i
 import clms.addon.patches.jwkest_accept_secp256k1 as j
+import clms.addon.patches.volto_indexers as k
 
 log = getLogger(__name__)
 
@@ -23,3 +24,4 @@ log.info(g)
 log.info(h)
 log.info(i)
 log.info(j)
+log.info(k)
