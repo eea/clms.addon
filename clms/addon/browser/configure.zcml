@@ -94,4 +94,11 @@
       class=".usage_limits.monitor.UsageLimitsMonitor"
       permission="zope2.View"
       />
+
+  <browser:page
+      name="technical-library-importer"
+      for="*"
+      class=".technical_library.importer.TechnicalLibraryImporter"
+      permission="zope2.View"
+      />
 </configure>
