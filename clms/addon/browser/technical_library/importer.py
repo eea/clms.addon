@@ -145,10 +145,7 @@ class TechnicalLibraryImporter(BrowserView):
             logger.info("CREATE ITEM for %s" % new_url)
             self.create_library_item(new_url)
 
-        # TODO notification
         logger.info("DONE IMPORT")
-        import pdb
-        pdb.set_trace()
 
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
