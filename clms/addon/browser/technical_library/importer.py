@@ -63,7 +63,6 @@ class TechnicalLibraryImporter(BrowserView):
         api.content.create(
             container=container,
             type="TechnicalLibrary",
-            id="techlib-{}".format(uuid4().hex[:8]),
             title=metadata.get("title") or "TEST",
             publication_date=metadata.get("publication_date"),
             version=metadata.get("version") or "",
