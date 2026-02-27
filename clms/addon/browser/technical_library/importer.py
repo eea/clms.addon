@@ -8,7 +8,6 @@ from html import unescape
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 import re
-from uuid import uuid4
 from zope.interface import alsoProvides
 import requests
 import xml.etree.ElementTree as ET
@@ -63,7 +62,6 @@ class TechnicalLibraryImporter(BrowserView):
         api.content.create(
             container=container,
             type="TechnicalLibrary",
-            id="techlib-{}".format(uuid4().hex[:8]),
             title=metadata.get("title") or "TEST",
             publication_date=metadata.get("publication_date"),
             version=metadata.get("version") or "",
