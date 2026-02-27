@@ -8,7 +8,6 @@ from html import unescape
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 import re
-from uuid import uuid4
 from zope.interface import alsoProvides
 import requests
 import xml.etree.ElementTree as ET
