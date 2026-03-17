@@ -59,14 +59,17 @@ class TechnicalLibraryImporter(BrowserView):
 
         metadata = self.get_item_metadata(new_url)
 
-        api.content.create(
-            container=container,
-            type="TechnicalLibrary",
-            title=metadata.get("title") or "TEST",
-            publication_date=metadata.get("publication_date"),
-            version=metadata.get("version") or "",
-            external_source_url=new_url,
-        )
+        # Keep the view public for the cronjob, but elevate only for the
+        # actual content creation step.
+        with api.env.adopt_roles(["Manager"]):
+            api.content.create(
+                container=container,
+                type="TechnicalLibrary",
+                title=metadata.get("title") or "TEST",
+                publication_date=metadata.get("publication_date"),
+                version=metadata.get("version") or "",
+                external_source_url=new_url,
+            )
 
     def get_item_metadata(self, item_url):
         """Fetch title, publication date and version from external page."""
