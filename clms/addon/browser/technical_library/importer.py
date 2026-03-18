@@ -128,8 +128,13 @@ class TechnicalLibraryImporter(BrowserView):
         logger.info("Found in sitemap: %s items" % len(external_items))
 
         catalog = self.context.portal_catalog
-        existing_items = [
-            x.getObject() for x in catalog(portal_type="TechnicalLibrary")]
+        with api.env.adopt_roles(["Manager"]):
+            existing_items = [
+                x.getObject()
+                for x in catalog.unrestrictedSearchResults(
+                    portal_type="TechnicalLibrary",
+                )
+            ]
         logger.info("Found in website: %s items" % len(existing_items))
 
         existing_items_urls = [
