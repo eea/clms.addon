@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1014"
+      destination="1015"
+      >
+
+    <gs:upgradeStep
+        title="Migrate teaserGrid to gridBlock"
+        description="Run teaserGrid to gridBlock migration"
+        handler=".v1015.upgrade"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>
