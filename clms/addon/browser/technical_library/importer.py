@@ -87,7 +87,7 @@ class TechnicalLibraryImporter(BrowserView):
             )
         return {
             "title": item.Title(),
-            "url": item.absolute_url(),
+            "url": item.absolute_url().replace("/api/", "/"),
         }
 
     def _format_review_email(self, created_items):
