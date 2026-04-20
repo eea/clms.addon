@@ -1,9 +1,9 @@
 <html xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:i18n="http://namespaces.zope.org/i18n">
   <body>
-    <p>
-      <strong tal:content="portal_title">Portal</strong> technical library import completed on
-      <span tal:content="date">date</span>.
+    <p i18n:translate="technical_library_import_completed">
+      <strong i18n:name="portal_title" tal:content="portal_title">Portal</strong> technical library import completed on
+      <span i18n:name="date" tal:content="date">date</span>.
     </p>
 
     <p>
@@ -20,7 +20,7 @@
       </tal:item>
     </ul>
 
-    <p>
+    <p i18n:translate="">
       Best regards,<br />
       Copernicus Land Monitoring Service
     </p>
