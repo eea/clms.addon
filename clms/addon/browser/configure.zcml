@@ -101,4 +101,11 @@
       class=".technical_library.importer.TechnicalLibraryImporter"
       permission="zope2.View"
       />
+
+  <browser:page
+      name="search-for-blocks"
+      for="*"
+      class=".admin.SearchForBlocksView"
+      permission="cmf.ManagePortal"
+      />
 </configure>
