@@ -1,0 +1,28 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:i18n="http://namespaces.zope.org/i18n">
+  <body>
+    <p>
+      <strong tal:content="portal_title">Portal</strong> technical library import completed on
+      <span tal:content="date">date</span>.
+    </p>
+
+    <p>
+      <strong tal:content="python: '{} new item(s) need review'.format(item_count)">0 new item(s) need review</strong>
+    </p>
+
+    <ul>
+      <tal:item repeat="item created_items">
+        <li>
+          <strong tal:content="item['title']">Item title</strong><br />
+          <a tal:attributes="href item['url'];"
+             tal:content="item['url']">item url</a>
+        </li>
+      </tal:item>
+    </ul>
+
+    <p>
+      Best regards,<br />
+      Copernicus Land Monitoring Service
+    </p>
+  </body>
+</html>

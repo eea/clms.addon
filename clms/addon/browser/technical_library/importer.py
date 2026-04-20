@@ -1,20 +1,36 @@
 """Technical Library - importer from external source"""
 
-from logging import getLogger
-from Products.Five.browser import BrowserView
-from clms.addon.browser.cdse.monitor import get_cdse_monitor_view_token
-from datetime import datetime
-from html import unescape
-from plone import api
-from plone.protect.interfaces import IDisableCSRFProtection
+import os
 import re
-from zope.interface import alsoProvides
 import requests
 import xml.etree.ElementTree as ET
+from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from logging import getLogger
+from html import unescape
+from smtplib import SMTPException
+
+from chameleon import PageTemplateLoader
+from plone import api
+from plone.protect.interfaces import IDisableCSRFProtection
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces import ISiteSchema
+from Products.CMFPlone.interfaces.controlpanel import IMailSchema
+from Products.CMFPlone.utils import safe_text
+from Products.Five.browser import BrowserView
+from zope.component import getUtility
+from zope.interface import alsoProvides
+
+from clms.addon.browser.cdse.monitor import get_cdse_monitor_view_token
+from clms.addon.browser.cdse.utils import get_env_var
 
 logger = getLogger(__name__)
 
 LIBRARY_SITEMAP_URL = "https://library.land.copernicus.eu/sitemap.xml"
+TECHNICAL_LIBRARY_REVIEW_EMAIL_TO_ENV_VAR = (
+    "TECHNICAL_LIBRARY_REVIEW_EMAIL_TO"
+)
 
 
 class TechnicalLibraryImporter(BrowserView):
@@ -55,14 +71,14 @@ class TechnicalLibraryImporter(BrowserView):
             "en/technical-library", None)
         if container is None:
             logger.warning("Target folder not found: /en/technical-library")
-            return
+            return None
 
         metadata = self.get_item_metadata(new_url)
 
         # Keep the view public for the cronjob, but elevate only for the
         # actual content creation step.
         with api.env.adopt_roles(["Manager"]):
-            api.content.create(
+            item = api.content.create(
                 container=container,
                 type="TechnicalLibrary",
                 title=metadata.get("title") or "TEST",
@@ -70,6 +86,100 @@ class TechnicalLibraryImporter(BrowserView):
                 version=metadata.get("version") or "",
                 external_source_url=new_url,
             )
+        return {
+            "title": item.Title(),
+            "url": item.absolute_url(),
+        }
+
+    def _format_review_email(self, created_items):
+        """Format the review email for newly created items."""
+        registry = getUtility(IRegistry)
+        site_settings = registry.forInterface(
+            ISiteSchema, prefix="plone", check=False
+        )
+        portal_title = "CLMS"
+
+        path = os.path.dirname(__file__)
+        templates = PageTemplateLoader(path)
+        template = templates["technical_library_review_template.pt"]
+
+        return template(
+            created_items=created_items,
+            item_count=len(created_items),
+            date=datetime.utcnow().strftime("%B %d, %Y at %H:%M:%S UTC"),
+            portal_title=portal_title,
+        )
+
+    def _send_review_email(self, created_items):
+        """Send a consolidated review email for newly imported items."""
+        if not created_items:
+            return False
+
+        email_to = get_env_var(TECHNICAL_LIBRARY_REVIEW_EMAIL_TO_ENV_VAR)
+        if not email_to:
+            logger.info(
+                "Skipping technical library review notification. Missing %s.",
+                TECHNICAL_LIBRARY_REVIEW_EMAIL_TO_ENV_VAR,
+            )
+            return False
+
+        subject = (
+            "[Review] {} new Technical Library item(s) imported"
+        ).format(len(created_items))
+        html_body = self._format_review_email(created_items)
+
+        try:
+            registry = getUtility(IRegistry)
+            mail_settings = registry.forInterface(
+                IMailSchema, prefix="plone"
+            )
+            from_address = mail_settings.email_from_address
+            from_name = (
+                mail_settings.email_from_name or "Technical Library Importer"
+            )
+            source = '"{0}" <{1}>'.format(from_name, from_address)
+            encoding = registry.get("plone.email_charset", "utf-8")
+            mailhost = api.portal.get_tool("MailHost")
+
+            message = MIMEMultipart("related")
+            message["Subject"] = subject
+            message["From"] = source
+            message["Reply-To"] = from_address
+            message.preamble = "This is a multi-part message in MIME format"
+
+            msg_alternative = MIMEMultipart("alternative")
+            message.attach(msg_alternative)
+            msg_alternative.attach(
+                MIMEText(
+                    "This email requires HTML support to display properly."
+                )
+            )
+            msg_alternative.attach(MIMEText(safe_text(html_body), "html"))
+
+            recipients = [email.strip() for email in email_to.split(",")]
+            for recipient in recipients:
+                if not recipient:
+                    continue
+                mailhost.send(
+                    message.as_string(),
+                    recipient,
+                    source,
+                    subject=subject,
+                    charset=encoding,
+                )
+                logger.info(
+                    "Technical library review notification sent to %s",
+                    recipient,
+                )
+        except (SMTPException, RuntimeError):
+            plone_utils = api.portal.get_tool("plone_utils")
+            logger.error(
+                "Unable to send technical library review email: %s",
+                plone_utils.exceptionString(),
+            )
+            return False
+
+        return True
 
     def get_item_metadata(self, item_url):
         """Fetch title, publication date and version from external page."""
@@ -143,15 +253,25 @@ class TechnicalLibraryImporter(BrowserView):
             if x.external_source_url is not None
         ]
 
+        created_items = []
         for new_item in external_items:
             new_url = new_item.get('item_url')
             if new_url in existing_items_urls:
                 logger.info("SKIP. ALREADY EXISTING: %s" % new_url)
                 continue
             logger.info("CREATE ITEM for %s" % new_url)
-            self.create_library_item(new_url)
+            created_item = self.create_library_item(new_url)
+            if created_item is not None:
+                created_items.append(created_item)
+
+        if not created_items:
+            logger.info("DONE IMPORT. No new items created.")
+            return created_items
+
+        self._send_review_email(created_items)
 
         logger.info("DONE IMPORT")
+        return created_items
 
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
