@@ -15,7 +15,6 @@ from chameleon import PageTemplateLoader
 from plone import api
 from plone.protect.interfaces import IDisableCSRFProtection
 from plone.registry.interfaces import IRegistry
-from Products.CMFPlone.interfaces import ISiteSchema
 from Products.CMFPlone.interfaces.controlpanel import IMailSchema
 from Products.CMFPlone.utils import safe_text
 from Products.Five.browser import BrowserView
@@ -93,10 +92,6 @@ class TechnicalLibraryImporter(BrowserView):
 
     def _format_review_email(self, created_items):
         """Format the review email for newly created items."""
-        registry = getUtility(IRegistry)
-        site_settings = registry.forInterface(
-            ISiteSchema, prefix="plone", check=False
-        )
         portal_title = "CLMS"
 
         path = os.path.dirname(__file__)
