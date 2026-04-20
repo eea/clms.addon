@@ -111,3 +111,4 @@ You need first to install the test dependencies:
 In docker container, run:
 
   bin/zope-testrunner --test-path sources/clms.addon/
+
