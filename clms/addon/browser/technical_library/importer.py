@@ -21,7 +21,7 @@ from Products.Five.browser import BrowserView
 from zope.component import getUtility
 from zope.interface import alsoProvides
 
-from clms.addon.browser.cdse.monitor import get_cdse_monitor_view_token
+from clms.addon.browser.cdse.config import CDSE_MONITOR_VIEW_TOKEN_ENV_VAR
 from clms.addon.browser.cdse.utils import get_env_var
 
 logger = getLogger(__name__)
@@ -30,6 +30,14 @@ LIBRARY_SITEMAP_URL = "https://library.land.copernicus.eu/sitemap.xml"
 TECHNICAL_LIBRARY_REVIEW_EMAIL_TO_ENV_VAR = (
     "TECHNICAL_LIBRARY_REVIEW_EMAIL_TO"
 )
+
+
+def get_technical_library_view_token():
+    """Return the token that protects the importer view."""
+    if 'localhost' in api.portal.get().absolute_url():
+        return "test-cdse"
+
+    return get_env_var(CDSE_MONITOR_VIEW_TOKEN_ENV_VAR)
 
 
 class TechnicalLibraryImporter(BrowserView):
@@ -272,7 +280,7 @@ class TechnicalLibraryImporter(BrowserView):
         alsoProvides(self.request, IDisableCSRFProtection)
 
         # It is safe to reuse this ENV var
-        view_token_env_value = get_cdse_monitor_view_token()
+        view_token_env_value = get_technical_library_view_token()
 
         if view_token_env_value is None:
             logger.info("Cancelled. Missing view token ENV.")
