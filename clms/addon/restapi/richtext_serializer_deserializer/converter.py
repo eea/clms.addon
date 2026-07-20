@@ -30,7 +30,7 @@ class RichtextDXContextConverter:
     def __call__(self):
         """call the conversion"""
         value = self.value
-        output = value.raw
+        output = value.raw or ""
 
         request = getRequest()
         filter = DownloadableLinkFilter(self.context, request)
