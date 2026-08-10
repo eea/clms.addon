@@ -25,12 +25,14 @@
       permission="cmf.ManagePortal"
       />
 
+<!--
   <browser:page
       name="gopdb"
       for="*"
       class=".admin.GoPDB"
       permission="cmf.ManagePortal"
       />
+-->
 
   <browser:page
       name="downloadtool-db-create"
