@@ -15,6 +15,7 @@
   <include package=".link" />
   <include package=".validate_access" />
   <include package=".csrf_token" />
+  <include package=".cdse_process" />
 
   <!-- <include package=".navroot" /> -->
 
