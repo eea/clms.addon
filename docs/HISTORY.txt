@@ -3,6 +3,9 @@ Changelog
 
 18.4-dev0 - (unreleased)
 ---------------------------
+* Enable server-side storage for REST API JWTs and reduce their lifetime to
+  one hour.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------
