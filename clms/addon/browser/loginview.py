@@ -2,10 +2,10 @@
 Override OIDC PAS Plugin redirect url
 """
 import base64
+import re
 from logging import getLogger
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse, urlsplit, urlunsplit
 
-from clms.addon.utils import add_url_params
 from DateTime import DateTime
 from pas.plugins.oidc.browser.view import CallbackView as BaseCallbackView
 from pas.plugins.oidc.browser.view import LoginView as BaseLoginView
@@ -59,16 +59,13 @@ class CallbackView(BaseCallbackView):
 
         portal_url = api.portal.get_tool("portal_url")
 
-        if came_from:
-            # pylint: disable=line-too-long
-            if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
-                redirect_url = came_from
+        if came_from and is_safe_came_from(came_from, portal_url):
+            redirect_url = came_from
 
         new_url = self.update_user_data(userinfo)
         url = new_url or redirect_url
-        new_came_from = add_url_params(url, {"access_token": token})
 
-        return new_came_from
+        return add_token_fragment(url, token)
 
     def update_user_data(self, userinfo):
         """update user's properties"""
@@ -177,10 +174,10 @@ class MyCallBack(BrowserView):
 
                     portal_url = api.portal.get_tool("portal_url")
 
-                    if came_from:
-                        # pylint: disable=line-too-long
-                        if (came_from.startswith("http") and portal_url.isURLInPortal(came_from) or same_domain(portal_url(), came_from) or not came_from.startswith("http")):  # noqa: E501
-                            redirect_url = came_from
+                    if came_from and is_safe_came_from(
+                        came_from, portal_url
+                    ):
+                        redirect_url = came_from
 
         else:
             came_from = self.request.get("came_from")
@@ -199,13 +196,49 @@ class MyCallBack(BrowserView):
         return self.request.response.redirect(redirect_url, status=302)
 
 
+def add_token_fragment(url, token):
+    scheme, netloc, path, query, _fragment = urlsplit(url)
+    fragment = urlencode({"access_token": token})
+    return urlunsplit((scheme, netloc, path, query, fragment))
+
+
+UNSAFE_CAME_FROM_RE = re.compile(r"[\x00-\x1f\x7f\\]")
+
+
+def is_safe_came_from(came_from, portal_url):
+    if not came_from:
+        return False
+
+    if UNSAFE_CAME_FROM_RE.search(came_from):
+        return False
+
+    if came_from.startswith("//"):
+        return False
+
+    parsed = urlparse(came_from)
+
+    if parsed.scheme or parsed.netloc:
+        # Absolute URL: only in-portal / same-host http(s) is allowed.
+        if parsed.scheme not in ("http", "https"):
+            return False
+        return bool(
+            portal_url.isURLInPortal(came_from)
+            or same_domain(portal_url(), came_from)
+        )
+
+    return True
+
+
 def same_domain(url1, url2):
     """detect whether both URLs are from the same domain. We need to check this
-    because the URL when coming from EU Login has the /api prefix
+    because the URL when coming from EU Login has the /api prefix.
     """
-    if url1.startswith("http") and url2.startswith("http"):
-        parsed_url1 = urlparse(url1)
-        parsed_url2 = urlparse(url2)
+    parsed_url1 = urlparse(url1)
+    parsed_url2 = urlparse(url2)
+    if parsed_url1.scheme in ("http", "https") and parsed_url2.scheme in (
+        "http",
+        "https",
+    ):
         return parsed_url1.hostname == parsed_url2.hostname
 
     return False
