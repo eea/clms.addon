@@ -6,6 +6,9 @@ Changelog
 * Enable server-side storage for REST API JWTs and reduce their lifetime to
   one hour.
   [GhitaB]
+* Revoke all stored REST API JWTs when a user's credentials change or their
+  account is deleted.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------
