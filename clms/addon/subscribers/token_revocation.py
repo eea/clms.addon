@@ -54,6 +54,35 @@ def revoke_user_tokens(user_id, portal=None):
     return True
 
 
+def revoke_token(user_id, token, portal=None):
+    """Remove one stored JWT without affecting the user's other sessions."""
+    if not user_id or not token:
+        return False
+
+    if portal is None:
+        portal = api.portal.get()
+
+    acl_users = getattr(portal, "acl_users", None)
+    if acl_users is None:
+        return False
+
+    jwt_auth = acl_users.get("jwt_auth")
+    if jwt_auth is None:
+        return False
+
+    tokens = getattr(jwt_auth, "_tokens", None)
+    if tokens is None or user_id not in tokens:
+        return False
+
+    user_tokens = tokens[user_id]
+    if token not in user_tokens:
+        return False
+
+    del user_tokens[token]
+    logger.info("Revoked one REST API JWT for principal %s", user_id)
+    return True
+
+
 def revoke_tokens_on_credentials_updated(principal, event):
     """Revoke a principal's JWTs after its credentials change."""
     revoke_user_tokens(get_principal_id(principal))

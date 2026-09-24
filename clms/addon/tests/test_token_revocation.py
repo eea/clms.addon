@@ -9,6 +9,7 @@ from clms.addon.subscribers.token_revocation import (
     get_principal_id,
     revoke_tokens_on_credentials_updated,
     revoke_tokens_on_principal_deleted,
+    revoke_token,
     revoke_user_tokens,
 )
 
@@ -57,6 +58,27 @@ class TokenRevocationTest(unittest.TestCase):
         portal = SimpleNamespace()
 
         self.assertFalse(revoke_user_tokens("alice", portal))
+
+    def test_revoke_token_removes_only_presented_token(self):
+        tokens = {
+            "alice": {"token-one": 1, "token-two": 2},
+            "bob": {"token-three": 3},
+        }
+
+        revoked = revoke_token("alice", "token-one", self.make_portal(tokens))
+
+        self.assertTrue(revoked)
+        self.assertNotIn("token-one", tokens["alice"])
+        self.assertIn("token-two", tokens["alice"])
+        self.assertIn("token-three", tokens["bob"])
+
+    def test_revoke_token_ignores_unknown_token(self):
+        tokens = {"alice": {"token-one": 1}}
+
+        revoked = revoke_token("alice", "unknown", self.make_portal(tokens))
+
+        self.assertFalse(revoked)
+        self.assertIn("token-one", tokens["alice"])
 
     def test_get_principal_id_accepts_user_id(self):
         self.assertEqual(get_principal_id("alice"), "alice")
