@@ -4,11 +4,9 @@ import unittest
 
 from BTrees.OOBTree import OOBTree
 from plone.app.testing import SITE_OWNER_NAME
-from plone.restapi.services.auth.renew import Renew as StockRenew
 from zope.event import notify
 from ZPublisher.pubevents import PubStart
 
-from clms.addon.restapi.login_renew.post import Renew
 from clms.addon.testing import CLMS_ADDON_INTEGRATION_TESTING
 
 
@@ -37,10 +35,10 @@ class LoginRenewTest(unittest.TestCase):
         token = self.plugin.create_token(SITE_OWNER_NAME)
         self.request._auth = f"Bearer {token}"
 
-        service = self.traverse()
+        result = self.traverse().reply()
+        payload = self.plugin._decode_token(result["token"])
 
-        self.assertIsInstance(service, Renew)
-        self.assertNotIsInstance(service, StockRenew)
+        self.assertIn("jti", payload)
 
     def test_renewal_replaces_presented_token(self):
         old_token = self.plugin.create_token(SITE_OWNER_NAME)
