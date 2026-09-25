@@ -1,7 +1,7 @@
 Changelog
 =========
 
-18.5-dev0 - (unreleased)
+18.5 - (2026-09-25)
 ---------------------------
 * Enable server-side storage for REST API JWTs and reduce their lifetime to
   one hour.
