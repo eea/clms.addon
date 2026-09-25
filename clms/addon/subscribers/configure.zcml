@@ -17,6 +17,16 @@
       />
 
 
+  <subscriber
+      for="*
+           Products.PluggableAuthService.interfaces.events.ICredentialsUpdatedEvent"
+      handler=".token_revocation.revoke_tokens_on_credentials_updated"
+      />
 
+  <subscriber
+      for="*
+           Products.PluggableAuthService.interfaces.events.IPrincipalDeletedEvent"
+      handler=".token_revocation.revoke_tokens_on_principal_deleted"
+      />
 
 </configure>

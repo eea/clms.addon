@@ -8,4 +8,12 @@
       file="overrides.zcml"
       />
 
+  <plone:service
+      method="POST"
+      factory=".login_renew.post.Renew"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      permission="zope.Public"
+      name="@login-renew"
+      />
+
 </configure>

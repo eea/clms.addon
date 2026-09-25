@@ -35,10 +35,12 @@ class ClmsAddonLayer(PloneSandboxLayer):
         # pylint: disable=import-outside-toplevel
         import plone.restapi
         import Products.CMFCore
+        from clms.addon import restapi
 
         self.loadZCML(package=Products.CMFCore)
         self.loadZCML(package=plone.restapi)
         self.loadZCML(package=clms.addon)
+        self.loadZCML(package=restapi, name="overrides.zcml")
         self.loadZCML(package=collective.MockMailHost)
 
     def setUpPloneSite(self, portal):
