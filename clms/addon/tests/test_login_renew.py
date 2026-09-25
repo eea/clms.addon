@@ -1,6 +1,7 @@
 """Tests for one-time JWT rotation during login renewal."""
 
 import unittest
+from time import time
 
 from BTrees.OOBTree import OOBTree
 from plone.app.testing import SITE_OWNER_NAME
@@ -39,6 +40,27 @@ class LoginRenewTest(unittest.TestCase):
         payload = self.plugin._decode_token(result["token"])
 
         self.assertIn("jti", payload)
+        self.assertIn("iat", payload)
+
+    def test_all_created_tokens_contain_current_issued_at(self):
+        before = int(time())
+        token = self.plugin.create_token(SITE_OWNER_NAME)
+        after = int(time())
+
+        payload = self.plugin._decode_token(token)
+
+        self.assertGreaterEqual(payload["iat"], before)
+        self.assertLessEqual(payload["iat"], after)
+
+    def test_token_issuer_controls_issued_at(self):
+        token = self.plugin.create_token(
+            SITE_OWNER_NAME,
+            data={"iat": 1},
+        )
+
+        payload = self.plugin._decode_token(token)
+
+        self.assertGreater(payload["iat"], 1)
 
     def test_renewal_replaces_presented_token(self):
         old_token = self.plugin.create_token(SITE_OWNER_NAME)

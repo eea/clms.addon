@@ -9,6 +9,8 @@ Changelog
 * Revoke all stored REST API JWTs when a user's credentials change or their
   account is deleted.
   [GhitaB]
+* Add an ``iat`` claim to every REST API JWT at issuance time.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------
