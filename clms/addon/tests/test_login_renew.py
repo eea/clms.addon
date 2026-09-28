@@ -52,6 +52,16 @@ class LoginRenewTest(unittest.TestCase):
         self.assertGreaterEqual(payload["iat"], before)
         self.assertLessEqual(payload["iat"], after)
 
+    def test_all_created_tokens_contain_unique_token_ids(self):
+        first_token = self.plugin.create_token(SITE_OWNER_NAME)
+        second_token = self.plugin.create_token(SITE_OWNER_NAME)
+
+        first_payload = self.plugin._decode_token(first_token)
+        second_payload = self.plugin._decode_token(second_token)
+
+        self.assertTrue(first_payload["jti"])
+        self.assertNotEqual(first_payload["jti"], second_payload["jti"])
+
     def test_token_issuer_controls_issued_at(self):
         token = self.plugin.create_token(
             SITE_OWNER_NAME,
@@ -61,6 +71,16 @@ class LoginRenewTest(unittest.TestCase):
         payload = self.plugin._decode_token(token)
 
         self.assertGreater(payload["iat"], 1)
+
+    def test_token_issuer_controls_token_id(self):
+        token = self.plugin.create_token(
+            SITE_OWNER_NAME,
+            data={"jti": "caller-controlled"},
+        )
+
+        payload = self.plugin._decode_token(token)
+
+        self.assertNotEqual(payload["jti"], "caller-controlled")
 
     def test_renewal_replaces_presented_token(self):
         old_token = self.plugin.create_token(SITE_OWNER_NAME)

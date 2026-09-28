@@ -1,6 +1,7 @@
-"""Add an issued-at claim to every REST API JWT."""
+"""Add issuer-controlled claims to every REST API JWT."""
 
 from time import time
+from uuid import uuid4
 
 from plone.restapi.pas.plugin import JWTAuthenticationPlugin
 
@@ -8,10 +9,11 @@ from plone.restapi.pas.plugin import JWTAuthenticationPlugin
 _original_create_token = JWTAuthenticationPlugin.create_token
 
 
-def create_token_with_iat(self, userid, timeout=None, data=None):
-    """Create a JWT whose ``iat`` is controlled by the token issuer."""
+def create_token_with_issuer_claims(self, userid, timeout=None, data=None):
+    """Create a JWT whose ``iat`` and ``jti`` are controlled by the issuer."""
     payload = dict(data or {})
     payload["iat"] = int(time())
+    payload["jti"] = uuid4().hex
     return _original_create_token(
         self,
         userid,
@@ -20,4 +22,4 @@ def create_token_with_iat(self, userid, timeout=None, data=None):
     )
 
 
-JWTAuthenticationPlugin.create_token = create_token_with_iat
+JWTAuthenticationPlugin.create_token = create_token_with_issuer_claims

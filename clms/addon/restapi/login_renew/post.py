@@ -1,7 +1,5 @@
 """Rotate REST API JWTs when renewing a login."""
 
-from uuid import uuid4
-
 from clms.addon.subscribers.token_revocation import revoke_token
 from plone.restapi.services import Service
 from Products.CMFCore.utils import getToolByName
@@ -83,7 +81,6 @@ class Renew(Service):
 
         payload = {
             "fullname": user.getProperty("fullname"),
-            "jti": uuid4().hex,
         }
         new_token = plugin.create_token(user_id, data=payload)
         return {"token": new_token}
