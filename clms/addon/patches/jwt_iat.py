@@ -10,9 +10,11 @@ _original_create_token = JWTAuthenticationPlugin.create_token
 
 
 def create_token_with_issuer_claims(self, userid, timeout=None, data=None):
-    """Create a JWT whose ``iat`` and ``jti`` are controlled by the issuer."""
+    """Create a JWT whose standard claims are controlled by the issuer."""
     payload = dict(data or {})
-    payload["iat"] = int(time())
+    issued_at = int(time())
+    payload["iat"] = issued_at
+    payload["nbf"] = issued_at
     payload["jti"] = uuid4().hex
     return _original_create_token(
         self,
