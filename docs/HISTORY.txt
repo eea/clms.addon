@@ -11,6 +11,9 @@ Changelog
   [GhitaB]
 * Add an ``iat`` claim to every REST API JWT at issuance time.
   [GhitaB]
+* Rotate REST API JWTs during ``@login-renew`` so the presented token cannot
+  be reused while other active sessions remain valid.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------
