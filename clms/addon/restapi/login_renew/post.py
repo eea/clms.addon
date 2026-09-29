@@ -1,15 +1,16 @@
 """Rotate REST API JWTs when renewing a login."""
 
-from clms.addon.subscribers.token_revocation import revoke_token
-from plone.restapi.services import Service
-from Products.CMFCore.utils import getToolByName
-from Products.PluggableAuthService.interfaces.plugins import (
-    IAuthenticationPlugin,
-)
-from zope.interface import alsoProvides
+from time import time
 
 import plone.protect.interfaces
+from plone.restapi.services import Service
+from Products.CMFCore.utils import getToolByName
+from Products.PluggableAuthService.interfaces.plugins import \
+    IAuthenticationPlugin
+from zope.interface import alsoProvides
 
+from clms.addon.session import ABSOLUTE_SESSION_TIMEOUT, AUTH_TIME_DATA_KEY
+from clms.addon.subscribers.token_revocation import revoke_token
 
 INVALID_TOKEN_ERROR = {
     "error": {
@@ -73,6 +74,26 @@ class Renew(Service):
         user = membership.getAuthenticatedMember()
         user_id = user.getId()
 
+        old_payload = plugin._decode_token(old_token) if old_token else None
+        auth_time = old_payload.get("auth_time") if old_payload else None
+        if auth_time is None and old_payload:
+            auth_time = old_payload.get("iat")
+
+        session_timeout = getattr(
+            plugin,
+            "absolute_session_timeout",
+            ABSOLUTE_SESSION_TIMEOUT,
+        )
+        now = int(time())
+        if (
+            not isinstance(auth_time, (int, float))
+            or auth_time > now
+            or session_timeout <= 0
+            or now - auth_time >= session_timeout
+        ):
+            revoke_token(user_id, old_token, portal=self.context)
+            return self.invalid_token()
+
         # Consume before minting. Both mutations commit in the same ZODB
         # transaction, and a concurrent request consuming the same token will
         # conflict and then observe that it has already been revoked.
@@ -81,6 +102,13 @@ class Renew(Service):
 
         payload = {
             "fullname": user.getProperty("fullname"),
+            AUTH_TIME_DATA_KEY: auth_time,
         }
-        new_token = plugin.create_token(user_id, data=payload)
+        remaining_session = int(auth_time + session_timeout - now)
+        token_timeout = min(plugin.token_timeout, remaining_session)
+        new_token = plugin.create_token(
+            user_id,
+            timeout=token_timeout,
+            data=payload,
+        )
         return {"token": new_token}

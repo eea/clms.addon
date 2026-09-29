@@ -18,6 +18,12 @@ Changelog
 * Periodically remove expired or invalid REST API JWTs from server-side token
   storage during token issuance.
   [GhitaB]
+* Limit REST API sessions to an absolute 12-hour lifetime across token
+  renewals.
+  [GhitaB]
+* Expire REST API JWTs after 30 minutes without activity while throttling
+  persisted activity updates to once every five minutes.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------
