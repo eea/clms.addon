@@ -101,8 +101,12 @@ def cleanup_expired_tokens(jwt_auth, now=None, force=False):
     if now is None:
         now = int(time())
 
-    last_cleanup = getattr(jwt_auth, "_last_token_cleanup", 0)
-    if not force and now - last_cleanup < TOKEN_CLEANUP_INTERVAL:
+    last_cleanup = getattr(jwt_auth, "_last_token_cleanup", None)
+    if (
+        not force
+        and last_cleanup is not None
+        and now - last_cleanup < TOKEN_CLEANUP_INTERVAL
+    ):
         return 0
 
     removed = 0
