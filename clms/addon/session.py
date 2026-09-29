@@ -1,0 +1,7 @@
+"""Shared REST API session policy."""
+
+
+ABSOLUTE_SESSION_TIMEOUT = 12 * 60 * 60
+AUTH_TIME_DATA_KEY = "_clms_original_auth_time"
+IDLE_SESSION_TIMEOUT = 30 * 60
+IDLE_ACTIVITY_UPDATE_INTERVAL = 5 * 60

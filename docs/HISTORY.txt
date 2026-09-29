@@ -12,7 +12,20 @@ Changelog
 * Revoke all stored REST API JWTs when a user's credentials change or their
   account is deleted.
   [GhitaB]
-* Add an ``iat`` claim to every REST API JWT at issuance time.
+* Add issuer-controlled ``iat`` and ``nbf`` claims, plus a unique ``jti``, to
+  every REST API JWT at issuance time, including standard and OIDC logins.
+  [GhitaB]
+* Rotate REST API JWTs during ``@login-renew`` so the presented token cannot
+  be reused while other active sessions remain valid.
+  [GhitaB]
+* Periodically remove expired or invalid REST API JWTs from server-side token
+  storage during token issuance.
+  [GhitaB]
+* Limit REST API sessions to an absolute 12-hour lifetime across token
+  renewals.
+  [GhitaB]
+* Expire REST API JWTs after 30 minutes without activity while throttling
+  persisted activity updates to once every five minutes.
   [GhitaB]
 
 18.4 - (2026-09-23)

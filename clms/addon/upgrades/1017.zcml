@@ -1,0 +1,20 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:gs="http://namespaces.zope.org/genericsetup"
+    >
+
+  <gs:upgradeSteps
+      profile="clms.addon:default"
+      source="1016"
+      destination="1017"
+      >
+
+    <gs:upgradeStep
+        title="Limit REST API session lifetime"
+        description="Limit JWT renewal chains to an absolute 12-hour lifetime"
+        handler=".v1017.upgrade"
+        />
+
+  </gs:upgradeSteps>
+
+</configure>

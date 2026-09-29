@@ -12,6 +12,7 @@ import clms.addon.patches.catalog as h
 import clms.addon.patches.validate_form_file as i
 import clms.addon.patches.jwkest_accept_secp256k1 as j
 import clms.addon.patches.jwt_iat as m
+import clms.addon.patches.jwt_idle_timeout as n
 import clms.addon.patches.volto_indexers as k
 import clms.addon.patches.render_portlet as l
 
@@ -29,3 +30,4 @@ log.info(j)
 log.info(k)
 log.info(l)
 log.info(m)
+log.info(n)
