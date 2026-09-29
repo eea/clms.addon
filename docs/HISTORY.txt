@@ -15,6 +15,9 @@ Changelog
 * Rotate REST API JWTs during ``@login-renew`` so the presented token cannot
   be reused while other active sessions remain valid.
   [GhitaB]
+* Periodically remove expired or invalid REST API JWTs from server-side token
+  storage during token issuance.
+  [GhitaB]
 
 18.3 - (2026-09-04)
 ---------------------------

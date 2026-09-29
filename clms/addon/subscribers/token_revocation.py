@@ -1,11 +1,15 @@
 """Revoke REST API JWTs when a principal changes or is removed."""
 
 from logging import getLogger
+from time import time
 
 from plone import api
 
 
 logger = getLogger(__name__)
+
+
+TOKEN_CLEANUP_INTERVAL = 15 * 60
 
 
 def get_principal_id(principal):
@@ -81,6 +85,43 @@ def revoke_token(user_id, token, portal=None):
     del user_tokens[token]
     logger.info("Revoked one REST API JWT for principal %s", user_id)
     return True
+
+
+def cleanup_expired_tokens(jwt_auth, now=None, force=False):
+    """Remove expired or invalid JWTs from server-side storage.
+
+    Cleanup is normally triggered during token creation and throttled to avoid
+    scanning the complete token store for every login.  Passing ``force`` is
+    useful for explicit maintenance calls.
+    """
+    tokens = getattr(jwt_auth, "_tokens", None)
+    if tokens is None:
+        return 0
+
+    if now is None:
+        now = int(time())
+
+    last_cleanup = getattr(jwt_auth, "_last_token_cleanup", 0)
+    if not force and now - last_cleanup < TOKEN_CLEANUP_INTERVAL:
+        return 0
+
+    removed = 0
+    for user_id in list(tokens.keys()):
+        user_tokens = tokens[user_id]
+        for token in list(user_tokens.keys()):
+            payload = jwt_auth._decode_token(token, verify=False)
+            expires = payload.get("exp") if payload else None
+            if payload is None or (expires is not None and expires <= now):
+                del user_tokens[token]
+                removed += 1
+
+        if not user_tokens:
+            del tokens[user_id]
+
+    jwt_auth._last_token_cleanup = now
+    if removed:
+        logger.info("Removed %d expired or invalid REST API JWTs", removed)
+    return removed
 
 
 def revoke_tokens_on_credentials_updated(principal, event):
