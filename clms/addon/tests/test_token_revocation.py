@@ -6,6 +6,7 @@ from unittest.mock import Mock
 from unittest.mock import patch
 
 from clms.addon.subscribers.token_revocation import (
+    cleanup_expired_tokens,
     get_principal_id,
     revoke_tokens_on_credentials_updated,
     revoke_tokens_on_principal_deleted,
@@ -79,6 +80,43 @@ class TokenRevocationTest(unittest.TestCase):
 
         self.assertFalse(revoked)
         self.assertIn("token-one", tokens["alice"])
+
+    def test_cleanup_removes_expired_and_invalid_tokens(self):
+        tokens = {
+            "alice": {"expired": 1, "valid": 2, "no-expiry": 3},
+            "bob": {"invalid": 4},
+        }
+        payloads = {
+            "expired": {"exp": 99},
+            "valid": {"exp": 101},
+            "no-expiry": {"sub": "alice"},
+            "invalid": None,
+        }
+        plugin = SimpleNamespace(
+            _tokens=tokens,
+            _decode_token=lambda token, verify=False: payloads[token],
+        )
+
+        removed = cleanup_expired_tokens(plugin, now=100)
+
+        self.assertEqual(2, removed)
+        self.assertEqual({"valid": 2, "no-expiry": 3}, tokens["alice"])
+        self.assertNotIn("bob", tokens)
+        self.assertEqual(100, plugin._last_token_cleanup)
+
+    def test_cleanup_is_throttled(self):
+        tokens = {"alice": {"expired": 1}}
+        plugin = SimpleNamespace(
+            _tokens=tokens,
+            _last_token_cleanup=100,
+            _decode_token=Mock(return_value={"exp": 1}),
+        )
+
+        removed = cleanup_expired_tokens(plugin, now=101)
+
+        self.assertEqual(0, removed)
+        self.assertIn("expired", tokens["alice"])
+        plugin._decode_token.assert_not_called()
 
     def test_get_principal_id_accepts_user_id(self):
         self.assertEqual(get_principal_id("alice"), "alice")
