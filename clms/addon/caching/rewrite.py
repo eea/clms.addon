@@ -2,6 +2,7 @@
 Custom IPurgePathRewriter adapter
 """
 
+from logging import getLogger
 from urllib.parse import urlparse
 
 from clms.addon.interfaces import IClmsAddonLayer
@@ -11,6 +12,9 @@ from plone.cachepurging.rewrite import DefaultRewriter as Base
 from plone.registry.interfaces import IRegistry
 from zope.component import adapter, queryUtility
 from zope.interface import implementer
+
+
+logger = getLogger(__name__)
 
 
 @implementer(IPurgePathRewriter)
@@ -28,10 +32,20 @@ class CLMSRewriter(Base):
         # No rewriting necessary
         virtualURL = request.get("VIRTUAL_URL", None)
         if virtualURL is None:
+            logger.info(
+                "CLMS cache purge: no VIRTUAL_URL; using original path %r",
+                path,
+            )
             return [path]
 
         registry = queryUtility(IRegistry)
         if registry is None:
+            logger.info(
+                "CLMS cache purge: registry unavailable; using original "
+                "path %r (VIRTUAL_URL=%r)",
+                path,
+                virtualURL,
+            )
             return [path]
 
         settings = registry.forInterface(ICachePurgingSettings, check=False)
@@ -50,10 +64,26 @@ class CLMSRewriter(Base):
         virtualUrlParts = request.get("VIRTUAL_URL_PARTS")
         virtualRootPhysicalPath = request.get("VirtualRootPhysicalPath")
 
+        logger.info(
+            "CLMS cache purge: rewriting path %r (VIRTUAL_URL=%r, "
+            "VIRTUAL_URL_PARTS=%r, VirtualRootPhysicalPath=%r, "
+            "configured_domains=%r)",
+            path,
+            virtualURL,
+            virtualUrlParts,
+            virtualRootPhysicalPath,
+            settings.domains,
+        )
+
         # Make sure request is compliant
         # pylint: disable=line-too-long
         # pylint: disable=too-many-boolean-expressions
         if (not virtualUrlParts or not virtualRootPhysicalPath or not isinstance(virtualUrlParts, (list, tuple)) or not isinstance(virtualRootPhysicalPath, (list, tuple)) or len(virtualUrlParts) < 2 or len(virtualUrlParts) > 3):  # noqa
+            logger.info(
+                "CLMS cache purge: invalid virtual-host request data; "
+                "using original path %r",
+                path,
+            )
             return [path]
 
         domains = settings.domains
@@ -93,4 +123,9 @@ class CLMSRewriter(Base):
                     "path": path,
                 }
             )
+        logger.info(
+            "CLMS cache purge: generated paths for %r: %r",
+            path,
+            paths,
+        )
         return paths
